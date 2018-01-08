@@ -12,6 +12,7 @@
 #include "game_object_space.h"
 #include "script_callback_ex.h"
 #include "script_game_object.h"
+#include "physics_game.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -327,7 +328,10 @@ void	CHangingLamp::Hit					(SHit* pHDS)
 		);
 	BOOL	bWasAlive		= Alive		();
 
-	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->boneID,pHDS->hit_type);
+    if (m_pPhysicsShell)
+    {
+        ShellApplyHit(m_pPhysicsShell, pHDS->p_in_bone_space, pHDS->dir, pHDS->impulse, pHDS->boneID, pHDS->hit_type);
+    }
 
 	if (pHDS->boneID==light_bone)fHealth =	0.f;
 	else	fHealth -=	pHDS->damage()*100.f;

@@ -309,3 +309,15 @@ void  TContactShotMark(CDB::TRI* T,dContactGeom* c)
 
 ContactCallbackFun *ContactShotMark = &TContactShotMark<EffectPars>;
 ContactCallbackFun *CharacterContactShotMark = &TContactShotMark<CharacterEffectPars>;
+
+void ShellApplyHit(const CPHShell* shell, const Fvector& pos, const Fvector& dir, float val, const u16 id, ALife::EHitType hit_type)
+{
+    if (shell->id == u16(-1)) return;//
+
+    switch (hit_type) {
+    case ALife::eHitTypeExplosion:
+        shell->ExplosionHit(pos, dir, val, id);
+        break;
+    default: shell->applyImpulseTrace(pos, dir, val, id);
+    }
+}

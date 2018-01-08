@@ -1,14 +1,13 @@
-#ifndef PhysicsShellH
-#define PhysicsShellH
 #pragma once
 
-#include "PHDefs.h"
-#include "PhysicsCommon.h"
-#include "icollidevalidator.h"
-#include "../xrserverentities/alife_space.h"
-//#include "script_export_space.h"
-#include "../xrEngine/iphysicsshell.h"
+ #include "PHDefs.h"
+// #include "PhysicsCommon.h"
+ #include "icollidevalidator.h"
+// #include "../xrserverentities/alife_space.h"
+// //#include "script_export_space.h"
+// #include "../xrEngine/iphysicsshell.h"
 #include "iphysics_scripted.h"
+#include "DisablingParams.h"
 class IPhysicsJoint;
 class IPhysicsElementEx;
 class IPhysicsShellEx;
@@ -65,7 +64,7 @@ public:
 	virtual		void			Activate								(bool disable=false, bool not_set_bone_callbacks = false)																= 0;
 	virtual		void			Activate								(const Fmatrix& form,bool disable=false)																				= 0;
 	virtual	const	Fmatrix		&XFORM									()const																													{ return mXFORM; }
-	virtual		void			get_xform								( Fmatrix& form ) const	{ form.set( XFORM() ); }
+	virtual		void			get_xform								(Fmatrix& form ) const	{ form = XFORM(); }
 	virtual		void	_BCL	InterpolateGlobalTransform				(Fmatrix* m)																											= 0;
 //	virtual		void			GetGlobalTransformDynamic				(Fmatrix* m) const																										= 0;
 	virtual		void			InterpolateGlobalPosition				(Fvector* v)																											= 0;
@@ -334,7 +333,6 @@ virtual				void						GetGlobalTransformDynamic					(Fmatrix* m) 																
 	virtual			bool						IsBreakingBlocked							()																							= 0;
 	virtual			void						applyImpulseTrace							(const Fvector& pos, const Fvector& dir, float val)											= 0;
 	virtual			void						applyImpulseTrace							(const Fvector& pos, const Fvector& dir, float val,const u16 id)							= 0;
-	virtual			void						applyHit									(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type)	= 0;
 	virtual			BoneCallbackFun*			GetBonesCallback							()																							= 0;
 	virtual			BoneCallbackFun*			GetStaticObjectBonesCallback				()																							= 0;
 	virtual			void						Update										()																							= 0;
@@ -408,38 +406,3 @@ virtual				void						GetGlobalTransformDynamic					(Fmatrix* m) 																
 //#undef script_type_list
 //#define script_type_list save_type_list(CPhysicsShell)
 
-struct dContact;
-struct SGameMtl;
-XRPHYSICS_API void	StaticEnvironmentCB ( bool& do_colide, bool bo1, dContact& c, SGameMtl* material_1, SGameMtl* material_2 );
-
-// Implementation creator
-XRPHYSICS_API	IPhysicsJoint*				P_create_Joint				(IPhysicsJoint::enumType type ,IPhysicsElementEx* first,IPhysicsElementEx* second)								;
-XRPHYSICS_API	IPhysicsElementEx*			P_create_Element			()																											;
-XRPHYSICS_API	IPhysicsShellEx*				P_create_Shell				()																											;
-XRPHYSICS_API	IPhysicsShellEx*				P_create_splited_Shell		()																											;
-XRPHYSICS_API	IPhysicsShellEx*				P_build_Shell				(IPhysicsShellHolder* obj,bool not_active_state,LPCSTR	fixed_bones)												;
-XRPHYSICS_API	IPhysicsShellEx*				P_build_Shell				(IPhysicsShellHolder* obj,bool not_active_state,U16Vec& fixed_bones)												;
-XRPHYSICS_API	IPhysicsShellEx*				P_build_Shell				(IPhysicsShellHolder* obj,bool not_active_state,BONE_P_MAP* bone_map, LPCSTR fixed_bones)							;
-
-extern "C" XRPHYSICS_API	IPhysicsShellEx*		__stdcall		P_build_Shell				(IPhysicsShellHolder* obj,bool not_active_state,BONE_P_MAP* bone_map = 0, bool not_set_bone_callbacks = false)		;
-
-XRPHYSICS_API	IPhysicsShellEx*				P_build_SimpleShell			(IPhysicsShellHolder* obj,float mass,bool not_active_state)															;
-XRPHYSICS_API	void						ApplySpawnIniToPhysicShell	(CInifile const * ini,IPhysicsShellEx* physics_shell,bool fixed)														;
-				void						fix_bones					(LPCSTR	fixed_bones,IPhysicsShellEx* shell )																	;
-
-extern "C" XRPHYSICS_API	void	__stdcall			destroy_physics_shell		(IPhysicsShellEx* &p)																							;
-
-extern "C" XRPHYSICS_API	bool	__stdcall			can_create_phys_shell( string1024 &reason, IPhysicsShellHolder& O );				
-
-struct	NearestToPointCallback
-{
-	virtual	bool operator() ( IPhysicsElementEx* e )	=	0;
-};
-					bool				shape_is_physic					( const SBoneShape& shape );
-					bool				has_physics_collision_shapes	( IKinematics& K );
-XRPHYSICS_API		void				phys_shell_verify_object_model	( IPhysicsShellHolder& O );
-
-
-
-					void				phys_shell_verify_model			( IKinematics& K );
-#endif // PhysicsShellH

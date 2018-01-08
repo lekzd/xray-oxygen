@@ -190,7 +190,7 @@ virtual			u16				numberOfGeoms		()							const			{ return 0; }
 virtual	const	IPhysicsGeometry*geometry			( u16 i )					const			{ return 0; }
 virtual	const	Fvector			&mass_Center		()							const			;
 
-virtual			void			get_xform			( Fmatrix& form )			const			{ form.set( XFORM()); }
+virtual			void			get_xform			(Fmatrix& form )			const			{ form.set( XFORM()); }
 virtual			bool			collide_fluids		() const									{ return true ; }
 public:
 virtual			void			update_last_material()											=0;

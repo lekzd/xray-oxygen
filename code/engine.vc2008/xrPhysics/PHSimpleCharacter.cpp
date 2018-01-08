@@ -1782,7 +1782,9 @@ void CPHSimpleCharacter::SCollisionDamageInfo::Construct()
 {
 	m_contact_velocity=0.f;
 	SCollisionDamageInfo::Reinit();
-	m_hit_type = ALife::eHitTypeStrike;
+
+    //#TODO: Move m_hit_type somewhere else
+	//m_hit_type = ALife::eHitTypeStrike;
 	//m_damege_contact;
 	
 	//m_dmc_signum;

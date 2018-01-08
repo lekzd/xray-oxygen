@@ -32,7 +32,7 @@ public:
 	typedef _matrix<T>	Self;
 	typedef Self&		SelfRef;
 	typedef const Self&	SelfCRef;
-	typedef _vector3<T>	Tvector;
+	typedef _vector4<T>	Tvector;
 public:
 	union {
 		struct {						// Direct definition
@@ -51,7 +51,7 @@ public:
 	};
 
 	// Class members
-	ICF	SelfRef	set			(const Self &a) 
+	ICF	SelfRef	set			(SelfCRef a)
 	{
 		i.set(a.i); _14_=a._14;
 		j.set(a.j); _24_=a._24;
@@ -67,6 +67,13 @@ public:
 		c.set(C); _44_=1;
 		return *this;
 	}
+
+    ICF SelfRef operator=( SelfCRef other)
+    {
+        set(other);
+        return *this;
+    }
+
 	ICF	SelfRef	identity	(void) 
 	{
 		_11=1; _12=0; _13=0; _14=0;

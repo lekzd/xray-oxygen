@@ -145,7 +145,7 @@ void CODEGeom::get_global_center_bt(Fvector& center)
 	center.y += add[1];
 	center.z += add[2];
 }
-void	CODEGeom::	get_xform( Fmatrix& form ) const
+void	CODEGeom::	get_xform(Fmatrix& form ) const
 {
 	VERIFY			( m_geom_transform );
 	const dReal	*rot	=NULL			;

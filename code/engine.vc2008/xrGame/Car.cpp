@@ -31,6 +31,7 @@
 #include "CharacterPhysicsSupport.h"
 #include "car_memory.h"
 #include "../xrphysics/IPHWorld.h"
+#include "physics_game.h"
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 //extern CPHWorld*	ph_world;
@@ -572,12 +573,12 @@ void CCar::PHHit(SHit &H)
 		if(!fis_zero(mag))
 		{
 			 vimpulse.mul(1.f/mag);
-			 m_pPhysicsShell->applyHit(H.bone_space_position(),vimpulse,mag,H.bone(),H.type());
+             ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), vimpulse, mag, H.bone(), H.type());
 		}
 		
 	} else
 	{
-		m_pPhysicsShell->applyHit( H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type() );
+        ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type());
 	}
 }
 

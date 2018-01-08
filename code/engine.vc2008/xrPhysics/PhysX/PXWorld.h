@@ -57,6 +57,8 @@ public:
     CObjectSpace				&ObjectSpace() { VERIFY(m_object_space); return *m_object_space; }
     CObjectList					&LevelObjects() { VERIFY(m_level_objects); return *m_level_objects; }
 
+    physx::PxPhysics& Physics() const;
+    physx::PxScene& Scene() const;
 
 private:
 
@@ -74,3 +76,9 @@ private:
     float m_frame_time;
     float m_previous_frame_time;
 };
+
+extern CPXWorld	*px_world;
+IC CPXWorld&	inl_px_world()
+{
+    return *px_world;
+}

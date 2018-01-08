@@ -33,6 +33,7 @@
 #include "../../../patrol_path_storage.h"
 #include "../../../patrol_path.h"
 #include "../../../Actor.h"
+#include "physics_game.h"
 
 
 #ifdef DEBUG
@@ -422,7 +423,7 @@ void CAI_Rat::CreateSkeleton(){
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	m_pPhysicsShell->set_PhysicsRefObject( this );
 	if(!fsimilar(0.f,m_saved_impulse)){
-		m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse,0,m_saved_hit_type);
+        ShellApplyHit(m_pPhysicsShell, m_saved_hit_position, m_saved_hit_dir, m_saved_impulse, 0, m_saved_hit_type);
 	}
 	/*
 	IKinematics* M		= smart_cast<IKinematics*>(Visual());			VERIFY(M);

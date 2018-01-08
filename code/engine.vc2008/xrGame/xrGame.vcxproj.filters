@@ -2293,6 +2293,9 @@
     <Filter Include="Core\Client\Objects\actor\memory">
       <UniqueIdentifier>{6abdee0d-6c56-49e2-b5e8-a42c04c6ec7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Common\Physics">
+      <UniqueIdentifier>{c13458e2-b642-4867-b82d-4d285ac6ec0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mt_config.h">

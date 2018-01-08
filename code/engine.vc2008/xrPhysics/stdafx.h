@@ -34,3 +34,6 @@ IC CGameMtlLibrary &GMLibrary()
 	VERIFY(PGMLib);
 	return *PGMLib;
 }
+
+#include "PhysicsCommon.h"
+#include "PhysicsExternalCommon.h"

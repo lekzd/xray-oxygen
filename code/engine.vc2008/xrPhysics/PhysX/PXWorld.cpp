@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "PXWorld.h"
 #include "../xrengine/device.h"
+#include "debug_output.h"
 
 //xray allocators and error handling for PhysX
+CPXWorld	*px_world = nullptr;
 
 class xrPhysXAllocator : public physx::PxAllocatorCallback
 {
@@ -77,6 +79,7 @@ void CPXWorld::Create(bool mt, CObjectSpace *os, CObjectList *lo, CRenderDeviceB
     m_object_space = os;
     m_level_objects = lo;
     m_device = dv;
+    px_world = this;
 
     //Create basic PhysX state
     using namespace physx;
@@ -111,11 +114,15 @@ void CPXWorld::Create(bool mt, CObjectSpace *os, CObjectList *lo, CRenderDeviceB
 void __stdcall CPXWorld::OnFrame(void)
 {
     throw std::logic_error("The method or operation is not implemented.");
+
+    //physX tick
+    m_Scene->simulate(Device().fTimeDelta);
+    m_Scene->fetchResults(true);
 }
 
 void CPXWorld::OnRender(void)
 {
-    throw std::logic_error("The method or operation is not implemented.");
+    debug_output().PH_DBG_Render();
 }
 
 u32 CPXWorld::CalcNumSteps(u32 dTime)
@@ -207,5 +214,17 @@ void CPXWorld::set_update_callback(IPHWorldUpdateCallbck* cb)
 iphysics_scripted & CPXWorld::get_scripted()
 {
     throw std::logic_error("The method or operation is not implemented.");
+}
+
+physx::PxPhysics& CPXWorld::Physics() const
+{
+    VERIFY(m_Physics);
+    return *m_Physics;
+}
+
+physx::PxScene& CPXWorld::Scene() const
+{
+    VERIFY(m_Scene);
+    return *m_Scene;
 }
 

@@ -414,7 +414,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PhysX\PhysX_helpers.cpp" />
     <ClCompile Include="PhysX\PXWorld.cpp" />
+    <ClCompile Include="PXElement.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -491,7 +493,9 @@
     <ClCompile Include="collisiondamagereceiver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PhysX\PhysX_helpers.h" />
     <ClInclude Include="PhysX\PXWorld.h" />
+    <ClInclude Include="PXElement.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xrPhysics.h" />
     <ClInclude Include="console_vars.h" />

@@ -50,7 +50,6 @@ public:
 	CPHShell								();							
 	virtual ~CPHShell						();
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
-	virtual void			applyHit				(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type);
 
 	static void 	_BCL	BonesCallback				(CBoneInstance* B);
 	static void 	_BCL	StataticRootBonesCallBack	(CBoneInstance* B);

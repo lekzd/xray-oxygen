@@ -23,7 +23,7 @@ public:
 		float m[3][3];					// Array
 	};
 	// Class members
-	IC SelfRef set_rapid(const _matrix<T> &a) 
+	IC SelfRef set_rapid(const _matrix<T>& a) 
 	{
         m[0][0]	=  a.m[0][0];	m[0][1]	=  a.m[0][1];	m[0][2]	= -a.m[0][2];
         m[1][0]	=  a.m[1][0];	m[1][1]	=  a.m[1][1];	m[1][2]	= -a.m[1][2];
@@ -35,7 +35,7 @@ public:
         std::memcpy(this,&a,9*sizeof(float));
 		return *this;
 	}
-	IC SelfRef set(const _matrix<T> &a) 
+	IC SelfRef set(const _matrix<T>& a) 
 	{
     	_11=a._11; _12=a._12; _13=a._13;
     	_21=a._21; _22=a._22; _23=a._23;
@@ -48,6 +48,18 @@ public:
     	_31=0.f; _32=0.f; _33=1.f;
 		return *this;
 	}
+
+    ICF SelfRef operator=(SelfCRef other)
+    {
+        set(other);
+        return *this;
+    }
+
+    ICF SelfRef operator=(const _matrix<T>& a)
+    {
+        set(a);
+        return *this;
+    }
 
 	IC SelfRef transpose(SelfCRef matSource)	// faster version of transpose
 	{

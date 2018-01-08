@@ -38,6 +38,7 @@
 #include "inventory.h"
 #include "activatingcharcollisiondelay.h"
 #include "stalker_movement_manager_smart_cover.h"
+#include "physics_game.h"
 
 //const float default_hinge_friction = 5.f;//gray_wolf comment
 #ifdef DEBUG
@@ -558,7 +559,7 @@ void CCharacterPhysicsSupport::in_Hit( SHit &H, bool is_killing )
 				Msg( "death anim: applied fatal impulse dir: (%f,%f,%f), value: (%f) ", H.dir.x,H.dir.y,H.dir.z, H.impulse );
 		}
 #endif
-		m_pPhysicsShell->applyHit( H.bone_space_position( ), H.direction( ), H.phys_impulse( ), H.bone(), H.type( ) );
+        ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type());
 	}
 }
 

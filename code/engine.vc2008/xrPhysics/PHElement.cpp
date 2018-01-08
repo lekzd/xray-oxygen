@@ -51,8 +51,6 @@ CPHElement::CPHElement()																															//aux
 	m_body=NULL;
 	//bActive=false;
 	//bActivating=false;
-	m_flags.set(flActive,FALSE);
-	m_flags.set(flActivating,FALSE);
 	m_parent_element=NULL;
 	m_shell=NULL;
 

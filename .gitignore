@@ -14,6 +14,7 @@
 *.pch
 *.ilk
 *.idb
+*.tmp
 
 engine.VC.db
 
