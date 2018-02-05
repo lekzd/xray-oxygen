@@ -369,7 +369,7 @@ LONG WINAPI UnhandledFilter (struct _EXCEPTION_POINTERS* pExceptionInfo)
 	Log("* ####[UNHANDLED EXCEPTION]####");
 	Log("* X-Ray Oxygen crash handler ver. 1");
 
-	MessageBox(NULL, "awda", "awda", MB_OK | MB_ICONASTERISK);
+	//MessageBox(NULL, "awda", "awda", MB_OK | MB_ICONASTERISK);
 
 	crashhandler* pCrashHandler = Debug.get_crashhandler();
 	if (pCrashHandler != nullptr)

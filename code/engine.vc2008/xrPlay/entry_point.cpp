@@ -1,5 +1,7 @@
+struct IUnknown;
 #include <string>
 #include <windows.h>
+
 
 #pragma comment(lib, "xrEngine.lib")
 #pragma comment(lib, "xrLauncher.lib")

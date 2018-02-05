@@ -18,7 +18,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{722D40C3-FE5A-4A9B-94A5-5DC23A7C7AE1}</ProjectGuid>
     <RootNamespace>xrECoreLite</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -110,7 +110,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\engine.vc2008\Include\editor;..\..\engine.vc2008\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\xray-oxygen\code\SDK\include\dx;G:\xray-oxygen\code\SDK\include;G:\xray-oxygen\code\engine.vc2008\Include\editor;..\..\engine.vc2008\Include\editor;..\..\engine.vc2008\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>GameMtlLibH;GM_NON_GAME;_SECURE_SCL=0;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

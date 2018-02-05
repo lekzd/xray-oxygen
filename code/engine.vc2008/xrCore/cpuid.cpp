@@ -173,6 +173,7 @@ unsigned int query_processor_info(processor_info* pinfo)
 	// All logical processors
 	pinfo->n_threads = sysInfo.dwNumberOfProcessors;
 	pinfo->affinity_mask = unsigned(pa_mask_save);
+
 	if (pinfo->hasFeature(CPUFeature::HT))
 	{
 		pinfo->n_cores = pinfo->n_threads / 2;
