@@ -227,7 +227,7 @@ _action* action_name_to_ptr(LPCSTR _name)
 			return &actions[idx];
 		++idx;
 	}
-	Msg("! cant find corresponding [id] for '%s'", _name);
+	Msg				("! cant find corresponding [id] for '%s'", _name);
 	return			NULL;
 }
 
