@@ -9,6 +9,7 @@
 #pragma once
 
 #include "alife_simulator_base.h"
+#include "../xrCPU_Pipe/ttapi.h"
 
 class NET_Packet;
 
@@ -24,6 +25,7 @@ protected:
 private:
 			void	prepare_objects_for_save();
 			void	load					(void *buffer, const u32 &buffer_size, LPCSTR file_name);
+			void	TTAPI	load			(LPVOID *buffer, const LPVOID &buffer_size, LPVOID file_name);
 
 public:
 	IC				CALifeStorageManager	(xrServer *server, LPCSTR section);

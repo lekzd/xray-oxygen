@@ -1,23 +1,22 @@
 #ifndef _LOCAL_RAND
 #define _LOCAL_RAND
 
-/*
-u32 dwRandSeed;
+
+/*u32 dwRandSeed;
 IC u32 dwfRandom(u32 dwRange)
 {
 	u32 dwResult;
 	__asm {
-		mov     eax,dwRange						_eax		= dwRange
-		imul    edx,dwRandSeed,08088405H		
-		inc     edx								
-		mov     dwRandSeed,edx					dwRandSeed	= (dwRandSeed * 08088405H)+1
-		mul     edx								return		(u64(dwRange) * u64(dwRandSeed)) >> 32
+		mov     eax,dwRange						_eax		= dwRange									//	u32 dwRange;
+		imul    edx,dwRandSeed,08088405H																//	u32 dwRandSeed = 08088405H * int i > edx;
+		inc     edx																						//	i++
+		mov     dwRandSeed,edx					dwRandSeed	= (dwRandSeed * 08088405H)+1				//	
+		mul     edx								return		(u64(dwRange) * u64(dwRandSeed)) >> 32		//
 		mov     dwResult,edx					
 	}
 	return(dwResult);
 }
 */
-
 class CRandom
 {
 private:

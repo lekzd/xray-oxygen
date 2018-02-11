@@ -6,6 +6,7 @@
 #include "EditMesh.h"
 #include "ImageManager.h"
 
+
 //------------------------------------------------------------------------------
 #define DETOBJ_CHUNK_VERSION		0x1000
 #define DETOBJ_CHUNK_REFERENCE 		0x0101                               
@@ -14,6 +15,8 @@
 #define DETOBJ_CHUNK_FLAGS			0x0104
 
 #define DETOBJ_VERSION 				0x0001
+
+
 //------------------------------------------------------------------------------
 void EDetail::EVertexIn::remapUV(const fvfVertexIn& src, const Fvector2& offs, const Fvector2& scale, bool bRotate)
 {

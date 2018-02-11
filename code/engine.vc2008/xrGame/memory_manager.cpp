@@ -24,6 +24,8 @@
 #include "profiler.h"
 #include "agent_enemy_manager.h"
 #include "script_game_object.h"
+#include "../xrCPU_Pipe/ttapi.h"
+
 
 CMemoryManager::CMemoryManager		(CEntityAlive *entity_alive, CSound_UserDataVisitor *visitor)
 {

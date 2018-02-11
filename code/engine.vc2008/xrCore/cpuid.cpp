@@ -83,6 +83,7 @@ unsigned int query_processor_info(processor_info* pinfo)
 	if (nIds >= 7)
 	{
 		f_1_EBX = data[7][1];
+		
 	}
 
 	// load bitset with flags for function 0x00000007
