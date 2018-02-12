@@ -1,14 +1,24 @@
 struct IUnknown;
 #include <string>
 #include <windows.h>
+#include "xrLauncherWnd.h"
 
 
 #pragma comment(lib, "xrEngine.lib")
-#pragma comment(lib, "xrLauncher.lib")
-
 #define DLL_API __declspec(dllimport)
-extern DLL_API int RunXRLauncher();
-extern DLL_API const char* GetParams();
+
+int RunXRLauncher()
+{
+	xrPlay::Application::EnableVisualStyles();
+	xrPlay::Application::SetCompatibleTextRenderingDefault(false);
+	xrPlay::Application::Run(gcnew xrPlay::xrLauncherWnd);
+	return xrPlay::type_ptr;
+}
+
+const char* GetParams()
+{
+	return xrPlay::params_list;
+}
 extern DLL_API int RunApplication(char* commandLine);
 
 int APIENTRY WinMain(HINSTANCE hInsttance, HINSTANCE hPrevInstance, char* lpCmdLine, int nCmdShow)
@@ -21,7 +31,7 @@ int APIENTRY WinMain(HINSTANCE hInsttance, HINSTANCE hPrevInstance, char* lpCmdL
         {
         case 0: return 0;
         }
-        params = GetParams(); // Fixed
+        params = GetParams();
     }
 
     RunApplication(params.data());

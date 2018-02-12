@@ -32,8 +32,6 @@ ENGINE_API bool g_bootComplete		= false;
 #endif
 bool	g_bIntroFinished			= false;
 extern	void	Intro				( void* fn );
-extern	void	Intro_DSHOW			( void* fn );
-extern	int PASCAL IntroDSHOW_wnd	(HINSTANCE hInstC, HINSTANCE hInstP, LPSTR lpCmdLine, int nCmdShow);
 
 #ifdef MASTER_GOLD
 #	define NO_MULTI_INSTANCES
@@ -373,25 +371,13 @@ struct damn_keys_filter {
 
 #include "xr_ioc_cmd.h"
 
-DLL_API int RunXRLauncher();
-DLL_API const char* GetParams();
-
 ENGINE_API int RunApplication(char* commandLine)
 {
 	Debug._initialize			(false);
-	//MessageBox(0, lpCmdLine, "", 0);
 	if (!IsDebuggerPresent()) 
 	{
-		HMODULE const kernel32	= LoadLibrary("kernel32.dll");
-		R_ASSERT				(kernel32);
-
-		typedef BOOL (__stdcall*HeapSetInformation_type) (HANDLE, HEAP_INFORMATION_CLASS, PVOID, SIZE_T);
-		HeapSetInformation_type const heap_set_information = (HeapSetInformation_type)GetProcAddress(kernel32, "HeapSetInformation");
-		if (heap_set_information) 
-		{
-			ULONG HeapFragValue	= 2;
-			heap_set_information(GetProcessHeap(), HeapCompatibilityInformation, &HeapFragValue, sizeof(HeapFragValue));
-		}
+		size_t HeapFragValue = 2;
+		HeapSetInformation(GetProcessHeap(), HeapCompatibilityInformation, &HeapFragValue, sizeof(HeapFragValue));
 	}
 
 	// Check for another instance
@@ -458,35 +444,10 @@ ENGINE_API int RunApplication(char* commandLine)
 	{
 		FPU::m24r				();
 		InitEngine				();
-
 		InitInput				();
-
 		InitConsole				();
 
 		Engine.External.CreateRendererList();
-
-		LPCSTR benchName = "-batch_benchmark ";
-		if(strstr(commandLine, benchName))
-		{
-			int sz = xr_strlen(benchName);
-			string64				b_name;
-			sscanf					(strstr(Core.Params,benchName)+sz,"%[^ ] ",b_name);
-			doBenchmark				(b_name);
-			return 0;
-		}
-
-		if(strstr(Core.Params,"-r2a"))	
-			Console->Execute			("renderer renderer_r2a");
-		else
-		if(strstr(Core.Params,"-r2"))	
-			Console->Execute			("renderer renderer_r2");
-		else
-		{
-			CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("renderer ");
-			pTmp->Execute				(Console->ConfigFile);
-			xr_delete					(pTmp);
-		}
-
 		Engine.External.Initialize	( );
 		Console->Execute			("stat_memory");
 
@@ -938,39 +899,6 @@ void CApplication::LoadAllArchives()
 	{
 		Level_Scan							();
 		g_pGamePersistent->OnAssetsChanged	();
-	}
-}
-
-void doBenchmark(LPCSTR name)
-{
-	g_bBenchmark = true;
-	string_path in_file;
-	FS.update_path(in_file,"$app_data_root$", name);
-	CInifile ini(in_file);
-	int test_count = ini.line_count("benchmark");
-	LPCSTR test_name,t;
-	shared_str test_command;
-	for(int i=0;i<test_count;++i){
-		ini.r_line			( "benchmark", i, &test_name, &t);
-		xr_strcpy				(g_sBenchmarkName, test_name);
-		
-		test_command		= ini.r_string_wb("benchmark",test_name);
-		xr_strcpy			(Core.Params,*test_command);
-		_strlwr_s				(Core.Params);
-		
-		InitInput					();
-		if(i) InitEngine();
-
-		Engine.External.Initialize	( );
-
-		xr_strcpy						(Console->ConfigFile,"user.ltx");
-		if (strstr(Core.Params,"-ltx ")) {
-			string64				c_name;
-			sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
-			xr_strcpy				(Console->ConfigFile,c_name);
-		}
-
-		Startup	 				();
 	}
 }
 #pragma optimize("g", off)
