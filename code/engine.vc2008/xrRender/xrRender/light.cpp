@@ -27,7 +27,7 @@ light::light		(void)	: ISpatial(g_SpatialSpace)
 
 	frame_render	= 0;
 
-#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
+#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4) || (RENDER==R_R5)
     std::memset(omnipart,0,sizeof(omnipart));
 	s_spot			= NULL;
 	s_point			= NULL;
@@ -72,7 +72,7 @@ void light::set_texture		(LPCSTR name)
 	strconcat(sizeof(temp),temp,"r2\\accum_spot_",name);
 	s_spot.create			(RImplementation.Target->b_accum_spot,temp,name);
 
-#	if	(RENDER!=R_R3) && (RENDER!=R_R4)
+#	if	(RENDER!=R_R3) && (RENDER!=R_R4) && (RENDER!=R_R5)
 	s_volumetric.create		("accum_volumetric", name);
 #	else
 	s_volumetric.create		("accum_volumetric_nomsaa", name);
@@ -89,7 +89,7 @@ void light::set_texture		(LPCSTR name)
 			s_volumetric_msaa[i].create	(RImplementation.Target->b_accum_volumetric_msaa[i],strconcat(sizeof(temp),temp,"r2\\accum_volumetric_",name),name);
 		}
 	}
-#	endif // (RENDER!=R_R3) || (RENDER!=R_R4)
+#	endif // (RENDER!=R_R3) || (RENDER!=R_R4) || (RENDER==R_R5)
 #endif
 }
 
@@ -188,7 +188,7 @@ void	light::spatial_move			()
 	// update spatial DB
 	ISpatial::spatial_move			();
 
-#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
+#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4) || (RENDER==R_R5)
 	if (flags.bActive) gi_generate	();
 	svis.invalidate					();
 #endif // (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
@@ -209,7 +209,7 @@ Fvector	light::spatial_sector_point	()
 }
 
 //////////////////////////////////////////////////////////////////////////
-#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
+#if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4) || (RENDER==R_R5)
 // Xforms
 void	light::xform_calc			()
 {
@@ -305,7 +305,7 @@ void	light::export_		(light_Package& package)
 						L->s_point			= s_point	;
 						
 						// Holger - do we need to export msaa stuff as well ?
-#if	(RENDER==R_R3) || (RENDER==R_R4)
+#if	(RENDER==R_R3) || (RENDER==R_R4) || (RENDER==R_R5)
 						if( RImplementation.o.dx10_msaa )
 						{
 							int bound = 1;
@@ -320,7 +320,7 @@ void	light::export_		(light_Package& package)
 								//L->s_volumetric_msaa[i] = s_volumetric_msaa[i];
 							}
 						}
-#endif	//	(RENDER==R_R3) || (RENDER==R_R4)
+#endif	//	(RENDER==R_R3) || (RENDER==R_R4) || (RENDER==R_R5)
 
 						//	Igor: add volumetric support
 						L->set_volumetric(flags.bVolumetric);
@@ -352,7 +352,7 @@ void	light::set_attenuation_params	(float a0, float a1, float a2, float fo)
 	falloff      = fo;
 }
 
-#endif // (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
+#endif // (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R5)
 
 extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 extern float		ps_r2_slight_fade;

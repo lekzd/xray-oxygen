@@ -2,7 +2,7 @@
 #define	xrD3DDefs_included
 #pragma once
 
-#if defined(USE_DX11) || defined(USE_DX10)
+#if defined(USE_DX11) || defined(USE_DX10) || defined(USE_DX12)
 
 #	include "..\xrRenderDX10\DXCommonTypes.h"
 

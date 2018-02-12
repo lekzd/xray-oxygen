@@ -51,7 +51,7 @@ xr_token							qssao_token									[ ]={
 	{ "st_opt_low",					1												},
 	{ "st_opt_medium",				2												},
 	{ "st_opt_high",				3												},
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	{ "st_opt_ultra",				4												},
 #endif
 	{ 0,							0												}
@@ -62,7 +62,7 @@ xr_token							qsun_quality_token							[ ]={
 	{ "st_opt_low",					0												},
 	{ "st_opt_medium",				1												},
 	{ "st_opt_high",				2												},
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	{ "st_opt_ultra",				3												},
 	{ "st_opt_extreme",				4												},
 #endif	//	USE_DX10
@@ -74,7 +74,7 @@ xr_token							qmsaa_token							[ ]={
 	{ "st_opt_off",					0												},
 	{ "2x",							1												},
 	{ "4x",							2												},
-	{ "8x",							3												},
+	{ "8x",							3												},	// Be very difficult with this parametre
 	{ 0,							0												}
 };
 
@@ -272,7 +272,7 @@ float		ps_r2_gloss_factor			= 4.0f;
 #include	"../../xrEngine/xr_ioconsole.h"
 #include	"../../xrEngine/xr_ioc_cmd.h"
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 #include "../xrRenderDX10/StateManager/dx10SamplerStateCache.h"
 #endif	//	USE_DX10
 
@@ -307,7 +307,7 @@ public:
 	void	apply	()	{
 		if (HW.pDevice == NULL)	return	;
 		int	val = *value;	clamp(val,1,16);
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		SSManager.SetMaxAnisotropy(val);
 #else	//	USE_DX10
 		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
@@ -332,7 +332,7 @@ public:
 	void	apply	()	{
 		if (HW.pDevice == NULL)	return	;
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		//	TODO: DX10: Implement mip bias control
 		//VERIFY(!"apply not implmemented.");
 #else	//	USE_DX10
@@ -695,7 +695,7 @@ public:
 };
 
 //	Allow real-time fog config reload
-#if	(RENDER == R_R3) || (RENDER == R_R4)
+#if	(RENDER == R_R3) || (RENDER == R_R4) || (RENDER == R_R5)
 #ifdef	DEBUG
 
 #include "../xrRenderDX10/3DFluid/dx103DFluidManager.h"

@@ -58,7 +58,7 @@ BOOL CTheoraStream::ParseHeaders		()
 {
 	ogg_packet			o_packet;
 	int header_count	= 0;
-	BOOL stateflag		= FALSE;
+	bool stateflag		= FALSE;
 
 	// find Theora stream
 	while(!stateflag){
@@ -121,11 +121,13 @@ BOOL CTheoraStream::ParseHeaders		()
 		}
 		else
 		{
-			if (!ReadData()) FATAL("End of file while searching for codec headers.");
+			if (!ReadData()) 
+				FATAL("End of file while searching for codec headers.");
 		}
 	}
 
-	if (3!=header_count)	return FALSE;
+	if (header_count != 3)	
+		return FALSE;
 	
 	// init decode
 	theora_decode_init		(&t_state,&t_info);
@@ -189,7 +191,9 @@ BOOL CTheoraStream::Decode(u32 in_tm_play)
 					VERIFY					(res!=OC_BADPACKET);
 //.					dbg_log					((stderr,"%04d: granule frame\n",theora_granule_frame(&t_state,t_state.granulepos)));
 					if (d_frame>=t_frame)	result = TRUE;
-				}else						break;
+				}
+				else						
+					break;
 			}
 			// check eof
 			VERIFY(!(FALSE==result&&source->eof()));
@@ -213,12 +217,12 @@ BOOL CTheoraStream::Decode(u32 in_tm_play)
 
 BOOL CTheoraStream::Load(const char* fname)
 {
-	VERIFY				(0==source);
+	VERIFY				(!source);
 	// open source
 #ifdef _EDITOR
-	source				= FS.r_open(0,fname);
+	source				= FS.r_open(NULL,fname);
 #else
-	source				= FS.rs_open(0,fname);
+	source				= FS.rs_open(NULL,fname);
 #endif
 	VERIFY				(source);
 

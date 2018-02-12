@@ -25,7 +25,7 @@ typedef struct
 		WORD	right;
 		WORD	bottom;
 	};
-//	RECT   rcFrame;		- лажа в MSDN
+//	RECT   rcFrame;		- error with MSDN
 } AVIStreamHeaderCustom;
 
 class ENGINE_API CAviPlayerCustom
@@ -41,8 +41,8 @@ protected:
 	BITMAPINFOHEADER	m_biOutFormat;
 	BITMAPINFOHEADER	m_biInFormat;
 
-	float				m_fRate;		// стандартная скорость, fps
-	float				m_fCurrentRate;	// текущая скорость, fps
+	float				m_fRate;		// Standart fps
+	float				m_fCurrentRate;	// Current fps
 
 	DWORD				m_dwFrameTotal;
 	DWORD				m_dwFrameCurrent;

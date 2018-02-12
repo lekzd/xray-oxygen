@@ -2,7 +2,7 @@
 #pragma hdrstop
 #include "tntQAVI.h"
 
-CAviPlayerCustom::CAviPlayerCustom()
+CAviPlayerCustom::CAviPlayerCustom	()
 {
     std::memset(this, 0, sizeof(*this));
 	m_dwFrameCurrent	= 0xfffffffd;	// страхуемся от 0xffffffff + 1 == 0
@@ -11,15 +11,13 @@ CAviPlayerCustom::CAviPlayerCustom()
 
 CAviPlayerCustom::~CAviPlayerCustom()
 {
-	if(m_aviIC)
+	if(m_aviIC) 
 	{
-
 		ICDecompressEnd(m_aviIC);
 		ICClose(m_aviIC);
 	}
 
 	if(m_pDecompressedBuf)	xr_free(m_pDecompressedBuf);
-
 	if(m_pMovieData )	xr_free(m_pMovieData);
 	if(m_pMovieIndex ) xr_free(m_pMovieIndex);
 
@@ -38,18 +36,18 @@ BOOL CAviPlayerCustom::Load (char* fname)
 		alpha->Load	(aname);
 	}
 
-	// Открыть через mmioOpen( ) AVI файл
+	// Open with mmioOpen( ) AVI file
 	HMMIO hmmioFile = mmioOpen( fname, NULL, MMIO_READ /*MMIO_EXCLUSIVE*/ );
 	if( hmmioFile == NULL ) {
 
 		return FALSE;
 	}
 
-	// Найти чанк FOURCC('movi')
+	// Find chunk FOURCC('movi')
 
 	MMCKINFO mmckinfoParent;
     std::memset( &mmckinfoParent, 0, sizeof(mmckinfoParent) );
-	mmckinfoParent.fccType = mmioFOURCC('A', 'V', 'I', ' ');
+	mmckinfoParent.fccType = mmioFOURCC('A', 'V', 'I', ' ');				//	O	L	E	S	Style: ON
 	MMRESULT res;
 	if( MMSYSERR_NOERROR != (res = mmioDescend(hmmioFile, &mmckinfoParent, NULL, MMIO_FINDRIFF)) ) {
 
@@ -83,9 +81,10 @@ BOOL CAviPlayerCustom::Load (char* fname)
 		return FALSE;
 	}
 
-	AVIStreamHeaderCustom	strh;
-    std::memset(&strh,0,sizeof(strh));
-	if( mmckinfoParent.cksize != (DWORD)mmioRead(hmmioFile, (HPSTR)&strh, mmckinfoParent.cksize) ) {
+	AVIStreamHeaderCustom	strHeight;
+
+    std::memset(&strHeight,0,sizeof(strHeight));
+	if( mmckinfoParent.cksize != (DWORD)mmioRead(hmmioFile, (HPSTR)&strHeight, mmckinfoParent.cksize) ) {
 
 		mmioClose( hmmioFile, 0 );
 		return FALSE;
@@ -94,8 +93,11 @@ BOOL CAviPlayerCustom::Load (char* fname)
 
 
     AVIFileInit		();
-	PAVIFILE aviFile = 0;
-	if( AVIERR_OK != AVIFileOpen( &aviFile, fname, OF_READ, 0 ) )	return FALSE;
+	PAVIFILE aviFile = NULL;
+	if (AVIERR_OK != AVIFileOpen(&aviFile, fname, OF_READ, NULL)) 
+	{ 
+		return FALSE; 
+	}
 
 	AVIFILEINFO		aviInfo;
     std::memset(&aviInfo,0,sizeof(aviInfo));
@@ -108,7 +110,7 @@ BOOL CAviPlayerCustom::Load (char* fname)
 	m_fCurrentRate	= (float) aviInfo.dwRate / (float)aviInfo.dwScale;
 
 	m_dwWidth			= aviInfo.dwWidth;
-	m_dwHeight		= aviInfo.dwHeight;
+	m_dwHeight			= aviInfo.dwHeight;
 
 	AVIFileRelease( aviFile );
 
@@ -121,18 +123,18 @@ BOOL CAviPlayerCustom::Load (char* fname)
 	mmckinfoParent.fccType = mmioFOURCC('s', 't', 'r', 'f'); 
 	if( MMSYSERR_NOERROR != (res = mmioDescend(hmmioFile, &mmckinfoParent, NULL, MMIO_FINDCHUNK)) ) {
 
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
-	// получаем входной формат декомпрессора в BITMAPINFOHEADER
+	// Getting output format of decompressor in BITMAPINFOHEADER
 	if( mmckinfoParent.cksize != (DWORD)mmioRead(hmmioFile, (HPSTR)&m_biInFormat, mmckinfoParent.cksize) ) {
 
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
-	// создаем выходной формат декомпрессора	(xRGB)
+	// Make output format of decompressor	(xRGB)
 	m_biOutFormat.biSize	= sizeof( m_biOutFormat );
 	m_biOutFormat.biBitCount= 32;
 	m_biOutFormat.biCompression	= BI_RGB;
@@ -141,40 +143,37 @@ BOOL CAviPlayerCustom::Load (char* fname)
 	m_biOutFormat.biHeight	= m_dwHeight;
 	m_biOutFormat.biSizeImage = m_dwWidth * m_dwHeight * 4;
 
-	// Найти подходящий декомпрессор
-	m_aviIC = ICLocate( ICTYPE_VIDEO, NULL, &m_biInFormat, &m_biOutFormat, \
-						// ICMODE_DECOMPRESS
-						ICMODE_FASTDECOMPRESS
-						);
-	if( m_aviIC == 0 ) {
-
+	// Search ready compressor
+	m_aviIC = ICLocate( ICTYPE_VIDEO, NULL, &m_biInFormat, &m_biOutFormat, ICMODE_FASTDECOMPRESS);
+	if( m_aviIC == NULL) 
+	{
 		return FALSE;
 	}
 
-	// Проинитить декомпрессор
-	if( ICERR_OK != ICDecompressBegin(m_aviIC, &m_biInFormat, &m_biOutFormat) ) {
-
+	// init decompressor
+	if( ICERR_OK != ICDecompressBegin(m_aviIC, &m_biInFormat, &m_biOutFormat) ) 
+	{
 		return FALSE;
 	}
 
 	//--strf
-	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoParent, 0 ) ) {
-
-		mmioClose( hmmioFile, 0 );
+	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoParent, 0 ) ) 
+	{
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
 	//--strh
-	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoParent, 0 ) ) {
-
-		mmioClose( hmmioFile, 0 );
+	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoParent, 0 ) ) 
+	{
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
 	//--strl
 	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoParent, 0 ) ) {
 
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
@@ -185,36 +184,35 @@ BOOL CAviPlayerCustom::Load (char* fname)
 	if( MMSYSERR_NOERROR != (res = mmioDescend(hmmioFile, &mmckinfoSubchunk, NULL, MMIO_FINDLIST)) \
 		|| mmckinfoSubchunk.cksize <= 4 )
 	{
-
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
 	mmioSeek( hmmioFile, mmckinfoSubchunk.dwDataOffset, SEEK_SET );
 	
-	// Выделить память под сжатые  данные всего клипа
+	// Pick out memory for compressed data of all clip
 	m_pMovieData = (BYTE *)xr_malloc( mmckinfoSubchunk.cksize );
-	if( m_pMovieData == NULL ) {
-
-		mmioClose( hmmioFile, 0 );
+	if( m_pMovieData == NULL ) 
+	{
+		mmioClose( hmmioFile, NULL );
 		return FALSE;
 	}
 
 	if( mmckinfoSubchunk.cksize != (DWORD)mmioRead( hmmioFile, (HPSTR)m_pMovieData, mmckinfoSubchunk.cksize ) ) {
 
 		xr_free( m_pMovieData );	m_pMovieData	= NULL;
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL);
 		return FALSE;
 	}
 
 	if( MMSYSERR_NOERROR != mmioAscend( hmmioFile, &mmckinfoSubchunk, 0 ) ) {
 
 		xr_free( m_pMovieData );	m_pMovieData	= NULL;
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL);
 		return FALSE;
 	}
 
-	// Найти чанк FOURCC('idx1')
+	// Find chunk FOURCC('idx1')
     std::memset(&mmckinfoSubchunk,0,sizeof(mmckinfoSubchunk));
 	mmckinfoSubchunk.fccType = mmioFOURCC('i', 'd', 'x', '1'); 
 
@@ -226,12 +224,15 @@ BOOL CAviPlayerCustom::Load (char* fname)
 		return FALSE;
 	}
 
-	// Выделить память под индекс
+	// Pick out memory for index(?)
+#pragma todo("Vertver to Oles: cho za huynyu ti pridumal?")
 	m_pMovieIndex = (AVIINDEXENTRY *)xr_malloc( mmckinfoSubchunk.cksize );
 	if( m_pMovieIndex == NULL ) {
 
-		xr_free( m_pMovieData );	m_pMovieData	= NULL;
-		mmioClose( hmmioFile, 0 );
+		// for index we CAN'T use xr_free method
+		xr_free( m_pMovieData );
+		m_pMovieData		= NULL;
+		mmioClose( hmmioFile, NULL);
 		return FALSE;
 	}
 
@@ -239,11 +240,11 @@ BOOL CAviPlayerCustom::Load (char* fname)
 
 		xr_free( m_pMovieIndex );	m_pMovieIndex	= NULL;
 		xr_free( m_pMovieData );	m_pMovieData	= NULL;
-		mmioClose( hmmioFile, 0 );
+		mmioClose( hmmioFile, NULL);
 		return FALSE;
 	}
 
-	// Закрыть AVI файл через mmioClose( )
+	// Closing AVI file with mmioClose()
 	mmioClose( hmmioFile, 0 );
 
 	if (alpha)	{
@@ -257,18 +258,21 @@ BOOL CAviPlayerCustom::Load (char* fname)
 
 BOOL CAviPlayerCustom::DecompressFrame( DWORD dwFrameNum )
 {
-	// получаем элемент индекса
+	// Getting element of index
 	AVIINDEXENTRY	*pCurrFrameIndex = &m_pMovieIndex[ dwFrameNum ];
 
 	m_biInFormat.biSizeImage = pCurrFrameIndex->dwChunkLength;
-	R_ASSERT( m_biInFormat.biSizeImage != 0 );
+	R_ASSERT( m_biInFormat.biSizeImage != NULL);
 
 	DWORD	dwFlags;
 	dwFlags = (pCurrFrameIndex->dwFlags & AVIIF_KEYFRAME) ? 0 : ICDECOMPRESS_NOTKEYFRAME;
 	m_biInFormat.biSizeImage = pCurrFrameIndex->dwChunkLength;
 	dwFlags |= (m_biInFormat.biSizeImage) ? 0 : ICDECOMPRESS_NULLFRAME;
 
-	if( ICERR_OK != ICDecompress(m_aviIC, dwFlags, &m_biInFormat, (m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8), &m_biOutFormat, m_pDecompressedBuf) ) {
+	if( ICERR_OK != ICDecompress(m_aviIC, dwFlags, &m_biInFormat, 
+		(m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8), 
+		&m_biOutFormat, m_pDecompressedBuf) ) 
+	{
 		return	FALSE;
 	}
 
@@ -291,44 +295,40 @@ BOOL CAviPlayerCustom::DecompressFrame( DWORD dwFrameNum )
 	return	TRUE;
 }
 
-/*
-GetFrame
+/************************************************
+*
+* GetFrame
+* Return TRUE if frame be changed, else FALSE
+*
+*************************************************/
 
-возвращает TRUE если кадр изменился, иначе FALSE
-*/
 BOOL CAviPlayerCustom::GetFrame( BYTE **pDest )
 {
 	R_ASSERT( pDest );
 
 	DWORD	dwCurrFrame;
 	dwCurrFrame	= CalcFrame();
-
-//** debug	dwCurrFrame = 112;
-
-	// Если заданный кадр равен предидущему
-	if( dwCurrFrame == m_dwFrameCurrent ) {
-
+	// If marked frame = previos
+	if( dwCurrFrame == m_dwFrameCurrent ) 
+	{
 		*pDest				= m_pDecompressedBuf;
-
 		return	FALSE;
 	} else
-	// Если заданный кадр это Предидущий кадр + 1
-	if( dwCurrFrame == m_dwFrameCurrent + 1 ) {
-	
-		++m_dwFrameCurrent;	//	dwCurrFrame == m_dwFrameCurrent + 1
-
+	// If marked frame is previos frame++
+	if( dwCurrFrame == m_dwFrameCurrent + 1 ) 
+	{
+		++m_dwFrameCurrent;	
 		*pDest	= m_pDecompressedBuf;
-
 		DecompressFrame( m_dwFrameCurrent );
 		return	TRUE;
 	} else {
 		
-		// Это произвольный кадр
+		// It's arbitrary frame
 
 		if( ! (m_pMovieIndex[ dwCurrFrame ].dwFlags & AVIIF_KEYFRAME) ) {
 
-			// Это НЕ ключевой кадр -
-			// делаем PreRoll от ближайшего предидущего ключевого кадра до Заданного-1
+			// It's not a main frame! -
+			// make PreRoll for near previous main frame to marked-1
 			PreRoll( dwCurrFrame );
 		}			
 
@@ -336,13 +336,13 @@ BOOL CAviPlayerCustom::GetFrame( BYTE **pDest )
 		
 		*pDest	= m_pDecompressedBuf;
 
-		// Декомпрессим заданный кадр
+		// Decompress this frame
 		DecompressFrame( m_dwFrameCurrent );
 		return	TRUE;
 	}
 }
 
-// минимум проверок на валидность переданного для преролла кадра - нужна скорость
+// Without validates - we're need a SPEED
 VOID CAviPlayerCustom::PreRoll( DWORD dwFrameNum )
 {
 	int i;
@@ -350,16 +350,16 @@ VOID CAviPlayerCustom::PreRoll( DWORD dwFrameNum )
 	AVIINDEXENTRY	*pCurrFrameIndex;
 	DWORD		res;
 
-	// находим в массиве индексов первый предшествующий ему ключевой кадр
-	// или берем кадр, корректно расжатый до этого
+	// Search in massive first previos main frame
+	// or take a frame before compress
 	for( i=(int)dwFrameNum-1 ; i>0 ; i-- ) {
 
 		if( m_pMovieIndex[ i ].dwFlags & AVIIF_KEYFRAME )	break;
 
 		if( (int)m_dwFrameCurrent == i ) {
 
-			// нам раньше встретился расжатый перед этим кадр:
-			// декомпрессим все последующие НЕключевые кадры с флагами PREROLL & NOTKEYFRAME
+			// Before this we gets decompessed before that frame:
+			// decompress all UNmain frames with flags PREROLL & NOTKEYFRAME
 			for( i++ ; i<(int)dwFrameNum ; i++ ) {
 
 				pCurrFrameIndex = &m_pMovieIndex[ i ];
@@ -370,7 +370,7 @@ VOID CAviPlayerCustom::PreRoll( DWORD dwFrameNum )
 				dwFlags |= (m_biInFormat.biSizeImage) ? 0 : ICDECOMPRESS_NULLFRAME;
 
 				res = ICDecompress(m_aviIC, dwFlags, &m_biInFormat, (m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8) /*m_pCompressedBuf*/, &m_biOutFormat, m_pDecompressedBuf);
-				if( ICERR_OK != res && ICERR_DONTDRAW != res ) {	// проверка на ICERR_DONTDRAW введена из-за indeo 5.11
+				if( ICERR_OK != res && ICERR_DONTDRAW != res ) {	// Checking for ICERR_DONTDRAW added cuz indeo 5.11
 
 					R_ASSERT( 0 );
 				}
@@ -382,19 +382,20 @@ VOID CAviPlayerCustom::PreRoll( DWORD dwFrameNum )
 	}	// for( i=(int)dwFrameNum-1 ; i>0 ; i-- )...
 
 
-	// получаем элемент индекса
+	// Getting a index's element
 	pCurrFrameIndex = &m_pMovieIndex[ i ];
 	m_biInFormat.biSizeImage = pCurrFrameIndex->dwChunkLength;
 	R_ASSERT( m_biInFormat.biSizeImage );
 
-	// декомпрессим ключевой кадр с флагом ICDECOMPRESS_PREROLL 
+	// Decompress main frames with flags ICDECOMPRESS_PREROLL 
 	res = ICDecompress(m_aviIC, ICDECOMPRESS_PREROLL | ICDECOMPRESS_HURRYUP, &m_biInFormat, m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8/*m_pCompressedBuf*/, &m_biOutFormat, m_pDecompressedBuf);
-	if( ICERR_OK != res && ICERR_DONTDRAW != res ) {
+	if( ICERR_OK != res && ICERR_DONTDRAW != res ) 
+	{
 
-		R_ASSERT( 0 );
+		R_ASSERT( NULL );
 	}
 
-	// декомпрессим все последующие НЕключевые кадры с флагами PREROLL & NOTKEYFRAME
+	// Decompress all next UNmain frames with flags PREROLL & NOTKEYFRAME
 	for( i++ ; i<(int)dwFrameNum ; i++ ) {
 
 		pCurrFrameIndex = &m_pMovieIndex[ i ];
@@ -405,7 +406,7 @@ VOID CAviPlayerCustom::PreRoll( DWORD dwFrameNum )
 		dwFlags |= (m_biInFormat.biSizeImage) ? 0 : ICDECOMPRESS_NULLFRAME;
 
 		res = ICDecompress(m_aviIC, dwFlags, &m_biInFormat, (m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8) /*m_pCompressedBuf*/, &m_biOutFormat, m_pDecompressedBuf);
-		if( ICERR_OK != res && ICERR_DONTDRAW != res ) {	// проверка на ICERR_DONTDRAW введена из-за indeo 5.11
+		if( ICERR_OK != res && ICERR_DONTDRAW != res ) {	// Checking for ICERR_DONTDRAW added cuz indeo 5.11
 
 			R_ASSERT( 0 );
 		}

@@ -4,6 +4,7 @@
 #include "StatGraph.h"
 //---------------------------------------------
 
+#pragma todo("Make sure to create TTAPI parallel")
 CStatGraph::CStatGraph()
 {
 	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);

@@ -67,6 +67,12 @@ HRESULT dx10State::Apply()
 	SSManager.DSApplySamplers(m_DSSamplers);
 	SSManager.CSApplySamplers(m_CSSamplers);
 #endif
+#ifdef USE_DX12
+	SSManager.HSApplySamplers(m_SRVamplers);
+	SSManager.DSApplySamplers(m_UAVamplers);
+	SSManager.CSApplySamplers(m_RTVamplers);
+#endif // USE_DX12
+
 
 //	static const FLOAT BlendFactor[4] = {0.000f, 0.000f, 0.000f, 0.000f};
 //	static const UINT SampleMask = 0xffffffff;

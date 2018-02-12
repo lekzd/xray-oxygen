@@ -25,7 +25,7 @@ void __stdcall xrSkin1W_3DNow(vertRender*		D,
 	u32				vCount,
 	CBoneInstance*	Bones)
 {
-	__asm
+	/*__asm
 	{
 		// ------------------------------------------------------------------
 		femms; Clear MMX / 3DNow!state
@@ -138,14 +138,16 @@ void __stdcall xrSkin1W_3DNow(vertRender*		D,
 				// ------------------------------------------------------------------
 				femms; Clear MMX / 3DNow!state
 				// ------------------------------------------------------------------
+				*/
 	}
-}
+
 
 void __stdcall xrSkin2W_3DNow(	vertRender*		D,
 								vertBoned2W*	S,
 								u32				vCount,
 								CBoneInstance*	Bones) 
-{__asm{
+{
+	/*__asm{
 // ------------------------------------------------------------------
 	mov			ecx,vCount						; ecx = vCount
 // ------------------------------------------------------------------
@@ -475,4 +477,5 @@ void __stdcall xrSkin2W_3DNow(	vertRender*		D,
 // ------------------------------------------------------------------
 	femms										; reset FPU/3DNow! state
 // ------------------------------------------------------------------
-}}
+*/
+}

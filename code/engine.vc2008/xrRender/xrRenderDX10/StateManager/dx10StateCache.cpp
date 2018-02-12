@@ -77,10 +77,11 @@ dx10StateCache<ID3DBlendState, D3D_BLEND_DESC>
 {
 	CHK_DX(HW.pDevice->CreateBlendState( &desc, ppIState));
 
-	//	TODO: DX10: Remove this.
-#ifdef	DEBUG
-	Msg("ID3DBlendState #%d created.", m_StateArray.size());
-#endif	//	DEBUG
+//	TODO: DX10: Remove this.
+//#ifdef	DEBUG
+//	Msg("ID3DBlendState #%d created.", m_StateArray.size());
+//#endif	//	DEBUG
+// OK :)
 }
 
 /*

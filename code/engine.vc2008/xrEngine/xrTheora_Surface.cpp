@@ -128,11 +128,14 @@ BOOL CTheoraSurface::Load(const char* fname)
 		open_sdl_video	();
 #endif
 		ready			= TRUE;
-	}else{
+	}
+	else
+	{
 		xr_delete		(m_rgb);
 		xr_delete		(m_alpha);
 	}
-	if(res){
+	if(res)
+	{
 		//	TODO: get shader version here for theora surface
 		//VERIFY(0);
 		

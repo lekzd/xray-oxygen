@@ -85,6 +85,7 @@ IC BOOL shared(occTri* T1, occTri* T2)
 	if (T1->adjacent[1]==T2)	return TRUE;
 	if (T1->adjacent[2]==T2)	return TRUE;
 	return FALSE;
+	// Сказали блять работает, значит сука не трожь! 
 }
 
 void occRasterizer::propagade	()

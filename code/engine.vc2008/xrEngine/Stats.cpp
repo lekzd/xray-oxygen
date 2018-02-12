@@ -18,6 +18,7 @@ DECLARE_RP(Stats);
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+#pragma todo("Make sure to create TTAPI parallel")
 BOOL			g_bDisableRedText	= FALSE;
 CStats::CStats	()
 {
@@ -145,7 +146,7 @@ void CStats::Show()
 	int frm = 2000;
 	div_t ddd = div(Device.dwFrame,frm);
 	if( ddd.rem < frm/2.0f ){
-		pFont->SetColor	(0xFFFFFFFF	);
+		pFont->SetColor	(0xFFFFFFFF);
 		pFont->OutSet	(0,0);
 		pFont->OnRender	();
 	}

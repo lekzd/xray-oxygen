@@ -29,6 +29,7 @@ private:
 	};
 
 private:
+	// TODO: State of wat? //
 	void			CreateState( StateDecs desc, IDeviceState** ppIState );
 	IDeviceState*	FindState( const StateDecs& desc, u32 StateCRC );
 

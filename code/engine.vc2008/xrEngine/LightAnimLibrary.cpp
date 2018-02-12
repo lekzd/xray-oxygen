@@ -105,20 +105,22 @@ u32 CLAItem::InterpolateRGB(int frame)
 
     auto A=Keys.find(frame);
     auto B = Keys.end();
-    if (A!=Keys.end()){  			// ключ - возвращаем цвет ключа
+    if (A!=Keys.end()){  			// Key - return the key's colour
     	return A->second;
-    }else{							// не ключ
-    	B=Keys.upper_bound(frame);  // ищем следующий ключ
-        if (B==Keys.end()){			// если его нет вернем цвет последнего ключа
+    }
+	else
+	{							// not a key
+    	B=Keys.upper_bound(frame);  // search a next key
+        if (B==Keys.end()){			// if isn't - return color of latest
 	    	B--;
         	return B->second;
         }
-    	A=B;        				// иначе в A занесем предыдущий ключ
+    	A=B;        				// Else in A = previos key
         A--;
     }
 
     R_ASSERT(Keys.size()>1);
-    // интерполируем цвет
+    // Interpolate the color
     Fcolor c, c0, c1;
     float a0=static_cast<float>(A->first);
     float a1=static_cast<float>(B->first);

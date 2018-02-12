@@ -7,6 +7,8 @@
 #include "ps_instance.h"
 #include "IGame_Persistent.h"
 
+#pragma todo("Vertver to Giperion: Make sure to use here TTAPI")
+
 CPS_Instance::CPS_Instance			(bool destroy_on_game_load)	:
 	ISpatial				(g_SpatialSpace),
 	m_destroy_on_game_load	(destroy_on_game_load)
@@ -46,14 +48,14 @@ void CPS_Instance::shedule_Update	(u32 dt)
 
 	// remove???
 	if (m_bDead)					return;
-	if (m_bAutoRemove && m_iLifeTime<=0)
+	if ( m_bAutoRemove && m_iLifeTime <= NULL )
 		PSI_destroy					();
 }
 //----------------------------------------------------
 void CPS_Instance::PSI_destroy		()
 {
 	m_bDead								= TRUE;
-	m_iLifeTime							= 0;
+	m_iLifeTime							= NULL;
 	g_pGamePersistent->ps_destroy.push_back	(this);
 }
 //----------------------------------------------------
