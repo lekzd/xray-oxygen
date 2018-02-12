@@ -36,8 +36,9 @@ enum {
 	rsR1							= (1ul<<19ul),
 	rsR2							= (1ul<<20ul),
 	rsR3							= (1ul<<21ul),
-	rsR4							= (1ul<<22ul), // was reserved to Editor
-	rsDrawFPS						= (1ul<<23ul), // was reserved to Editor
+	rsR4							= (1ul<<22ul),
+	rsR5							= (1ul<<23ul),
+	rsDrawFPS						= (1ul<<24ul),
 	// 22-32 bit - reserved to Editor
 };
 
