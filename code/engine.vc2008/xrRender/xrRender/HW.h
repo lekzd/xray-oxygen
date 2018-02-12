@@ -50,7 +50,22 @@ public:
 #endif
 
 //	Variables section
-#if defined(USE_DX11)	//	USE_DX10
+#if defined(USE_DX12)
+public:
+	IDXGIAdapter * m_pAdapter;
+	ID3D12Device*			pDevice;
+	ID3D12DeviceContext*    pContext;
+	IDXGISwapChain*         m_pSwapChain;
+	ID3D12RenderTargetView*	pBaseRT;
+	ID3D12DepthStencilView*	pBaseZB;
+
+	CHWCaps					Caps;
+
+	D3D_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
+	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivdalent
+	bool					m_bUsePerfhud;
+	D3D_FEATURE_LEVEL		FeatureLevel;
+#elif  defined(USE_DX11)	//	USE_DX10
 public:
 	IDXGIAdapter*			m_pAdapter;	//	pD3D equivalent
 	ID3D11Device*			pDevice;	//	combine with DX9 pDevice via typedef

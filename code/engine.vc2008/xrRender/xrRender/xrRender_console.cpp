@@ -74,7 +74,7 @@ xr_token							qmsaa_token							[ ]={
 	{ "st_opt_off",					0												},
 	{ "2x",							1												},
 	{ "4x",							2												},
-//	{ "8x",							3												},
+	{ "8x",							3												},
 	{ 0,							0												}
 };
 
@@ -305,7 +305,7 @@ class CCC_tf_Aniso		: public CCC_Integer
 {
 public:
 	void	apply	()	{
-		if (0==HW.pDevice)	return	;
+		if (HW.pDevice == NULL)	return	;
 		int	val = *value;	clamp(val,1,16);
 #if defined(USE_DX10) || defined(USE_DX11)
 		SSManager.SetMaxAnisotropy(val);
@@ -330,7 +330,7 @@ class CCC_tf_MipBias: public CCC_Float
 {
 public:
 	void	apply	()	{
-		if (0==HW.pDevice)	return	;
+		if (HW.pDevice == NULL)	return	;
 
 #if defined(USE_DX10) || defined(USE_DX11)
 		//	TODO: DX10: Implement mip bias control
@@ -359,9 +359,9 @@ public:
 	CCC_R2GM(LPCSTR N, float*	v) : CCC_Float(N, v, 0.f, 4.f) { *v = 0; };
 	virtual void	Execute	(LPCSTR args)
 	{
-		if (0==xr_strcmp(args,"on"))	{
+		if (!xr_strcmp(args,"on"))	{
 			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,TRUE);
-		} else if (0==xr_strcmp(args,"off"))	{
+		} else if (!xr_strcmp(args,"off"))	{
 			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,FALSE);
 		} else {
 			CCC_Float::Execute	(args);
@@ -418,6 +418,7 @@ public:
 		{
 			case 0:
 			{
+				// NULL
 				ps_r_ssao = 0;
 				ps_r2_ls_flags_ext.set(R2FLAGEXT_SSAO_HBAO, 0);
 				ps_r2_ls_flags_ext.set(R2FLAGEXT_SSAO_HDAO, 0);
@@ -425,6 +426,7 @@ public:
 			}
 			case 1:
 			{
+				// SSAP
 				if (ps_r_ssao==0)
 				{
 					ps_r_ssao = 1;
@@ -436,6 +438,7 @@ public:
 			}
 			case 2:
 			{
+				// HDAO
 				if (ps_r_ssao==0)
 				{
 					ps_r_ssao = 1;
@@ -448,6 +451,7 @@ public:
 			}
 			case 3:
 			{
+				// HBAO
 				if (ps_r_ssao==0)
 				{
 					ps_r_ssao = 1;
@@ -825,9 +829,6 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sun_details",		&ps_r2_ls_flags,			R2FLAG_SUN_DETAILS);
 	CMD3(CCC_Mask,		"r2_sun_focus",			&ps_r2_ls_flags,			R2FLAG_SUN_FOCUS);
-//	CMD3(CCC_Mask,		"r2_sun_static",		&ps_r2_ls_flags,			R2FLAG_SUN_STATIC);
-//	CMD3(CCC_Mask,		"r2_exp_splitscene",	&ps_r2_ls_flags,			R2FLAG_EXP_SPLIT_SCENE);
-//	CMD3(CCC_Mask,		"r2_exp_donttest_uns",	&ps_r2_ls_flags,			R2FLAG_EXP_DONT_TEST_UNSHADOWED);
 	CMD3(CCC_Mask,		"r2_exp_donttest_shad",	&ps_r2_ls_flags,			R2FLAG_EXP_DONT_TEST_SHADOWED);
 	
 	CMD3(CCC_Mask,		"r2_sun_tsm",			&ps_r2_ls_flags,			R2FLAG_SUN_TSM	);
@@ -880,7 +881,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);
 
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallax_h,		.0f,	.5f		);
-//	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	175.0f	);
 
 	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.2f,	1.f		);
 
@@ -901,21 +901,17 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_dof_sky",	&ps_r2_dof_sky,						-10000.f,	10000.f);
 	CMD3(CCC_Mask,		"r2_dof_enable",&ps_r2_ls_flags,	R2FLAG_DOF);
 	
-//	float		ps_r2_dof_near			= 0.f;					// 0.f
-//	float		ps_r2_dof_focus			= 1.4f;					// 1.4f
-	
 	CMD3(CCC_Mask,		"r2_volumetric_lights",			&ps_r2_ls_flags,			R2FLAG_VOLUMETRIC_LIGHTS);
-//	CMD3(CCC_Mask,		"r2_sun_shafts",				&ps_r2_ls_flags,			R2FLAG_SUN_SHAFTS);
 	CMD3(CCC_Token,		"r2_sun_shafts",				&ps_r_sun_shafts,			qsun_shafts_token);
 	CMD3(CCC_SSAO_Mode,	"r2_ssao_mode",					&ps_r_ssao_mode,			qssao_mode_token);
 	CMD3(CCC_Token,		"r2_ssao",						&ps_r_ssao,					qssao_token);
-	CMD3(CCC_Mask,		"r2_ssao_blur",                 &ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_BLUR);//Need restart
-	CMD3(CCC_Mask,		"r2_ssao_opt_data",				&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_OPT_DATA);//Need restart
-	CMD3(CCC_Mask,		"r2_ssao_half_data",			&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HALF_DATA);//Need restart
-	CMD3(CCC_Mask,		"r2_ssao_hbao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HBAO);//Need restart
-	CMD3(CCC_Mask,		"r2_ssao_hdao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HDAO);//Need restart
-	CMD3(CCC_Mask,		"r4_enable_tessellation",		&ps_r2_ls_flags_ext,		R2FLAGEXT_ENABLE_TESSELLATION);//Need restart
-	CMD3(CCC_Mask,		"r4_wireframe",					&ps_r2_ls_flags_ext,		R2FLAGEXT_WIREFRAME);//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_blur",                 &ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_BLUR);				//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_opt_data",				&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_OPT_DATA);			//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_half_data",			&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HALF_DATA);			//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_hbao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HBAO);				//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_hdao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HDAO);				//Need restart
+	CMD3(CCC_Mask,		"r4_enable_tessellation",		&ps_r2_ls_flags_ext,		R2FLAGEXT_ENABLE_TESSELLATION);		//Need restart
+	CMD3(CCC_Mask,		"r4_wireframe",					&ps_r2_ls_flags_ext,		R2FLAGEXT_WIREFRAME);				//Need restart
 	CMD3(CCC_Mask,		"r2_steep_parallax",			&ps_r2_ls_flags,			R2FLAG_STEEP_PARALLAX);
 	CMD3(CCC_Mask,		"r2_detail_bump",				&ps_r2_ls_flags,			R2FLAG_DETAIL_BUMP);
 

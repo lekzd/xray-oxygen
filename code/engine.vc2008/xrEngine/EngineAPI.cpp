@@ -47,14 +47,28 @@ void CEngineAPI::InitializeNotDedicated()
 {
 	LPCSTR			r2_name	= "xrRender_R2",
 					r3_name	= "xrRender_R3",
-					r4_name	= "xrRender_R4";
+					r4_name	= "xrRender_R4",
+					r5_name = "xrRender_R5";
+
+	if (psDeviceFlags.test(rsR5))
+	{
+		// try to initialize R5
+		Log("Loading DLL:", r5_name);
+		hRender = LoadLibrary(r5_name);
+		if (hRender == NULL)
+		{
+			// try to load R1
+			Msg("! ...Failed - incompatible hardware/pre-Windows 10 OS.");
+			psDeviceFlags.set(rsR2, TRUE);
+		}
+	}
 
 	if (psDeviceFlags.test(rsR4))
 	{
 		// try to initialize R4
 		Log				("Loading DLL:",	r4_name);
 		hRender			= LoadLibrary		(r4_name);
-		if (0==hRender)	
+		if (hRender == NULL)
 		{
 			// try to load R1
 			Msg			("! ...Failed - incompatible hardware/pre-Vista OS.");
@@ -67,7 +81,7 @@ void CEngineAPI::InitializeNotDedicated()
 		// try to initialize R3
 		Log				("Loading DLL:",	r3_name);
 		hRender			= LoadLibrary		(r3_name);
-		if (0==hRender)	
+		if (hRender == NULL)
 		{
 			// try to load R1
 			Msg			("! ...Failed - incompatible hardware/pre-Vista OS.");
@@ -84,7 +98,7 @@ void CEngineAPI::InitializeNotDedicated()
 		psDeviceFlags.set	(rsR3,FALSE);
 		Log				("Loading DLL:",	r2_name);
 		hRender			= LoadLibrary		(r2_name);
-		if (0==hRender)	
+		if (hRender == NULL)
 		{
 			// try to load R1
 			Msg			("! ...Failed - incompatible hardware.");
@@ -106,6 +120,7 @@ void CEngineAPI::Initialize(void)
 	if (!hRender)		
 	{
 		// try to load R1
+		psDeviceFlags.set	(rsR5,FALSE);
 		psDeviceFlags.set	(rsR4,FALSE);
 		psDeviceFlags.set	(rsR3,FALSE);
 		psDeviceFlags.set	(rsR2,FALSE);
@@ -113,7 +128,7 @@ void CEngineAPI::Initialize(void)
 
 		Log				("Loading DLL:",	r1_name);
 		hRender			= LoadLibrary		(r1_name);
-		if (0==hRender)	R_CHK				(GetLastError());
+		if (hRender == NULL)	R_CHK				(GetLastError());
 		R_ASSERT		(hRender);
 		g_current_renderer	= 1;
 	}
@@ -150,20 +165,23 @@ extern "C" {
 	typedef bool __cdecl SupportsAdvancedRendering	(void);
 	typedef bool _declspec(dllexport) SupportsDX10Rendering();
 	typedef bool _declspec(dllexport) SupportsDX11Rendering();
+	typedef bool _declspec(dllexport) SupportsDX12Rendering();
 };
 
 void CEngineAPI::CreateRendererList()
 {
 	//	TODO: ask renderers if they are supported!
 	if(vid_quality_token != NULL)		return;
-	bool bSupports_r2 = false;
-	bool bSupports_r2_5 = false;
-	bool bSupports_r3 = false;
-	bool bSupports_r4 = false;
+	bool bSupports_r2		=			false;
+	bool bSupports_r2_5		=			false;
+	bool bSupports_r3		=			false;
+	bool bSupports_r4		=			false;
+	bool bSupports_r5		=			false;
 
 	LPCSTR			r2_name	= "xrRender_R2";
 	LPCSTR			r3_name	= "xrRender_R3";
 	LPCSTR			r4_name	= "xrRender_R4";
+	LPCSTR			r5_name = "xrRender_R5";
 
 	if (strstr(Core.Params,"-perfhud_hack"))
 	{
@@ -171,6 +189,7 @@ void CEngineAPI::CreateRendererList()
 		bSupports_r2_5 = true;
 		bSupports_r3 = true;
 		bSupports_r4 = true;
+		bSupports_r5 = true;
 	}
 	else
 	{
@@ -215,6 +234,21 @@ void CEngineAPI::CreateRendererList()
 			bSupports_r4 = test_dx11_rendering();
 			FreeLibrary(hRender);
 		}
+
+		// try to initialize R5
+		Log				("Loading DLL:",	r5_name);
+		//	Hide "d3d10 not found" message box for XP
+		SetErrorMode(SEM_FAILCRITICALERRORS);
+		hRender			= LoadLibrary		(r5_name);
+		//	Restore error handling
+		SetErrorMode	(0);
+		if (hRender)
+		{
+			SupportsDX12Rendering *test_dx12_rendering = (SupportsDX12Rendering*)GetProcAddress(hRender, "SupportsDX12Rendering");
+			R_ASSERT	(test_dx12_rendering);
+			bSupports_r5	= test_dx12_rendering();
+			FreeLibrary(hRender);
+		}
 	}
 
 	hRender = 0;
@@ -242,6 +276,10 @@ void CEngineAPI::CreateRendererList()
 			if (!bSupports_r4)
 				bBreakLoop = true;
 			break;
+		case 6:
+			if (!bSupports_r5)
+				bBreakLoop = true;
+			break;
 		default:	;
 		}
 
@@ -255,8 +293,10 @@ void CEngineAPI::CreateRendererList()
 		case 1: val ="renderer_r2a";		break;
 		case 2: val ="renderer_r2";			break;
 		case 3: val ="renderer_r2.5";		break;
-		case 4: val ="renderer_r3";			break; //  -)
-		case 5: val ="renderer_r4";			break; //  -)
+		case 4: val ="renderer_r3";			break;
+		case 5: val ="renderer_r4";			break;
+		case 6: val ="renderer_r5";			break;
+
 		}
 		if (bBreakLoop) break;
 		_tmp.back()					= xr_strdup(val);

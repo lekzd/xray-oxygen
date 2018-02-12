@@ -4,26 +4,26 @@
 #include "hwcaps.h"
 #include "hw.h"
 
-#include "NVAPI/nvapi.h"
+//#include "NVAPI/nvapi.h"
 #include "amd/amd_ags.h"
 
 #pragma comment(lib, "amd_ags.lib")
 
 namespace
 {
-u32 GetNVGpuNum()
+/*u32 GetNVGpuNum()
 {
-	NvLogicalGpuHandle  logicalGPUs[NVAPI_MAX_LOGICAL_GPUS];
-	NvU32               logicalGPUCount;
-	NvPhysicalGpuHandle physicalGPUs[NVAPI_MAX_PHYSICAL_GPUS];
-	NvU32               physicalGPUCount;
+	//NvLogicalGpuHandle  logicalGPUs[NVAPI_MAX_LOGICAL_GPUS];
+	//NvU32               logicalGPUCount;
+	//NvPhysicalGpuHandle physicalGPUs[NVAPI_MAX_PHYSICAL_GPUS];
+	//NvU32               physicalGPUCount;
 
 //	int result = NVAPI_OK;
 
 	int iGpuNum = 0;
 
-	NvAPI_Status	status;
-	status = NvAPI_Initialize();
+	//NvAPI_Status	status;
+	//status = NvAPI_Initialize();
 
 	if (status != NVAPI_OK)
 	{
@@ -66,7 +66,7 @@ u32 GetNVGpuNum()
 
 	return iGpuNum;
 }
-
+*/
 u32 GetATIGpuNum()
 {
 	AGSContext *ags = nullptr;
@@ -91,7 +91,7 @@ u32 GetATIGpuNum()
 	return crossfireGpuCount;
 }
 
-u32 GetGpuNum()
+/*u32 GetGpuNum()
 {
 	u32 res = GetNVGpuNum();
 
@@ -107,6 +107,7 @@ u32 GetGpuNum()
 	
 	return res;
 }
+*/
 }
 
 #if !defined(USE_DX10) && !defined(USE_DX11)
@@ -268,6 +269,6 @@ void CHWCaps::Update()
 
 	// DEV INFO
 
-	iGPUNum = GetGpuNum();
+	//iGPUNum = GetGpuNum();
 }
 #endif	//	USE_DX10

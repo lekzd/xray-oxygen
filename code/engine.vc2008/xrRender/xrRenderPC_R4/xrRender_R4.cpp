@@ -1,5 +1,7 @@
 // xrRender_R2.cpp : Defines the entry point for the DLL application.
 //
+#pragma todo("SupportsDX12Rendering()")
+
 #include "stdafx.h"
 #include "../xrRender/dxRenderFactory.h"
 #include "../xrRender/dxUIRender.h"
