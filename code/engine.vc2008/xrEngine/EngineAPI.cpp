@@ -188,26 +188,6 @@ void CEngineAPI::CreateRendererList()
 	if (!vid_quality_token.empty())
 		return;
 
-	if (strstr(Core.Params, "-r5"))
-		Console->Execute("renderer renderer_r5");
-	else if (strstr(Core.Params, "-r4"))
-		Console->Execute("renderer renderer_r4");
-	else if (strstr(Core.Params, "-r3"))
-		Console->Execute("renderer renderer_r3");
-	else if (strstr(Core.Params, "-r2.5"))
-		Console->Execute("renderer renderer_r2.5");
-	else if (strstr(Core.Params, "-r2a"))
-		Console->Execute("renderer renderer_r2a");
-	else if (strstr(Core.Params, "-r2"))
-		Console->Execute("renderer renderer_r2");
-	else if (strstr(Core.Params, "-r1"))
-		Console->Execute("renderer renderer_r1");
-	else
-	{
-		CCC_LoadCFG_custom cmd("renderer ");
-		cmd.Execute(Console->ConfigFile);
-	}
-
 	xr_vector<xr_token> modes;
 
 	// try to initialize R1
@@ -287,4 +267,24 @@ void CEngineAPI::CreateRendererList()
 			Log(mode.name);
 
 	vid_quality_token = std::move(modes);
+
+	if (strstr(Core.Params, "-r5"))
+		Console->Execute("renderer renderer_r5");
+	else if (strstr(Core.Params, "-r4"))
+		Console->Execute("renderer renderer_r4");
+	else if (strstr(Core.Params, "-r3"))
+		Console->Execute("renderer renderer_r3");
+	else if (strstr(Core.Params, "-r2.5"))
+		Console->Execute("renderer renderer_r2.5");
+	else if (strstr(Core.Params, "-r2a"))
+		Console->Execute("renderer renderer_r2a");
+	else if (strstr(Core.Params, "-r2"))
+		Console->Execute("renderer renderer_r2");
+	else if (strstr(Core.Params, "-r1"))
+		Console->Execute("renderer renderer_r1");
+	else
+	{
+		CCC_LoadCFG_custom cmd("renderer ");
+		cmd.Execute(Console->ConfigFile);
+	}
 }
