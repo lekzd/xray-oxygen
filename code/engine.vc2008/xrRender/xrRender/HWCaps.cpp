@@ -210,7 +210,7 @@ void CHWCaps::Update()
 
 	// DEV INFO
 
-	iGPUNum = GetGpuNum();
+	iGPUNum = 1;
 }
 #else	//	USE_DX10
 void CHWCaps::Update()

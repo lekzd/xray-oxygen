@@ -18,6 +18,8 @@
 #include <d3d11.h>
 #include <D3Dx10core.h>
 #include <D3DCompiler.h>
+#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex/DDS.h>
 
 #include "../xrRender/xrD3DDefs.h"
 

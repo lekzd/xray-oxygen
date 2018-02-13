@@ -70,7 +70,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories>./;../../../sdk/include/dx;$(DXSDK_DIR)Include;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ATIMGPUD_DLL;MSAA_DX10_1;MSAA_SAMPLES=4;USE_MSAA;GBUFFER_OPTIMIZATION;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R4_EXPORTS;_SECURE_SCL=0;USE_DX11;USE_RESOURCE_DEBUGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -91,7 +91,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;d3dx11.lib;d3d12.lib;D3DCompiler.lib;d3d11.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;D3DCompiler.lib;d3d11.lib;d3d12.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;DirectXTex_d3d12.lib</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\..\..\sdk\libraries;..\..\..\sdk\libraries\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,7 +117,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./;../../../sdk/include/dx;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_DX11;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R4_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
@@ -141,7 +141,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;d3dx11.lib;D3DCompiler.lib;d3d11.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;D3DCompiler.lib;d3d11.lib;d3d12.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;DirectXTex_d3d12.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\sdk\libraries;..\..\..\sdk\libraries\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
@@ -157,7 +157,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ImportLibrary>$(xrLib)$(TargetName).lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>luabind.beta7-devel.rc4.lib;</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_AI32|x64'">
@@ -169,7 +170,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./;../../../sdk/include/dx;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_DX12;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R5_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
@@ -193,7 +194,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;d3dx11.lib;d3dx12.lib;D3DCompiler.lib;d3d11.lib;d3d12.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xrECoreLite.lib;WildMagic.lib;ETools.lib;dxguid.lib;D3DCompiler.lib;d3d11.lib;d3d12.lib;dxgi.lib;nvapi.lib;dxerr2015.lib;d3d10.lib;DirectXTex_d3d12.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\sdk\libraries;..\..\..\sdk\libraries\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
@@ -209,7 +210,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ImportLibrary>$(xrLib)$(TargetName).lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>luabind.beta7-devel.rc4.lib;</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
