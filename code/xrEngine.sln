@@ -108,6 +108,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rd party", "3rd party", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrPlay", "engine.vc2008\xrPlay\xrPlay.vcxproj", "{131A9895-FE16-417A-8C41-16A5994A6D13}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrRender_R5", "engine.vc2008\xrRender\xrRenderPC_R5\xrRender_R5.vcxproj", "{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -318,6 +320,14 @@ Global
 		{131A9895-FE16-417A-8C41-16A5994A6D13}.Release_AI32|x64.Build.0 = Release_AI32|x64
 		{131A9895-FE16-417A-8C41-16A5994A6D13}.Release|x64.ActiveCfg = Release|x64
 		{131A9895-FE16-417A-8C41-16A5994A6D13}.Release|x64.Build.0 = Release|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Debug|x64.ActiveCfg = Debug|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Debug|x64.Build.0 = Debug|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Mixed|x64.ActiveCfg = Release|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Mixed|x64.Build.0 = Release|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Release_AI32|x64.ActiveCfg = Release_AI32|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Release_AI32|x64.Build.0 = Release_AI32|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Release|x64.ActiveCfg = Release|x64
+		{0A9F30F7-FBFC-4753-AF57-7FFBA7307448}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

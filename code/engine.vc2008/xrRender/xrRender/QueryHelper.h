@@ -10,7 +10,7 @@ IC HRESULT EndQuery( ID3DQuery *pQuery);
 
 //	Implementation
 
-#if defined(USE_DX11)
+#if defined(USE_DX11) || defined(USE_DX12)
 
 IC HRESULT CreateQuery ( ID3DQuery **ppQuery, D3DQUERYTYPE Type)
 {

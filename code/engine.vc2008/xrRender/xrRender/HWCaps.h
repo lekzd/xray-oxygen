@@ -9,7 +9,8 @@ class  CHWCaps
 public:
 	enum
 	{
-		MAX_GPUS		= 8
+		// The GPU's count (4 max)
+		MAX_GPUS		= 1 << 3
 	};
 
 public:

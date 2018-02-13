@@ -90,11 +90,13 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
 
 	m_DriverType = Caps.bForceGPU_REF ? 
+#pragma todo("Incorrect types in DX12")
+		
 		D3D_DRIVER_TYPE_REFERENCE : D3D_DRIVER_TYPE_HARDWARE;
-
+		
 	if (m_bUsePerfhud)
 		m_DriverType = D3D_DRIVER_TYPE_REFERENCE;
-
+		
 	// Display the name of video board
 	DXGI_ADAPTER_DESC Desc;
 	R_CHK( m_pAdapter->GetDesc(&Desc) );
@@ -150,6 +152,14 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 
    R =  D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels)/sizeof(pFeatureLevels[0]),
 										  D3D11_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
+#elif USE_DX12
+	D3D_FEATURE_LEVEL pFeatureLevels[] =
+	{
+		D3D_FEATURE_LEVEL_11_0
+	};
+
+	R = D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels) / sizeof(pFeatureLevels[0]),
+		D3D12_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
 #else
    R =  D3DX10CreateDeviceAndSwapChain(m_pAdapter, m_DriverType, 0, createDeviceFlags, &sd, &m_pSwapChain, &pDevice );
 

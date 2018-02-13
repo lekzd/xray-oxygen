@@ -9,6 +9,8 @@ public:
 	~CRT();
 #ifdef USE_DX11
 	void	create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount = 1, bool useUAV = false );
+#elif  USE_DX12
+	void	create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount = 1, bool useUAV = false);
 #else
 	void	create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount = 1 );
 #endif
@@ -20,13 +22,15 @@ public:
 public:
 	ID3DTexture2D*			pSurface;
 	ID3DRenderTargetView*	pRT;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	ID3DDepthStencilView*	pZRT;
 
 #ifdef USE_DX11
 	ID3D11UnorderedAccessView*	pUAView;
 #endif
-
+#ifdef USE_DX12
+	ID3D11UnorderedAccessView*	pUAView;
+#endif
 #endif	//	USE_DX10
 	ref_texture				pTexture;
 

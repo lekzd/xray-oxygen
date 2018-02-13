@@ -59,7 +59,7 @@ ref_constant R_constant_table::get	(shared_str& S)
 	return	0;
 }
 
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11)  && !defined(USE_DX12)
 BOOL	R_constant_table::parse	(void* _desc, u32 destination)
 {
 	D3DXSHADER_CONSTANTTABLE* desc	= (D3DXSHADER_CONSTANTTABLE*) _desc;
@@ -191,6 +191,7 @@ BOOL	R_constant_table::parse	(void* _desc, u32 destination)
 #endif	//	USE_DX10
 
 /// !!!!!!!!FIX THIS FOR DX11!!!!!!!!!
+#pragma todo("AlexMX to AlexMX: FIX THIS FOR DX11!!!")
 void R_constant_table::merge(R_constant_table* T)
 {
 	if (0==T)		return;
@@ -208,7 +209,7 @@ void R_constant_table::merge(R_constant_table* T)
 			C->type				=	src->type;
 			C->ps				=	src->ps;
 			C->vs				=	src->vs;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 			C->gs				=	src->gs;
 #	ifdef USE_DX11
 			C->hs				=	src->hs;

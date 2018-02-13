@@ -52,7 +52,7 @@ public:
 	CTexture							();
 	virtual ~CTexture					();
 	
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	ID3DShaderResourceView*				get_SRView() {return m_pSRView;}
 #endif	//	USE_DX10
 
@@ -60,7 +60,7 @@ private:
 	IC BOOL								desc_valid		()		{ return pSurface==desc_cache; }
 	IC void								desc_enshure	()		{ if (!desc_valid()) desc_update(); }
 	void								desc_update		();
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	void								Apply			(u32 dwStage);
 	void								ProcessStaging();
 	D3D_USAGE							GetUsage();
@@ -100,7 +100,7 @@ private:
 	ID3DBaseTexture*					desc_cache;
 	D3D_TEXTURE2D_DESC					desc;
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	ID3DShaderResourceView*			m_pSRView;
 	// Sequence view data
 	xr_vector<ID3DShaderResourceView*>m_seqSRView;

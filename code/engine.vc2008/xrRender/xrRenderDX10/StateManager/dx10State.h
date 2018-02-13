@@ -46,9 +46,9 @@ private:
 #endif
 #ifdef USE_DX12
 	//	I mean it's true
-	tSamplerHArray				m_SRVamplers;
-	tSamplerHArray				m_UAVamplers;
-	tSamplerHArray				m_RTVamplers;
+	tSamplerHArray				m_CSSamplers;
+	tSamplerHArray				m_HSSamplers;
+	tSamplerHArray				m_DSSamplers;
 #endif
 
 	UINT						m_uiStencilRef;

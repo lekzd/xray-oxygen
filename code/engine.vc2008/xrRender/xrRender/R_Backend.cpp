@@ -6,7 +6,7 @@
 CBackend			RCache;
 
 // Create Quad-IB
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 
 // Igor: is used to test bug with rain, particles corruption
 void CBackend::RestoreQuadIBData()
@@ -123,7 +123,7 @@ void CBackend::CreateQuadIB		()
 // Device dependance
 void CBackend::OnDeviceCreate	()
 {
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//CreateConstantBuffers();
 #endif	//	USE_DX10
 
@@ -147,12 +147,12 @@ void CBackend::OnDeviceDestroy()
 	HW.stats_manager.decrement_stats_ib	(QuadIB);
 	_RELEASE							(QuadIB);
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//DestroyConstantBuffers();
 #endif	//	USE_DX10
 }
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 /*
 void CBackend::CreateConstantBuffers()
 {

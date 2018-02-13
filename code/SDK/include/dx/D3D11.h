@@ -10143,6 +10143,7 @@ enum D3D11_CREATE_DEVICE_FLAG
     } 	D3D11_CREATE_DEVICE_FLAG;
 
 #define	D3D11_SDK_VERSION	( 7 )
+#define D3D12_SDK_VERSION	( 18 )
 
 #include "d3d10_1.h"
 #if !defined( D3D11_IGNORE_SDK_LAYERS ) 

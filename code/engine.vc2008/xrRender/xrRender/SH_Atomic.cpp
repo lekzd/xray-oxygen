@@ -16,7 +16,7 @@
 //	SVS
 SVS::SVS() :
 	vs(0)
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 //	,signature(0)
 #endif	//	USE_DX10
 {
@@ -27,7 +27,7 @@ SVS::SVS() :
 SVS::~SVS()
 {
 	DEV->_DeleteVS(this);
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//_RELEASE(signature);
 	//	Now it is release automatically
 #endif	//	USE_DX10
@@ -39,7 +39,7 @@ SVS::~SVS()
 //	SPS
 SPS::~SPS								()			{	_RELEASE(ps);		DEV->_DeletePS			(this);	}
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 ///////////////////////////////////////////////////////////////////////
 //	SGS
 SGS::~SGS								()			{	_RELEASE(gs);		DEV->_DeleteGS			(this);	}
@@ -49,6 +49,12 @@ SHS::~SHS								()			{	_RELEASE(sh);		DEV->_DeleteHS			(this);	}
 SDS::~SDS								()			{	_RELEASE(sh);		DEV->_DeleteDS			(this);	}
 SCS::~SCS								()			{	_RELEASE(sh);		DEV->_DeleteCS			(this);	}
 #	endif
+#ifdef	   USE_DX12
+SHS::~SHS								()			{ _RELEASE(sh);			DEV->_DeleteHS			(this);	}
+SDS::~SDS								()			{ _RELEASE(sh);			DEV->_DeleteDS			(this);	}
+SCS::~SCS								()			{ _RELEASE(sh);			DEV->_DeleteCS			(this);	}
+#endif
+
 
 ///////////////////////////////////////////////////////////////////////
 //	SInputSignature
@@ -65,7 +71,7 @@ SState::~SState							()			{	_RELEASE(state);	DEV->_DeleteState		(this);	}
 SDeclaration::~SDeclaration()
 {	
 	DEV->_DeleteDecl(this);	
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	xr_map<ID3DBlob*, ID3DInputLayout*>::iterator iLayout;
 	iLayout = vs_to_layout.begin();
 	for( ; iLayout != vs_to_layout.end(); ++iLayout)

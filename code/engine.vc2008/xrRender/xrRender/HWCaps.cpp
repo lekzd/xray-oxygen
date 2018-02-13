@@ -110,7 +110,7 @@ u32 GetATIGpuNum()
 */
 }
 
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11) && !defined(USE_DX12)
 void CHWCaps::Update()
 {
 	D3DCAPS9					caps;

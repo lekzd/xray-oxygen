@@ -227,7 +227,7 @@ public:
 #endif	//	USE_DX10
 	}
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	IC	void						get_ConstantDirect	(shared_str& n, u32 DataSize, void** pVData, void** pGData, void** pPData);
 #else	//USE_DX10
 	IC	R_constant_array&			get_ConstantCache_Vertex	()			{ return constants.a_vertex;	}
@@ -384,7 +384,7 @@ public:
 	// Debug render
 	void dbg_DP						(D3DPRIMITIVETYPE pt, ref_geom geom, u32 vBase, u32 pc);
 	void dbg_DIP					(D3DPRIMITIVETYPE pt, ref_geom geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//	TODO: DX10: Implement this.
 	IC void	dbg_SetRS				(D3DRENDERSTATETYPE p1, u32 p2)
 	{ VERIFY(!"Not implemented"); }

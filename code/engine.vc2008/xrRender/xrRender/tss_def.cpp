@@ -6,7 +6,7 @@
 IDirect3DStateBlock9* SimulatorStates::record	()
 {
 //	TODO: DX10: Implement equivalent for SimulatorStates::record for DX10
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//VERIFY(!"SimulatorStates::record not implemented!");
 	return 0;
 #else	//	USE_DX10
@@ -98,7 +98,7 @@ void	SimulatorStates::clear	()
 	States.clear();
 }
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 
 #include "../xrRenderDX10/dx10StateUtils.h"
 
@@ -181,7 +181,7 @@ void SimulatorStates::UpdateDesc( D3D_RASTERIZER_DESC &desc ) const
 			//	desc.DepthClipEnable = TRUE;
 			
 			case D3DRS_SCISSORTESTENABLE:
-				desc.ScissorEnable = S.v2;
+				//desc.ScissorEnable = S.v2;
 				break;
 
 			//desc.MultisampleEnable = FALSE;
@@ -339,6 +339,78 @@ void SimulatorStates::UpdateDesc( D3D_BLEND_DESC &desc ) const
 	}
 }
 #else
+#ifdef USE_DX12
+void SimulatorStates::UpdateDesc(D3D_BLEND_DESC &desc) const
+{
+	for (u32 it = 0; it<States.size(); it++)
+	{
+		const State& S = States[it];
+		if (S.type == 0)
+		{
+			switch (S.v1)
+			{
+			case XRDX10RS_ALPHATOCOVERAGE:
+				for (int i = 0; i<8; ++i)
+					desc.AlphaToCoverageEnable = S.v2 ? 1 : 0;
+				break;
+
+			case D3DRS_SRCBLEND:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].SrcBlend = dx10StateUtils::ConvertBlendArg((D3DBLEND)S.v2);
+				break;
+
+			case D3DRS_DESTBLEND:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].DestBlend = dx10StateUtils::ConvertBlendArg((D3DBLEND)S.v2);
+				break;
+
+				//D3DRS_ALPHAFUNC
+
+			case D3DRS_BLENDOP:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].BlendOp = dx10StateUtils::ConvertBlendOp((D3DBLENDOP)S.v2);
+				break;
+
+			case D3DRS_SRCBLENDALPHA:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].SrcBlendAlpha = dx10StateUtils::ConvertBlendArg((D3DBLEND)S.v2);
+				break;
+
+			case D3DRS_DESTBLENDALPHA:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].DestBlendAlpha = dx10StateUtils::ConvertBlendArg((D3DBLEND)S.v2);
+				break;
+
+			case D3DRS_BLENDOPALPHA:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].BlendOpAlpha = dx10StateUtils::ConvertBlendOp((D3DBLENDOP)S.v2);
+				break;
+
+			case D3DRS_ALPHABLENDENABLE:
+				for (int i = 0; i<8; ++i)
+					desc.RenderTarget[i].BlendEnable = S.v2 ? 1 : 0;
+				break;
+
+			case D3DRS_COLORWRITEENABLE:
+				desc.RenderTarget[0].RenderTargetWriteMask = (u8)S.v2;
+				break;
+
+			case D3DRS_COLORWRITEENABLE1:
+				desc.RenderTarget[1].RenderTargetWriteMask = (u8)S.v2;
+				break;
+
+			case D3DRS_COLORWRITEENABLE2:
+				desc.RenderTarget[2].RenderTargetWriteMask = (u8)S.v2;
+				break;
+
+			case D3DRS_COLORWRITEENABLE3:
+				desc.RenderTarget[3].RenderTargetWriteMask = (u8)S.v2;
+				break;
+			}
+		}
+	}
+}
+#else
 void SimulatorStates::UpdateDesc( D3D_BLEND_DESC &desc ) const
 {
 	for (u32 it=0; it<States.size(); it++)
@@ -402,6 +474,7 @@ void SimulatorStates::UpdateDesc( D3D_BLEND_DESC &desc ) const
 		}
 	}
 }
+	#endif
 #endif
 
 void SimulatorStates::UpdateDesc( D3D_SAMPLER_DESC descArray[D3D_COMMONSHADER_SAMPLER_SLOT_COUNT], bool SamplerUsed[D3D_COMMONSHADER_SAMPLER_SLOT_COUNT], int iBaseSamplerIndex ) const

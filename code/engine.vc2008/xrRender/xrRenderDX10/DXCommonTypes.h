@@ -24,9 +24,11 @@ typedef D3D12_BLEND_DESC				D3D_BLEND_DESC;
 
 typedef D3D12_SUBRESOURCE_DATA			D3D_SUBRESOURCE_DATA;
 
-typedef	D3D12_TEXTURE1D_DESC				D3D_TEXTURE1D_DESC;
-typedef D3D12_TEXTURE2D_DESC				D3D_TEXTURE2D_DESC;
-typedef D3D12_TEXTURE3D_DESC				D3D_TEXTURE3D_DESC;
+// How work with the textures in the DX12?
+typedef	D3D11_TEXTURE1D_DESC				D3D_TEXTURE1D_DESC;
+typedef D3D11_TEXTURE2D_DESC				D3D_TEXTURE2D_DESC;
+typedef D3D11_TEXTURE3D_DESC				D3D_TEXTURE3D_DESC;
+
 typedef D3D11_BUFFER_DESC					D3D_BUFFER_DESC;		//<< Use the #ifndef for stability work
 typedef D3D12_QUERY_HEAP_DESC				D3D_QUERY_DESC;			//<< Use the #ifndef for stability work 
 typedef D3D12_SHADER_RESOURCE_VIEW_DESC		D3D_SHADER_RESOURCE_VIEW_DESC;
@@ -40,13 +42,13 @@ typedef	D3D11_VIEWPORT						D3D_VIEWPORT;
 typedef	D3D11_USAGE							D3D_USAGE;
 
 
-//typedef ID3D11RasterizerState					ID3DRasterizerState;			//	RasterizerState;		<< One call must be deleted
-//typedef ID3D11DepthStencilState				ID3DDepthStencilState;			//	DepthStencilState;		<< One call must be deleted
-//typedef ID3D11BlendState						ID3DBlendState;					//	BlendState;				<< One call must be deleted
-//typedef ID3D11SamplerState					ID3DSamplerState;				//	No one in d3d12.h		<< One call must be deleted
-typedef ID3D12Buffer							ID3DBuffer;
-typedef ID3D12Buffer							ID3DVertexBuffer;
-typedef ID3D12Buffer							ID3DIndexBuffer;
+typedef ID3D11RasterizerState					ID3DRasterizerState;			//	RasterizerState;		<< One call must be deleted
+typedef ID3D11DepthStencilState					ID3DDepthStencilState;			//	DepthStencilState;		<< One call must be deleted
+typedef ID3D11BlendState						ID3DBlendState;					//	BlendState;				<< One call must be deleted
+typedef ID3D11SamplerState						ID3DSamplerState;				//	No one in d3d12.h		<< One call must be deleted
+typedef ID3D11Buffer							ID3DBuffer;
+typedef ID3D11Buffer							ID3DVertexBuffer;
+typedef ID3D11Buffer							ID3DIndexBuffer;
 //-----------------------------SRV, UAV, RTV---------------------------------
 typedef	ID3D11InputLayout						ID3DInputLayout;
 typedef	ID3D11VertexShader						ID3DVertexShader;
@@ -63,7 +65,7 @@ typedef	ID3D11DepthStencilView					ID3DDepthStencilView;		//D3D12_CPU_DESCRIPTOR
 typedef	ID3D11ShaderResourceView				ID3DShaderResourceView;		//D3D12_CPU_DESCRIPTOR_HANDLE ShaderResourceView or Resource
 typedef	ID3D12QueryHeap							ID3DQuery;					// Heap
 typedef	ID3D12Device							ID3DDevice;
-typedef ID3D11DeviceContext						ID3DDeviceContext;			// not anough
+typedef ID3D12Device							ID3DDeviceContext;			// not anough
 
 #define D3D_COMMONSHADER_SAMPLER_SLOT_COUNT		D3D12_COMMONSHADER_SAMPLER_SLOT_COUNT
 

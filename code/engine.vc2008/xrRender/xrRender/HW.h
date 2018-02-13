@@ -13,7 +13,7 @@
 #endif
 
 class  CHW
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	:	public pureAppActivate, 
 		public pureAppDeactivate
 #endif	//	USE_DX10
@@ -53,18 +53,24 @@ public:
 #if defined(USE_DX12)
 public:
 	IDXGIAdapter * m_pAdapter;
-	ID3D12Device*			pDevice;
-	ID3D12DeviceContext*    pContext;
-	IDXGISwapChain*         m_pSwapChain;
-	ID3D12RenderTargetView*	pBaseRT;
-	ID3D12DepthStencilView*	pBaseZB;
+	ID3D12Device*					pDevice;
+	ID3D12Device1*					pDevice1;
+	ID3D12Device*					pContext;
+	ID3D12Device1*					pContext1;
+	ID3D12Resource*					pResource;
+	IDXGISwapChain*					m_pSwapChain;
+	ID3D11RenderTargetView*			pBaseRT;
+	ID3D11DepthStencilView*			pBaseZB;
 
-	CHWCaps					Caps;
+	//-----------------------------------
+	CHWCaps							Caps;
+	//-----------------------------------
 
-	D3D_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
-	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivdalent
-	bool					m_bUsePerfhud;
-	D3D_FEATURE_LEVEL		FeatureLevel;
+	D3D_DRIVER_TYPE					m_DriverType;	//	DevT equivalent
+	DXGI_SWAP_CHAIN_DESC			m_ChainDesc;	//	DevPP equivdalent
+	bool							m_bUsePerfhud;
+
+	D3D12_FEATURE		FeatureLevel;
 #elif  defined(USE_DX11)	//	USE_DX10
 public:
 	IDXGIAdapter*			m_pAdapter;	//	pD3D equivalent
@@ -119,7 +125,7 @@ public:
 #ifndef _MAYA_EXPORT
 	stats_manager			stats_manager;
 #endif
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	void			UpdateViews();
 	DXGI_RATIONAL	selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt);
 
