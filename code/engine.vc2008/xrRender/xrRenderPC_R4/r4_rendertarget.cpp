@@ -959,17 +959,21 @@ CRenderTarget::CRenderTarget		()
 
 			//	Create noise mipped
 			{
-				//	Autogen mipmaps
-				desc.MipLevels = 0;
-				R_CHK( HW.pDevice->CreateTexture2D(&desc, 0, &t_noise_surf_mipped) );
-				t_noise_mipped = dxRenderDeviceRender::Instance().Resources->_CreateTexture(r2_jitter_mipped);
-				t_noise_mipped->surface_set(t_noise_surf_mipped);
+                //	Autogen mipmaps
+                desc.MipLevels = 0;
+                DirectX::ScratchImage mippedNoise;
+                DirectX::Image img;
+                img.format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+                img.height = TEX_jitter;
+                img.pixels = (uint8_t*)tempData[0];
+                img.rowPitch = TEX_jitter * sampleSize;
+                img.slicePitch = 0;
+                img.width = TEX_jitter;
+                DirectX::GenerateMipMaps(img, DirectX::TEX_FILTER_POINT, 0, mippedNoise);
 
-				//	Update texture. Generate mips.
-
-				HW.pContext->CopySubresourceRegion( t_noise_surf_mipped, 0, 0, 0, 0, t_noise_surf[0], 0, 0 );
-
-				D3DX11FilterTexture(HW.pContext, t_noise_surf_mipped, 0, D3DX10_FILTER_POINT);
+                CHK_DX(DirectX::CreateTexture(HW.pDevice, mippedNoise.GetImages(), mippedNoise.GetImageCount(), mippedNoise.GetMetadata(), (ID3D11Resource**)&t_noise_surf_mipped));
+                t_noise_mipped = dxRenderDeviceRender::Instance().Resources->_CreateTexture(r2_jitter_mipped);
+                t_noise_mipped->surface_set(t_noise_surf_mipped);
 			}
 		}
 	}
