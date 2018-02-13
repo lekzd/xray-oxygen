@@ -109,19 +109,7 @@ IC void	Reduce(UINT& w, UINT& h, int l, int skip)
 	if (h<1)	h=1;
 }
 
-void				TW_Save	(ID3DTexture2D* T, LPCSTR name, LPCSTR prefix, LPCSTR postfix)
-{
-	string256		fn;		strconcat	(sizeof(fn),fn,name,"_",prefix,"-",postfix);
-	for (int it=0; it<int(xr_strlen(fn)); it++)	
-		if ('\\'==fn[it])	fn[it]	= '_';
-	string256		fn2;	strconcat	(sizeof(fn2),fn2,"debug\\",fn,".dds");
-	Log						("* debug texture save: ",fn2);
-#ifdef USE_DX11
-	R_CHK					(D3DX11SaveTextureToFile(HW.pContext, T, D3DX11_IFF_DDS, fn2));
-#else
-	R_CHK					(D3DX10SaveTextureToFile(T, D3DX10_IFF_DDS, fn2));
-#endif
-}
+using namespace DirectX;
 
 ID3DBaseTexture*	CRender::texture_load(LPCSTR fRName, u32& ret_msize, bool bStaging)
 {
