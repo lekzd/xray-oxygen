@@ -5,10 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#pragma warning(disable:4995)
-#include <d3dx9.h>
-#pragma warning(default:4995)
-
 #include <D3DX10Tex.h>
 
 #include "../xrRender/dxRenderDeviceRender.h"
@@ -114,8 +110,12 @@ using namespace DirectX;
 ID3DBaseTexture*	CRender::texture_load(LPCSTR fRName, u32& ret_msize, bool bStaging)
 {
 	//	Moved here just to avoid warning
-    TexMetadata					IMG;
-    ZeroMemory(&IMG, sizeof(IMG));
+#ifdef USE_DX10
+	D3DX10_IMAGE_INFO IMG;
+#else
+    TexMetadata IMG;
+#endif
+	std::memset(&IMG, 0, sizeof(IMG));
 
 	//	Staging control
 	static bool bAllowStaging = !strstr(Core.Params,"-no_staging");
@@ -158,12 +158,18 @@ _DDS:
 #endif // DEBUG
 		img_size				= S->length	();
 		R_ASSERT				(S);
-		//R_CHK2					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG), fn);
+#ifdef USE_DX10
+		R_CHK2(D3DX10GetImageInfoFromMemory(S->pointer(), S->length(), 0, &IMG, 0), fn);
+		if (IMG.MiscFlags & D3D_RESOURCE_MISC_TEXTURECUBE)
+			goto _DDS_CUBE;
+		else
+			goto _DDS_2D;
+#else
         CHK_DX(GetMetadataFromDDSMemory(S->pointer(), S->length(), 0, IMG));
 
 		if (IMG.IsCubemap())			goto _DDS_CUBE;
 		else							goto _DDS_2D;
-
+#endif
 _DDS_CUBE:
 		{
 			//	Inited to default by provided default constructor
@@ -196,7 +202,11 @@ _DDS_CUBE:
 			FS.r_close				(S);
 
 			// OK
-			mip_cnt					= IMG.mipLevels;
+#ifdef USE_DX10
+			mip_cnt = IMG.MipLevels;
+#else
+			mip_cnt = IMG.mipLevels;
+#endif
 			ret_msize				= calc_texture_size(img_loaded_lod, mip_cnt, img_size);
 			return					pTexture2D;
 		}
@@ -209,8 +219,8 @@ _DDS_2D:
 			//	Inited to default by provided default constructor
 #ifdef USE_DX10
             D3DX10_IMAGE_LOAD_INFO LoadInfo;
-            LoadInfo.Width = IMG.width;
-            LoadInfo.Height = IMG.height;
+            LoadInfo.Width = IMG.Width;
+            LoadInfo.Height = IMG.Height;
 
             if (bStaging)
             {
@@ -225,17 +235,15 @@ _DDS_2D:
             }
             LoadInfo.pSrcInfo = &IMG;
 
-#ifdef R34_USE_FIRSTMIPLEVEL
+#	ifdef R34_USE_FIRSTMIPLEVEL
             LoadInfo.FirstMipLevel = img_loaded_lod;
-#else
+#	else
             if (img_loaded_lod)
             {
                 Reduce(LoadInfo.Width, LoadInfo.Height, IMG.MipLevels, img_loaded_lod);
             }
+#	endif
 #endif
-#endif
-
-
 
 #if  defined(USE_DX11) || defined(USE_DX12)
 			//R_CHK2(D3DX11CreateTextureFromMemory(HW.pDevice,S->pointer(),S->length(), &LoadInfo, 0, &pTexture2D, 0), fn);
@@ -246,7 +254,12 @@ _DDS_2D:
 			R_CHK2(D3DX10CreateTextureFromMemory(HW.pDevice,S->pointer(),S->length(), &LoadInfo, 0, &pTexture2D, 0), fn);
 #endif
 			FS.r_close				(S);
-			mip_cnt					= IMG.mipLevels;
+
+#ifdef USE_DX10
+			mip_cnt = IMG.MipLevels;
+#else
+			mip_cnt = IMG.mipLevels;
+#endif
 			// OK
 			ret_msize				= calc_texture_size(img_loaded_lod, mip_cnt, img_size);
 			return					pTexture2D;
