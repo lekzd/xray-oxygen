@@ -8,7 +8,6 @@
 #include "../../xrEngine/stdafx.h"
 #pragma warning(disable:4995 4005)
 #include <d3dx9.h>
-#include <d3d12.h>
 
 #ifdef	DEBUG
 #include <D3d12SDKLayers.h>
@@ -20,9 +19,13 @@
 #pragma warning( 4 : 4244 )
 #pragma warning(disable:4237)
 
-#include <D3D11.h>
-#include <D3Dx11core.h>
+//#include <D3D11.h>
+#include <D3D12.h>
+//#include <D3Dx11core.h>
 #include <D3DCompiler.h>
+#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex/DDS.h>
+#include <DirectXTex/d3dx12.h>
 
 #include "../xrRender/xrD3DDefs.h"
 

@@ -152,12 +152,12 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 
    R =  D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels)/sizeof(pFeatureLevels[0]),
 										  D3D11_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
-#elif USE_DX12
+#elif defined (USE_DX12)
 	D3D_FEATURE_LEVEL pFeatureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_11_0
 	};
-
+    
 	R = D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels) / sizeof(pFeatureLevels[0]),
 		D3D12_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
 #else
