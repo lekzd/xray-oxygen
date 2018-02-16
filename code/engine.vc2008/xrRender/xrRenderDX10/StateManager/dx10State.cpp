@@ -62,7 +62,7 @@ HRESULT dx10State::Apply()
 	SSManager.GSApplySamplers(m_GSSamplers);
 	SSManager.VSApplySamplers(m_VSSamplers);
 	SSManager.PSApplySamplers(m_PSSamplers);
-#ifdef USE_DX11 || USE_DX12
+#if defined(USE_DX11) || defined(USE_DX12)
 	SSManager.HSApplySamplers(m_HSSamplers);
 	SSManager.DSApplySamplers(m_DSSamplers);
 	SSManager.CSApplySamplers(m_CSSamplers);
