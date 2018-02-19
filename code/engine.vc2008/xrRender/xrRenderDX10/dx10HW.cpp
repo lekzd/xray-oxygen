@@ -8,7 +8,7 @@
 //#include <d3dx9.h>
 //#include <d3dx10.h>
 //#include <d3dx11.h>
-#include <d3d12.h>
+//#include <d3d12.h>
 #pragma warning(default:4995)
 #include "../xrRender/HW.h"
 #include "../../xrEngine/XR_IOConsole.h"
@@ -571,6 +571,7 @@ void CHW::UpdateViews()
 	descDepth.SampleDesc.Count = 1;
 	descDepth.SampleDesc.Quality = 0;
 	descDepth.Usage = D3D_USAGE_DEFAULT;
+
 	descDepth.BindFlags = D3D_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
