@@ -56,10 +56,14 @@ public:
     ComPtr < IDXGIAdapter1 >                m_pAdapter;
     ComPtr < ID3D12Device >					pDevice;
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
+    ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
+    ComPtr < ID3D12DescriptorHeap >         m_rtvHeap;
     ComPtr < ID3D12Resource >				pResource;
     ComPtr < IDXGISwapChain1 >				m_pSwapChain;
-    ComPtr < ID3D11RenderTargetView >		pBaseRT;
-    ComPtr < ID3D11DepthStencilView >		pBaseZB;
+    ComPtr < ID3D12Resource >		        pBaseRT;
+    ComPtr < ID3D12Resource >		        pBaseRT2;
+
+    ComPtr < ID3D12Resource >		        pBaseZB;
 
 	//-----------------------------------
 	CHWCaps							Caps;
@@ -69,6 +73,8 @@ public:
     DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivdalent
 
 	D3D12_FEATURE		FeatureLevel;
+
+    UINT m_rtvDescSize;
 #elif  defined(USE_DX11)	//	USE_DX10
 public:
     ComPtr < IDXGIAdapter >			m_pAdapter;	//	pD3D equivalent
