@@ -41,44 +41,42 @@ CHW::~CHW()
 //////////////////////////////////////////////////////////////////////
 void CHW::CreateD3D()
 {
-	IDXGIFactory * pFactory;
-	R_CHK( CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&pFactory)) );
+	R_CHK( CreateDXGIFactory1(IID_PPV_ARGS(&m_pFactory)));
 
-	m_pAdapter = 0;
-	m_bUsePerfhud = false;
+#ifdef USE_DX12
 
-#ifndef	MASTER_GOLD
-	// Look for 'NVIDIA NVPerfHUD' adapter
-	// If it is present, override default settings
-	UINT i = 0;
-	while(pFactory->EnumAdapters(i, &m_pAdapter) != DXGI_ERROR_NOT_FOUND)
-	{
-		DXGI_ADAPTER_DESC desc;
-		m_pAdapter->GetDesc(&desc);
-		if(!wcscmp(desc.Description,L"NVIDIA PerfHUD"))
-		{
-			m_bUsePerfhud = true;
-			break;
-		}
-		else
-		{
-			m_pAdapter->Release();
-			m_pAdapter = 0;
-		}
-		++i;
-	}
-#endif	//	MASTER_GOLD
+    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_pFactory->EnumAdapters1(adapterIndex, &m_pAdapter); ++adapterIndex)
+    {
+        DXGI_ADAPTER_DESC1 desc;
+        m_pAdapter->GetDesc1(&desc);
 
-	if (!m_pAdapter)
-		pFactory->EnumAdapters(0, &m_pAdapter);
+        if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+        {
+            // Don't select the Basic Render Driver adapter.
+            // If you want a software adapter, pass in "/warp" on the command line.
+            continue;
+        }
 
-	pFactory->Release();
+        // Check to see if the adapter supports Direct3D 12, but don't create the
+        // actual device yet.
+        if (SUCCEEDED(D3D12CreateDevice(m_pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr)))
+        {
+            break;
+        }
+    }
+
+    R_ASSERT(m_pAdapter.Get());
+
+#else
+    if (!m_pAdapter)
+        m_pFactory->EnumAdapters(0, &m_pAdapter.Get());
+#endif
+
 }
 
 void CHW::DestroyD3D()
 {
 	_SHOW_REF				("refCount:m_pAdapter",m_pAdapter);
-	_RELEASE				(m_pAdapter);
 }
 
 void CHW::CreateDevice( HWND m_hWnd, bool move_window )
@@ -90,13 +88,8 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	// General - select adapter and device
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
 
-	m_DriverType = Caps.bForceGPU_REF ? 
-#pragma todo("Incorrect types in DX12")
-		
-		D3D_DRIVER_TYPE_REFERENCE : D3D_DRIVER_TYPE_HARDWARE;
-		
-	if (m_bUsePerfhud)
-		m_DriverType = D3D_DRIVER_TYPE_REFERENCE;
+// 	m_DriverType = Caps.bForceGPU_REF ? 
+// 		D3D_DRIVER_TYPE_REFERENCE : D3D_DRIVER_TYPE_HARDWARE;
 		
 	// Display the name of video board
 	DXGI_ADAPTER_DESC Desc;
@@ -115,6 +108,22 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	fDepth = selectDepthStencil(fTarget);
 	
 	// Set up the presentation parameters
+#ifdef USE_DX12
+    DXGI_SWAP_CHAIN_DESC1& sd = m_ChainDesc;
+    std::memset(&sd, 0, sizeof(sd));
+
+    selectResolution(sd.Width, sd.Height, bWindowed);
+
+    sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    sd.Stereo = FALSE;
+    sd.SampleDesc.Count = 1;
+    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    sd.BufferCount = 2;
+    sd.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
+    sd.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+
+#else
 	DXGI_SWAP_CHAIN_DESC	&sd	= m_ChainDesc;
     std::memset(&sd,0,sizeof(sd));
 
@@ -142,8 +151,9 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 		sd.BufferDesc.RefreshRate = selectRefresh( sd.BufferDesc.Width, sd.BufferDesc.Height, sd.BufferDesc.Format);
 
 	//	Additional set up
-	UINT createDeviceFlags = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+#endif
+	UINT createDeviceFlags = 0;
 	HRESULT R;
 #ifdef USE_DX11
     D3D_FEATURE_LEVEL pFeatureLevels[] =
@@ -154,13 +164,19 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
    R =  D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels)/sizeof(pFeatureLevels[0]),
 										  D3D11_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
 #elif defined (USE_DX12)
-	D3D_FEATURE_LEVEL pFeatureLevels[] =
-	{
-		D3D_FEATURE_LEVEL_11_0
-	};
-    
-	R = D3D11CreateDeviceAndSwapChain(0, m_DriverType, 0, createDeviceFlags, pFeatureLevels, sizeof(pFeatureLevels) / sizeof(pFeatureLevels[0]),
-		D3D12_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
+
+    CHK_DX(D3D12CreateDevice(m_pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&pDevice)));
+
+    // Describe and create the command queue.
+    D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+    queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+    queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+
+    CHK_DX(pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&pCommandQueue)));
+
+    //DXGI_SWAP_CHAIN_DESC1 
+
+    m_pFactory->CreateSwapChainForHwnd(pCommandQueue.Get(), m_hWnd, &m_ChainDesc, nullptr, nullptr, &m_pSwapChain);
 #else
    R =  D3DX10CreateDeviceAndSwapChain(m_pAdapter, m_DriverType, 0, createDeviceFlags, &sd, &m_pSwapChain, &pDevice );
 
@@ -207,25 +223,15 @@ void CHW::DestroyDevice()
 	SSManager.ClearStateArray();
 
 	_SHOW_REF				("refCount:pBaseZB",pBaseZB);
-	_RELEASE				(pBaseZB);
 
 	_SHOW_REF				("refCount:pBaseRT",pBaseRT);
-	_RELEASE				(pBaseRT);
 	//	Must switch to windowed mode to release swap chain
 	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, NULL);
 	_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
-	_RELEASE				(m_pSwapChain);
-
-#ifdef USE_DX11
-	_RELEASE				(pContext);
-#endif
 
 #ifndef USE_DX11
-	_RELEASE				(HW.pDevice1);
 #endif
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
-	_RELEASE				(HW.pDevice);
-
 
 	DestroyD3D				();
 
@@ -267,9 +273,6 @@ void CHW::Reset(HWND hwnd)
 #endif
 	_SHOW_REF("refCount:pBaseZB", pBaseZB);
 	_SHOW_REF("refCount:pBaseRT", pBaseRT);
-
-	_RELEASE(pBaseZB);
-	_RELEASE(pBaseRT);
 
 	CHK_DX(m_pSwapChain->ResizeBuffers(
 		cd.BufferCount,
