@@ -383,7 +383,7 @@ void CRender::Render		()
 		Lights_LastFrame.clear	();
 	}
 
-	// Directional light - fucking sun
+	// Directional light - R sun
 	if (bSUN)	{
 		RImplementation.stats.l_visible		++;
 		if( !ps_r2_ls_flags_ext.is(R2FLAGEXT_SUN_OLD))

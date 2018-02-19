@@ -148,12 +148,12 @@ void CBackend::OnDeviceDestroy()
 	_RELEASE							(QuadIB);
 
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-	//DestroyConstantBuffers();
+	DestroyConstantBuffers();
 #endif	//	USE_DX10
 }
 
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-/*
+
 void CBackend::CreateConstantBuffers()
 {
 	const int iVectorElements = 4;
@@ -167,5 +167,5 @@ void CBackend::DestroyConstantBuffers()
 	_RELEASE(m_pVertexConstants);
 	_RELEASE(m_pPixelConstants);
 }
-*/
+
 #endif	USE_DX10

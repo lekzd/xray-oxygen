@@ -311,7 +311,7 @@ D3DXVECTOR2 BuildTSMProjectionMatrix_caster_depth_bounds(D3DXMATRIX& lightSpaceB
 void CRender::render_sun				()
 {
 	PIX_EVENT(render_sun);
-	light*			fuckingsun			= (light*)Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)Lights.sun_adapted._get()	;
 	D3DXMATRIX		m_LightViewProj		;
 
 	// calculate view-frustum bounds in world space
@@ -349,7 +349,7 @@ void CRender::render_sun				()
 					hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
 		}
-		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
+		hull.compute_caster_model	(cull_planes,Rsun->direction);
 
 		// Search for default sector - assume "default" or "outdoor" sector is the largest one
 		//. hack: need to know real outdoor sector
@@ -368,7 +368,7 @@ void CRender::render_sun				()
 		cull_sector					= largest_sector;
 
 		// COP - 100 km away
-		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, -tweak_COP_initial_offs	);
+		cull_COP.mad				(Device.vCameraPosition, Rsun->direction, -tweak_COP_initial_offs	);
 
 		// Create frustum for query
 		cull_frustum._clear			();
@@ -379,8 +379,8 @@ void CRender::render_sun				()
 		// view: auto find 'up' and 'right' vectors
 		Fmatrix						mdir_View, mdir_Project;
 		Fvector						L_dir,L_up,L_right,L_pos;
-		L_pos.set					(fuckingsun->position);
-		L_dir.set					(fuckingsun->direction).normalize	();
+		L_pos.set					(Rsun->position);
+		L_dir.set					(Rsun->direction).normalize	();
 		L_up.set					(0,1,0);					if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
 		L_right.crossproduct		(L_up,L_dir).normalize		();
 		L_up.crossproduct			(L_dir,L_right).normalize	();
@@ -407,7 +407,7 @@ void CRender::render_sun				()
 		phase									= PHASE_SMAP;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
-//		fuckingsun->svis.begin					();
+//		Rsun->svis.begin					();
 	}
 
 	// Fill the database
@@ -433,7 +433,7 @@ void CRender::render_sun				()
 	//	Prepare to interact with D3DX code
 	const D3DXMATRIX&	m_View			= *((D3DXMATRIX*)(&Device.mView));
 	const D3DXMATRIX&	m_Projection	= *((D3DXMATRIX*)(&ex_project));
-	const D3DXVECTOR3	m_lightDir		= -D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
+	const D3DXVECTOR3	m_lightDir		= -D3DXVECTOR3(Rsun->direction.x,Rsun->direction.y,Rsun->direction.z);
 
 	//  these are the limits specified by the physical camera
 	//  gamma is the "tilt angle" between the light and the view direction.
@@ -720,7 +720,7 @@ void CRender::render_sun				()
 	}
 
 	// Finalize & Cleanup
-	fuckingsun->X.D.combine			= *((Fmatrix*)&m_LightViewProj);
+	Rsun->X.D.combine			= *((Fmatrix*)&m_LightViewProj);
 	s_receivers.clear				();
 	s_casters.clear					();
 
@@ -730,15 +730,15 @@ void CRender::render_sun				()
 		bool	bNormal							= mapNormalPasses[0][0].size() || mapMatrixPasses[0][0].size();
 		bool	bSpecial						= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target->phase_smap_direct			(fuckingsun, SE_SUN_FAR		);
+			Target->phase_smap_direct			(Rsun, SE_SUN_FAR		);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
-			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
+			RCache.set_xform_project			(Rsun->X.D.combine	);	
 			r_dsgraph_render_graph				(0);
-			fuckingsun->X.D.transluent			= FALSE;
+			Rsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
-				fuckingsun->X.D.transluent			= TRUE;
-				Target->phase_smap_direct_tsh		(fuckingsun, SE_SUN_FAR	);
+				Rsun->X.D.transluent			= TRUE;
+				Target->phase_smap_direct_tsh		(Rsun, SE_SUN_FAR	);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -747,7 +747,7 @@ void CRender::render_sun				()
 
 	// End SMAP-render
 	{
-//		fuckingsun->svis.end					();
+//		Rsun->svis.end					();
 		r_pmask									(true,false);
 	}
 
@@ -771,7 +771,7 @@ void CRender::render_sun				()
 
 void CRender::render_sun_near	()
 {
-	light*			fuckingsun			= (light*)Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)Lights.sun_adapted._get()	;
 	D3DXMATRIX		m_LightViewProj		;
 
 	// calculate view-frustum bounds in world space
@@ -811,7 +811,7 @@ void CRender::render_sun_near	()
 					hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
 		}
-		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
+		hull.compute_caster_model	(cull_planes,Rsun->direction);
 #ifdef	_DEBUG
 		for (u32 it=0; it<cull_planes.size(); it++)
 			RImplementation.Target->dbg_addplane(cull_planes[it],0xffffffff);
@@ -834,7 +834,7 @@ void CRender::render_sun_near	()
 		cull_sector	= largest_sector;
 
 		// COP - 100 km away
-		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, -tweak_COP_initial_offs	);
+		cull_COP.mad				(Device.vCameraPosition, Rsun->direction, -tweak_COP_initial_offs	);
 
 		// Create frustum for query
 		cull_frustum._clear			();
@@ -845,8 +845,8 @@ void CRender::render_sun_near	()
 		// view: auto find 'up' and 'right' vectors
 		Fmatrix						mdir_View, mdir_Project;
 		Fvector						L_dir,L_up,L_right,L_pos;
-		L_pos.set					(fuckingsun->position);
-		L_dir.set					(fuckingsun->direction).normalize	();
+		L_pos.set					(Rsun->position);
+		L_dir.set					(Rsun->direction).normalize	();
 		L_right.set					(1,0,0);					if (_abs(L_right.dotproduct(L_dir))>.99f)	L_right.set(0,0,1);
 		L_up.crossproduct			(L_dir,L_right).normalize	();
 		L_right.crossproduct		(L_up,L_dir).normalize		();
@@ -926,10 +926,10 @@ void CRender::render_sun_near	()
 			scissor.modify			(xf);
 		}
 		s32		limit					= RImplementation.o.smapsize-1;
-		fuckingsun->X.D.minX			= clampr	(iFloor	(scissor.min.x), 0, limit);
-		fuckingsun->X.D.maxX			= clampr	(iCeil	(scissor.max.x), 0, limit);
-		fuckingsun->X.D.minY			= clampr	(iFloor	(scissor.min.y), 0, limit);
-		fuckingsun->X.D.maxY			= clampr	(iCeil	(scissor.max.y), 0, limit);
+		Rsun->X.D.minX			= clampr	(iFloor	(scissor.min.x), 0, limit);
+		Rsun->X.D.maxX			= clampr	(iCeil	(scissor.max.x), 0, limit);
+		Rsun->X.D.minY			= clampr	(iFloor	(scissor.min.y), 0, limit);
+		Rsun->X.D.maxY			= clampr	(iCeil	(scissor.max.y), 0, limit);
 
 		// full-xform
 		FPU::m24r			();
@@ -943,14 +943,14 @@ void CRender::render_sun_near	()
 		phase									= PHASE_SMAP;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
-//		fuckingsun->svis.begin					();
+//		Rsun->svis.begin					();
 	}
 
 	// Fill the database
 	r_dsgraph_render_subspace				(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
 
 	// Finalize & Cleanup
-	fuckingsun->X.D.combine					= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
+	Rsun->X.D.combine					= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
 
 	// Render shadow-map
 	//. !!! We should clip based on shrinked frustum (again)
@@ -958,17 +958,17 @@ void CRender::render_sun_near	()
 		bool	bNormal							= mapNormalPasses[0][0].size() || mapMatrixPasses[0][0].size();
 		bool	bSpecial						= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target->phase_smap_direct			(fuckingsun	, SE_SUN_NEAR	);
+			Target->phase_smap_direct			(Rsun	, SE_SUN_NEAR	);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
-			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
+			RCache.set_xform_project			(Rsun->X.D.combine	);	
 			r_dsgraph_render_graph				(0)	;
 			if (ps_r2_ls_flags.test(R2FLAG_SUN_DETAILS))	
 				Details->Render					()	;
-			fuckingsun->X.D.transluent			= FALSE;
+			Rsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
-				fuckingsun->X.D.transluent			= TRUE;
-				Target->phase_smap_direct_tsh		(fuckingsun, SE_SUN_NEAR);
+				Rsun->X.D.transluent			= TRUE;
+				Target->phase_smap_direct_tsh		(Rsun, SE_SUN_NEAR);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -977,7 +977,7 @@ void CRender::render_sun_near	()
 
 	// End SMAP-render
 	{
-//		fuckingsun->svis.end					();
+//		Rsun->svis.end					();
 		r_pmask									(true,false);
 	}
 
@@ -1048,7 +1048,7 @@ void CRender::render_sun_cascades ( )
 
 void CRender::render_sun_cascade ( u32 cascade_ind )
 {
-	light*			fuckingsun			= (light*)Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)Lights.sun_adapted._get()	;
 
 	// calculate view-frustum bounds in world space
 	Fmatrix	ex_project, ex_full, ex_full_inverse;
@@ -1093,14 +1093,14 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 		cull_sector	= largest_sector;
 
 		// COP - 100 km away
-		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, -tweak_COP_initial_offs	);
+		cull_COP.mad				(Device.vCameraPosition, Rsun->direction, -tweak_COP_initial_offs	);
 
 		// Create approximate ortho-xform
 		// view: auto find 'up' and 'right' vectors
 		Fmatrix						mdir_View, mdir_Project;
 		Fvector						L_dir,L_up,L_right,L_pos;
-		L_pos.set					(fuckingsun->position);
-		L_dir.set					(fuckingsun->direction).normalize	();
+		L_pos.set					(Rsun->position);
+		L_dir.set					(Rsun->direction).normalize	();
 		L_right.set					(1,0,0);					if (_abs(L_right.dotproduct(L_dir))>.99f)	L_right.set(0,0,1);
 		L_up.crossproduct			(L_dir,L_right).normalize	();
 		L_right.crossproduct		(L_up,L_dir).normalize		();
@@ -1260,10 +1260,10 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 			m_sun_cascades[cascade_ind].xform = cull_xform;
 
 			s32		limit					= RImplementation.o.smapsize-1;
-			fuckingsun->X.D.minX			= 0;
-			fuckingsun->X.D.maxX			= limit;
-			fuckingsun->X.D.minY			= 0;
-			fuckingsun->X.D.maxY			= limit;
+			Rsun->X.D.minX			= 0;
+			Rsun->X.D.maxX			= limit;
+			Rsun->X.D.minY			= 0;
+			Rsun->X.D.maxY			= limit;
 
 		// full-xform
 		FPU::m24r			();
@@ -1277,14 +1277,14 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 		phase									= PHASE_SMAP;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
-		//		fuckingsun->svis.begin					();
+		//		Rsun->svis.begin					();
 	}
 
 	// Fill the database
 	r_dsgraph_render_subspace				(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
 
 	// Finalize & Cleanup
-	fuckingsun->X.D.combine					= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
+	Rsun->X.D.combine					= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
 
 	// Render shadow-map
 	//. !!! We should clip based on shrinked frustum (again)
@@ -1292,17 +1292,17 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 		bool	bNormal							= mapNormalPasses[0][0].size() || mapMatrixPasses[0][0].size();
 		bool	bSpecial						= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target->phase_smap_direct			(fuckingsun	, SE_SUN_FAR	);
+			Target->phase_smap_direct			(Rsun	, SE_SUN_FAR	);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
-			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
+			RCache.set_xform_project			(Rsun->X.D.combine	);	
 			r_dsgraph_render_graph				(0)	;
 			if (ps_r2_ls_flags.test(R2FLAG_SUN_DETAILS))	
 				Details->Render					()	;
-			fuckingsun->X.D.transluent			= FALSE;
+			Rsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
-				fuckingsun->X.D.transluent			= TRUE;
-				Target->phase_smap_direct_tsh		(fuckingsun, SE_SUN_FAR);
+				Rsun->X.D.transluent			= TRUE;
+				Target->phase_smap_direct_tsh		(Rsun, SE_SUN_FAR);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -1311,7 +1311,7 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 
 	// End SMAP-render
 	{
-		//		fuckingsun->svis.end					();
+		//		Rsun->svis.end					();
 		r_pmask									(true,false);
 	}
 

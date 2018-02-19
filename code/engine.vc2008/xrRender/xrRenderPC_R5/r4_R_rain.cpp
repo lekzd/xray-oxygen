@@ -100,7 +100,7 @@ void CRender::render_rain()
 					hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
 		}
-		//hull.compute_caster_model	(cull_planes,fuckingsun->direction);
+		//hull.compute_caster_model	(cull_planes,Rsun->direction);
 		hull.compute_caster_model	(cull_planes,RainLight.direction);
 #ifdef	_DEBUG
 		for (u32 it=0; it<cull_planes.size(); it++)
@@ -245,7 +245,7 @@ void CRender::render_rain()
 
 	// End SMAP-render
 	{
-		//		fuckingsun->svis.end					();
+		//		Rsun->svis.end					();
 		r_pmask									(true,false);
 	}
 

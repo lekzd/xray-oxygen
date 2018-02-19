@@ -43,7 +43,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 
 	//	TODO: DX10: Remove half pixe offset
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -57,9 +57,9 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+	L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 	L_spec						= u_diffuse2s	(L_clr);
-	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+	Device.mView.transform_dir	(L_dir,Rsun->direction);
 	L_dir.normalize				();
 
 	// Perform masking (only once - on the first/near phase)
@@ -78,7 +78,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// setup
-		float	intensity			= 0.3f*fuckingsun->color.r + 0.48f*fuckingsun->color.g + 0.22f*fuckingsun->color.b;
+		float	intensity			= 0.3f*Rsun->color.r + 0.48f*Rsun->color.g + 0.22f*Rsun->color.b;
 		Fvector	dir					= L_dir;
 				dir.normalize().mul	(- _sqrt(intensity+EPS));
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
@@ -168,7 +168,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		// shadow xform
 		Fmatrix				m_shadow;
 		{
-			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
+			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,Rsun->X.D.combine);
 			m_shadow.mul	(xf_project,	xf_invview);
 
 			// tsm-bias
@@ -186,7 +186,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		{
 			static	float	w_shift		= 0;
 			Fmatrix			m_xform;
-			Fvector			direction	= fuckingsun->direction	;
+			Fvector			direction	= Rsun->direction	;
 			float	w_dir				= g_pGamePersistent->Environment().CurrentEnv->wind_direction	;
 			//float	w_speed				= g_pGamePersistent->Environment().CurrentEnv->wind_velocity	;
 			Fvector			normal	;	normal.setHP(w_dir,0);
@@ -328,7 +328,7 @@ void CRenderTarget::accum_direct_cascade	( u32 sub_phase, Fmatrix& xform, Fmatri
 
 	//	TODO: DX10: Remove half pixe offset
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -342,9 +342,9 @@ void CRenderTarget::accum_direct_cascade	( u32 sub_phase, Fmatrix& xform, Fmatri
 
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+	L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 	L_spec						= u_diffuse2s	(L_clr);
-	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+	Device.mView.transform_dir	(L_dir,Rsun->direction);
 	L_dir.normalize				();
 
 	// Perform masking (only once - on the first/near phase)
@@ -363,7 +363,7 @@ void CRenderTarget::accum_direct_cascade	( u32 sub_phase, Fmatrix& xform, Fmatri
 		RCache.set_Geometry			(g_combine);
 
 		// setup
-		float	intensity			= 0.3f*fuckingsun->color.r + 0.48f*fuckingsun->color.g + 0.22f*fuckingsun->color.b;
+		float	intensity			= 0.3f*Rsun->color.r + 0.48f*Rsun->color.g + 0.22f*Rsun->color.b;
 		Fvector	dir					= L_dir;
 		dir.normalize().mul	(- _sqrt(intensity+EPS));
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
@@ -453,7 +453,7 @@ void CRenderTarget::accum_direct_cascade	( u32 sub_phase, Fmatrix& xform, Fmatri
 		// shadow xform
 		Fmatrix				m_shadow;
 		{
-			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
+			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,Rsun->X.D.combine);
 			m_shadow.mul	(xf_project,	xf_invview);
 
 			// tsm-bias
@@ -471,7 +471,7 @@ void CRenderTarget::accum_direct_cascade	( u32 sub_phase, Fmatrix& xform, Fmatri
 		{
 			static	float	w_shift		= 0;
 			Fmatrix			m_xform;
-			Fvector			direction	= fuckingsun->direction	;
+			Fvector			direction	= Rsun->direction	;
 			float	w_dir				= g_pGamePersistent->Environment().CurrentEnv->wind_direction	;
 			//float	w_speed				= g_pGamePersistent->Environment().CurrentEnv->wind_velocity	;
 			Fvector			normal	;	normal.setHP(w_dir,0);
@@ -765,7 +765,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 		u_setrt								(rt_Generic_0_r,NULL,NULL,RImplementation.Target->rt_MSAADepth->pZRT);
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -779,9 +779,9 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+	L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 	L_spec						= u_diffuse2s	(L_clr);
-	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+	Device.mView.transform_dir	(L_dir,Rsun->direction);
 	L_dir.normalize				();
 
 	// Perform masking (only once - on the first/near phase)
@@ -803,7 +803,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// setup
-		float	intensity			= 0.3f*fuckingsun->color.r + 0.48f*fuckingsun->color.g + 0.22f*fuckingsun->color.b;
+		float	intensity			= 0.3f*Rsun->color.r + 0.48f*Rsun->color.g + 0.22f*Rsun->color.b;
 		Fvector	dir					= L_dir;
 		dir.normalize().mul	(- _sqrt(intensity+EPS));
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
@@ -883,7 +883,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 		{
 			FPU::m64r		();
 			Fmatrix			xf_invview;		xf_invview.invert	(Device.mView)	;
-			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
+			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,Rsun->X.D.combine);
 			m_shadow.mul	(xf_project,	xf_invview);
 
 			// tsm-bias
@@ -971,7 +971,7 @@ void CRenderTarget::accum_direct_lum	()
 	phase_accumulator					();
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
+	light*			Rsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -985,9 +985,9 @@ void CRenderTarget::accum_direct_lum	()
 
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+	L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 	L_spec						= u_diffuse2s	(L_clr);
-	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+	Device.mView.transform_dir	(L_dir,Rsun->direction);
 	L_dir.normalize				();
 
 	// recalculate d_Z, to perform depth-clipping
@@ -1135,11 +1135,11 @@ void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, co
 	{
 
 		// *** assume accumulator setted up ***
-		light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
+		light*			Rsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 		// Common constants (light-related)
 		Fvector		L_clr;
-		L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+		L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 		
 		//	Use g_combine_2UV that was set up by accum_direct
 		//	RCache.set_Geometry			(g_combine_2UV);

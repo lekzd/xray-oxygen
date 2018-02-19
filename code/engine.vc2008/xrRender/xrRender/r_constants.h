@@ -18,6 +18,8 @@ enum
 	RC_int			= 1,
 	RC_bool			= 2,
 	RC_sampler		= 99,	//	DX9 shares index for sampler and texture
+
+	//VERTVER: We don't need for DX10 textures.
 	RC_dx10texture	= 100,	//	For DX10 sampler and texture are different resources
 	RC_dx11UAV		= 101
 };
@@ -94,7 +96,7 @@ struct ECORE_API	R_constant			:public xr_resource
 	R_constant_load			vs;
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	R_constant_load			gs;
-#	ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
 	R_constant_load			hs;
 	R_constant_load			ds;
 	R_constant_load			cs;

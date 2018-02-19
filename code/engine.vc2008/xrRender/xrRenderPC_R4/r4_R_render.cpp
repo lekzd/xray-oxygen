@@ -429,7 +429,7 @@ void CRender::Render		()
 		render_rain();
 	}
 
-	// Directional light - fucking sun
+	// Directional light - R sun
 	if (bSUN)	
 	{
 		PIX_EVENT(DEFER_SUN);

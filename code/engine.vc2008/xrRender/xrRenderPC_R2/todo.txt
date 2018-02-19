@@ -50,10 +50,10 @@ FEAT:	shadows from transparent particles - 2x for light boost + colorful shadows
 +		:	fading of bloom
 +BUG	:	jumping transform for projected texture
 +BUG	:	biasing for spot-lighting
-+BUG	:	fucking light-flickering!!!
++BUG	:	R light-flickering!!!
 +BUG	:	DX-WARN: RT used while bound
 +FEATURE:	self-ilum
-+BUG	:	fucking light near viewpoint!!!
++BUG	:	R light near viewpoint!!!
 
 hw-pointlight
 volume-fog

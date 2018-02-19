@@ -7,9 +7,9 @@
 #pragma warning(disable:4995)
 #include "../../xrEngine/stdafx.h"
 #pragma warning(disable:4995 4005)
-#include <d3dx9.h>
+//VERTVER: No more "Rsun" T-T
 
-#ifdef	DEBUG
+#ifdef	DEBUG || USE_DX12
 #include <D3d12SDKLayers.h>
 #endif
 
@@ -19,9 +19,11 @@
 #pragma warning( 4 : 4244 )
 #pragma warning(disable:4237)
 
-//#include <D3D11.h>
+#ifdef USE_DX11
+#include <D3D11.h>
+#endif
+
 #include <D3D12.h>
-//#include <D3Dx11core.h>
 #include <D3DCompiler.h>
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DDS.h>
@@ -58,10 +60,12 @@
 
 IC	void	jitter(CBlender_Compile& C)
 {
+//	The jitters in DX12 working another
 //	C.r_Sampler	("jitter0",	JITTER(0), true, D3DTADDRESS_WRAP, D3DTEXF_POINT, D3DTEXF_NONE, D3DTEXF_POINT);
 //	C.r_Sampler	("jitter1",	JITTER(1), true, D3DTADDRESS_WRAP, D3DTEXF_POINT, D3DTEXF_NONE, D3DTEXF_POINT);
 //	C.r_Sampler	("jitter2",	JITTER(2), true, D3DTADDRESS_WRAP, D3DTEXF_POINT, D3DTEXF_NONE, D3DTEXF_POINT);
 //	C.r_Sampler	("jitter3",	JITTER(3), true, D3DTADDRESS_WRAP, D3DTEXF_POINT, D3DTEXF_NONE, D3DTEXF_POINT);
+
 	C.r_dx10Texture	("jitter0",	JITTER(0));
 	C.r_dx10Texture	("jitter1",	JITTER(1));
 	C.r_dx10Texture	("jitter2",	JITTER(2));

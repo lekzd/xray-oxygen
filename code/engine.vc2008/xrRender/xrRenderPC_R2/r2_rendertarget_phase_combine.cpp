@@ -137,11 +137,11 @@ void	CRenderTarget::phase_combine	()
 
 		// sun-params
 		{
-			light*		fuckingsun		= (light*)RImplementation.Lights.sun_adapted._get()	;
+			light*		Rsun		= (light*)RImplementation.Lights.sun_adapted._get()	;
 			Fvector		L_dir,L_clr;	float L_spec;
-			L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+			L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 			L_spec						= u_diffuse2s	(L_clr);
-			Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+			Device.mView.transform_dir	(L_dir,Rsun->direction);
 			L_dir.normalize				();
 
 			sunclr.set				(L_clr.x,L_clr.y,L_clr.z,L_spec);
@@ -486,11 +486,11 @@ void CRenderTarget::phase_combine_volumetric()
 
 		// sun-params
 		{
-			light*		fuckingsun		= (light*)RImplementation.Lights.sun_adapted._get()	;
+			light*		Rsun		= (light*)RImplementation.Lights.sun_adapted._get()	;
 			Fvector		L_dir,L_clr;	float L_spec;
-			L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+			L_clr.set					(Rsun->color.r,Rsun->color.g,Rsun->color.b);
 			L_spec						= u_diffuse2s	(L_clr);
-			Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+			Device.mView.transform_dir	(L_dir,Rsun->direction);
 			L_dir.normalize				();
 
 			sunclr.set				(L_clr.x,L_clr.y,L_clr.z,L_spec);
