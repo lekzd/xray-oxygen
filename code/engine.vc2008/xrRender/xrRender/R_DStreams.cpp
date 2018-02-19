@@ -96,7 +96,7 @@ void* _VertexStream::Lock	( u32 vl_Count, u32 Stride, u32& vOffset )
 		mPosition			= vl_mPosition*Stride;
 		vOffset				= vl_mPosition;
 
-#if defined(USE_DX11)
+#if defined(USE_DX11) || defined(USE_DX12)
 		HW.pContext->Map(pVB, 0, D3D_MAP_WRITE_NO_OVERWRITE, 0, &MappedSubRes);
 		pData=(BYTE*)MappedSubRes.pData;
 		pData += vOffset*Stride;

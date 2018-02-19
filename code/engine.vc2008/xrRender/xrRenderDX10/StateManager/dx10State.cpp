@@ -36,7 +36,7 @@ dx10State* dx10State::Create(SimulatorStates& state_code)
 		InitSamplers( pState->m_VSSamplers, state_code, CTexture::rstVertex);
 		InitSamplers( pState->m_PSSamplers, state_code, CTexture::rstPixel);
 		InitSamplers( pState->m_GSSamplers, state_code, CTexture::rstGeometry);
-#ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
 		InitSamplers( pState->m_HSSamplers, state_code, CTexture::rstHull);
 		InitSamplers( pState->m_DSSamplers, state_code, CTexture::rstDomain);
 		InitSamplers( pState->m_CSSamplers, state_code, CTexture::rstCompute);

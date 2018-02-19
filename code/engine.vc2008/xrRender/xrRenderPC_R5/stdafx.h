@@ -7,7 +7,7 @@
 #pragma warning(disable:4995)
 #include "../../xrEngine/stdafx.h"
 #pragma warning(disable:4995 4005)
-//VERTVER: No more "Rsun" T-T
+//VERTVER: No more "fuckingsun" T-T
 
 #ifdef	DEBUG || USE_DX12
 #include <D3d12SDKLayers.h>

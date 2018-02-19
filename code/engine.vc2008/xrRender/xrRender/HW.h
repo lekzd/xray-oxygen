@@ -40,7 +40,7 @@ public:
 	BOOL					support					(D3DFORMAT fmt, DWORD type, DWORD usage);
 
 #ifdef DEBUG
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	void	Validate(void)	{};
 #else	//	USE_DX10
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };

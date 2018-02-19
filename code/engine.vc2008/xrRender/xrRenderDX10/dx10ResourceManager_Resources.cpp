@@ -2,14 +2,11 @@
 #pragma hdrstop
 
 #pragma warning(disable:4995)
-#include <d3dx9.h>
 #ifndef _EDITOR
 #pragma comment( lib, "d3dx9.lib"		)
 #include "../../xrEngine/render.h"
 #endif
 #pragma warning(default:4995)
-
-#include <D3DX10Core.h>
 
 #include "../xrRender/ResourceManager.h"
 #include "../xrRender/tss.h"
@@ -21,7 +18,7 @@
 
 #include "../xrRender/ShaderResourceTraits.h"
 
-#ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
 	SHS*	CResourceManager::_CreateHS			(LPCSTR Name)
 	{
 		return CreateShader<SHS>(Name);
@@ -79,7 +76,7 @@ SState*		CResourceManager::_CreateState		(SimulatorStates& state_code)
 	// Create New
 	v_states.push_back				(xr_new<SState>());
 	v_states.back()->dwFlags		|= xr_resource_flagged::RF_REGISTERED;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	v_states.back()->state			= ID3DState::Create(state_code);
 #else	//	USE_DX10
 	v_states.back()->state			= state_code.record();
@@ -107,7 +104,7 @@ SPass*		CResourceManager::_CreatePass			(const SPass& proto)
 	P->ps						=	proto.ps;
 	P->vs						=	proto.vs;
 	P->gs						=	proto.gs;
-#ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
 	P->hs						=	proto.hs;
 	P->ds						=	proto.ds;
 	P->cs						=	proto.cs;
@@ -454,7 +451,7 @@ void				CResourceManager::_DeleteConstantTable	(const R_constant_table* C)
 #ifdef USE_DX11
 CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount, bool useUAV )
 #elif USE_DX12
-CRT*	CResourceManager::_CreateRT(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount, bool useUAV)
+CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount, bool useUAV)
 #else
 CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount )
 #endif
@@ -470,7 +467,7 @@ CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 S
 		CRT *RT					=	xr_new<CRT>();
 		RT->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 		m_rtargets.insert		(std::make_pair(RT->set_name(Name),RT));
-#ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
 		if (Device.b_is_Ready)	RT->create	(Name,w,h,f, SampleCount, useUAV );
 #else
 		if (Device.b_is_Ready)	RT->create	(Name,w,h,f, SampleCount );
