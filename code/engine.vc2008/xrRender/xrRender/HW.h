@@ -49,59 +49,55 @@ public:
 	void	Validate(void)	{};
 #endif
 
+    ComPtr < IDXGIFactory2 > m_pFactory;
 //	Variables section
 #if defined(USE_DX12)
 public:
-	IDXGIAdapter * m_pAdapter;
-	ID3D12Device*					pDevice;
-	ID3D12Device1*					pDevice1;
-	ID3D12Device*					pContext;
-	ID3D12Device1*					pContext1;
-	ID3D12Resource*					pResource;
-	IDXGISwapChain*					m_pSwapChain;
-	ID3D11RenderTargetView*			pBaseRT;
-	ID3D11DepthStencilView*			pBaseZB;
+    ComPtr < IDXGIAdapter1 >                m_pAdapter;
+    ComPtr < ID3D12Device >					pDevice;
+    ComPtr < ID3D12CommandQueue >           pCommandQueue;
+    ComPtr < ID3D12Resource >				pResource;
+    ComPtr < IDXGISwapChain1 >				m_pSwapChain;
+    ComPtr < ID3D11RenderTargetView >		pBaseRT;
+    ComPtr < ID3D11DepthStencilView >		pBaseZB;
 
 	//-----------------------------------
 	CHWCaps							Caps;
 	//-----------------------------------
 
 	D3D_DRIVER_TYPE					m_DriverType;	//	DevT equivalent
-	DXGI_SWAP_CHAIN_DESC			m_ChainDesc;	//	DevPP equivdalent
-	bool							m_bUsePerfhud;
+    DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivdalent
 
 	D3D12_FEATURE		FeatureLevel;
 #elif  defined(USE_DX11)	//	USE_DX10
 public:
-	IDXGIAdapter*			m_pAdapter;	//	pD3D equivalent
-	ID3D11Device*			pDevice;	//	combine with DX9 pDevice via typedef
-	ID3D11DeviceContext*    pContext;	//	combine with DX9 pDevice via typedef
-	IDXGISwapChain*         m_pSwapChain;
-	ID3D11RenderTargetView*	pBaseRT;	//	combine with DX9 pBaseRT via typedef
-	ID3D11DepthStencilView*	pBaseZB;
+    ComPtr < IDXGIAdapter >			m_pAdapter;	//	pD3D equivalent
+    ComPtr < ID3D11Device >			pDevice;	//	combine with DX9 pDevice via typedef
+    ComPtr < ID3D11DeviceContext >    pContext;	//	combine with DX9 pDevice via typedef
+    ComPtr < IDXGISwapChain >         m_pSwapChain;
+    ComPtr < ID3D11RenderTargetView >	pBaseRT;	//	combine with DX9 pBaseRT via typedef
+    ComPtr < ID3D11DepthStencilView >	pBaseZB;
 
 	CHWCaps					Caps;
 
 	D3D_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
-	bool					m_bUsePerfhud;
 	D3D_FEATURE_LEVEL		FeatureLevel;
 #elif defined(USE_DX10)
 public:
-	IDXGIAdapter*			m_pAdapter;	//	pD3D equivalent
-	ID3D10Device1*       	pDevice1;	//	combine with DX9 pDevice via typedef
-	ID3D10Device*        	pDevice;	//	combine with DX9 pDevice via typedef
-	ID3D10Device1*       	pContext1;	//	combine with DX9 pDevice via typedef
-	ID3D10Device*        	pContext;	//	combine with DX9 pDevice via typedef
-	IDXGISwapChain*         m_pSwapChain;
-	ID3D10RenderTargetView*	pBaseRT;	//	combine with DX9 pBaseRT via typedef
-	ID3D10DepthStencilView*	pBaseZB;
+	ComPtr < IDXGIAdapter >			m_pAdapter;	//	pD3D equivalent
+	ComPtr < ID3D10Device1 >       	pDevice1;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device >        	pDevice;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device1 >       	pContext1;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device >        	pContext;	//	combine with DX9 pDevice via typedef
+	ComPtr < IDXGISwapChain >         m_pSwapChain;
+	ComPtr < ID3D10RenderTargetView >	pBaseRT;	//	combine with DX9 pBaseRT via typedef
+	ComPtr < ID3D10DepthStencilView >	pBaseZB;
 
 	CHWCaps					Caps;
 
 	D3D10_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
-	bool					m_bUsePerfhud;
 	D3D_FEATURE_LEVEL		FeatureLevel;
 #else
 private:
@@ -109,11 +105,11 @@ private:
 
 public:
 
-	IDirect3D9* 			pD3D;		// D3D
-	IDirect3DDevice9*		pDevice;	// render device
+	ComPtr < IDirect3D9 > 			pD3D;		// D3D
+	ComPtr < IDirect3DDevice9 >		pDevice;	// render device
 
-	IDirect3DSurface9*		pBaseRT;
-	IDirect3DSurface9*		pBaseZB;
+	ComPtr < IDirect3DSurface9 >		pBaseRT;
+	ComPtr < IDirect3DSurface9 >		pBaseZB;
 
 	CHWCaps					Caps;
 

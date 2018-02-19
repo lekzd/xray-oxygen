@@ -174,6 +174,7 @@ bool TestDX12Present()
     }
 
     ComPtr<IDXGIAdapter1> HardwareAdapter;
+    bool bCreatedDevice = false;
 
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != DXGIFactory->EnumAdapters1(adapterIndex, &HardwareAdapter); ++adapterIndex)
     {
@@ -191,18 +192,18 @@ bool TestDX12Present()
         // actual device yet.
         if (SUCCEEDED(D3D12CreateDevice(HardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr)))
         {
+            bCreatedDevice = true;
             break;
         }
     }
 
-    if (HardwareAdapter.Get() == nullptr)
+    if (HardwareAdapter.Get() == nullptr || !bCreatedDevice)
     {
         FreeLibrary(hD3D12);
 
         DestroyWindow(hWnd);
         return false;
     }
-
 
 
 	FreeLibrary(hD3D12);

@@ -523,12 +523,6 @@ void CTexture::Load		()
 				//pSurface = ::RImplementation.texture_load	(*cName,mem);
 				pSurface = ::RImplementation.texture_load	(*cName,mem, true);
 
-				if (GetUsage() == D3D_USAGE_STAGING)
-				{
-					flags.bLoadedAsStaging = TRUE;
-					bCreateView = false;
-				}
-
 				// Calc memory usage and preload into vid-mem
 				if (pSurface) 
 				{
@@ -590,51 +584,6 @@ void CTexture::desc_update	()
 			T->GetDesc(&desc);
 		}
 	}
-}
-
-D3D_USAGE CTexture::GetUsage()
-{
-	D3D_USAGE	res = D3D_USAGE_DEFAULT;
-
-	if (pSurface)
-	{
-		D3D_RESOURCE_DIMENSION	type;
-		pSurface->GetType(&type);
-		switch(type)
-		{
-		case D3D_RESOURCE_DIMENSION_TEXTURE1D:
-			{
-				ID3DTexture1D*	T	= (ID3DTexture1D*)pSurface;
-				D3D_TEXTURE1D_DESC	descr;
-				T->GetDesc(&descr);
-				res = descr.Usage;
-			}
-			break;
-
-		case D3D_RESOURCE_DIMENSION_TEXTURE2D:
-			{
-				ID3DTexture2D*	T	= (ID3DTexture2D*)pSurface;
-				D3D_TEXTURE2D_DESC	descr;
-				T->GetDesc(&descr);
-				res = descr.Usage;
-			}
-			break;
-
-		case D3D_RESOURCE_DIMENSION_TEXTURE3D:
-			{
-				ID3DTexture3D*	T	= (ID3DTexture3D*)pSurface;
-				D3D_TEXTURE3D_DESC	descr;
-				T->GetDesc(&descr);
-				res = descr.Usage;
-			}
-			break;
-
-		default:
-			VERIFY(!"Unknown texture format???");
-		}
-	}
-
-	return res;
 }
 
 void CTexture::video_Play		(BOOL looped, u32 _time)	

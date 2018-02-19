@@ -63,7 +63,6 @@ private:
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	void								Apply			(u32 dwStage);
 	void								ProcessStaging();
-	D3D_USAGE							GetUsage();
 #endif	//	USE_DX10
 
 	//	Class data
