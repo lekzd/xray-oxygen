@@ -7,11 +7,7 @@
 #pragma warning(disable:4995)
 #include "../../xrEngine/stdafx.h"
 #pragma warning(disable:4995 4005)
-//VERTVER: No more "fuckingsun" T-T
 
-#ifdef	DEBUG || USE_DX12
-#include <D3d12SDKLayers.h>
-#endif
 
 #pragma warning(default:4995 4005)
 #pragma warning(disable:4714)
@@ -19,15 +15,17 @@
 #pragma warning( 4 : 4244 )
 #pragma warning(disable:4237)
 
-#ifdef USE_DX11
-#include <D3D11.h>
-#endif
-
 #include <D3D12.h>
+#include <D3d12SDKLayers.h>
 #include <D3DCompiler.h>
+#include <dxgi1_4.h>
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DDS.h>
 #include <DirectXTex/d3dx12.h>
+
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
 
 #include "../xrRender/xrD3DDefs.h"
 
