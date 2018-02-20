@@ -110,7 +110,7 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	// Set up the presentation parameters
 #ifdef USE_DX12
     DXGI_SWAP_CHAIN_DESC1& sd = m_ChainDesc;
-    std::memset(&sd, 0, sizeof(sd));
+    ZeroMemory(&sd, sizeof(sd));
 
     selectResolution(sd.Width, sd.Height, bWindowed);
 
@@ -123,9 +123,15 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     sd.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
     sd.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
+    DXGI_SWAP_CHAIN_FULLSCREEN_DESC SCFullscreenDesc;
+    ZeroMemory(&SCFullscreenDesc, sizeof(DXGI_SWAP_CHAIN_FULLSCREEN_DESC));
+
+    SCFullscreenDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
+    SCFullscreenDesc.Windowed = bWindowed;
 #else
 	DXGI_SWAP_CHAIN_DESC	&sd	= m_ChainDesc;
-    std::memset(&sd,0,sizeof(sd));
+    ZeroMemory(&sd, sizeof(sd));
+
 
 	selectResolution	(sd.BufferDesc.Width, sd.BufferDesc.Height, bWindowed);
 
@@ -173,10 +179,10 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
     CHK_DX(pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&pCommandQueue)));
+    CHK_DX(m_pFactory->CreateSwapChainForHwnd(pCommandQueue.Get(), m_hWnd, &m_ChainDesc, &SCFullscreenDesc, nullptr, &m_pSwapChain));
+    CHK_DX(m_pFactory->MakeWindowAssociation(m_hWnd, DXGI_MWA_NO_ALT_ENTER));
 
-    //DXGI_SWAP_CHAIN_DESC1 
-
-    m_pFactory->CreateSwapChainForHwnd(pCommandQueue.Get(), m_hWnd, &m_ChainDesc, nullptr, nullptr, &m_pSwapChain);
+    R = 0; //all ok
 #else
    R =  D3DX10CreateDeviceAndSwapChain(m_pAdapter, m_DriverType, 0, createDeviceFlags, &sd, &m_pSwapChain, &pDevice );
 
@@ -474,7 +480,6 @@ struct _uniq_mode
 	bool operator() (LPCSTR _other) {return !stricmp(_val,_other);}
 };
 
-#ifndef _EDITOR
 void free_vid_mode_list()
 {
 	for( int i=0; vid_mode_token[i].name; i++ )
@@ -546,6 +551,34 @@ void fill_vid_mode_list(CHW* _hw)
 	}
 }
 
+#ifdef USE_DX12
+
+void CHW::UpdateViews()
+{
+    DXGI_SWAP_CHAIN_DESC1 &sd = m_ChainDesc;
+    D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc = {};
+    
+    RTVHeapDesc.NumDescriptors = 2;
+    RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+    CHK_DX(pDevice->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(&m_rtvHeap)));
+
+    m_rtvDescSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE RTVCPUHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart());
+
+    CHK_DX(m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBaseRT)));
+    pDevice->CreateRenderTargetView(pBaseRT.Get(), nullptr, RTVCPUHandle);
+    RTVCPUHandle.Offset(1, m_rtvDescSize);
+
+    CHK_DX(m_pSwapChain->GetBuffer(1, IID_PPV_ARGS(&pBaseRT2)));
+    pDevice->CreateRenderTargetView(pBaseRT2.Get(), nullptr, RTVCPUHandle);
+    RTVCPUHandle.Offset(1, m_rtvDescSize);
+
+    CHK_DX (pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&pCommandAllocator)));
+}
+
+#else //DX11 | DX10
+
 void CHW::UpdateViews()
 {
 	DXGI_SWAP_CHAIN_DESC &sd = m_ChainDesc;
@@ -589,4 +622,5 @@ void CHW::UpdateViews()
 
 	pDepthStencil->Release();
 }
+
 #endif
