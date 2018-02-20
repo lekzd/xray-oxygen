@@ -97,8 +97,11 @@ private:
 
 	// Description
 	ID3DBaseTexture*					desc_cache;
+#if defined(USE_DX12)
 	D3D12_RESOURCE_DESC					desc;
-
+#else 
+	D3D_TEXTURE2D_DESC					desc;
+#endif
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	ID3DShaderResourceView*			m_pSRView;
 	// Sequence view data
