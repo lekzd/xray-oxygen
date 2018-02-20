@@ -34,7 +34,7 @@ public:
 	void								Load			();
 	void								PostLoad		();
 	void								Unload			(void);
-//	void								Apply			(u32 dwStage);
+//	void							Apply			(u32 dwStage);
 
 	void								surface_set		(ID3DBaseTexture* surf );
 	ID3DBaseTexture*					surface_get 	();

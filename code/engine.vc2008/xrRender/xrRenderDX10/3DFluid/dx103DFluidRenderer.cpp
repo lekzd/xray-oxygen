@@ -7,7 +7,7 @@
 #include "../../xrRender/dxRenderDeviceRender.h"
 
 #include "dx103DFluidData.h"
-
+#if !defined(USE_DX12)
 struct VsInput
 {
 	D3DXVECTOR3 pos;  
@@ -290,6 +290,8 @@ void dx103DFluidRenderer::CreateJitterTexture()
 #ifdef USE_DX11
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+#elif  USE_DX12
+
 #else
 	desc.Usage = D3D_USAGE_DEFAULT;
 	desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
@@ -968,3 +970,4 @@ void dx103DFluidRenderer::CalculateLighting(const dx103DFluidData &FluidData, Fo
 	//LightData.m_vLightIntencity.set( 1.0f, 0.5f, 0.0f);
 	//LightData.m_vLightIntencity.set( 1.0f, 1.0f, 1.0f);
 }
+#endif

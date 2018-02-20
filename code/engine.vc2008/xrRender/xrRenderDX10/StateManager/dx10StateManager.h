@@ -1,7 +1,7 @@
 #ifndef	dx10StateManager_included
 #define	dx10StateManager_included
 #pragma once
-
+#if !defined(USE_DX12)
 class dx10StateManager
 {
 	// Давай по новой Миша, всё хуйн
@@ -92,5 +92,5 @@ private:
 };
 
 extern	dx10StateManager	StateManager;
-
+#endif
 #endif	//	dx10StateManager_included
