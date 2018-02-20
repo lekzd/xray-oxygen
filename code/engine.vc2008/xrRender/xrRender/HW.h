@@ -57,6 +57,7 @@ public:
     ComPtr < ID3D12Device >					pDevice;
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
     ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
+    ComPtr < ID3D12GraphicsCommandList >    pCommandList;
     ComPtr < ID3D12DescriptorHeap >         m_rtvHeap;
     ComPtr < ID3D12Resource >				pResource;
     ComPtr < IDXGISwapChain1 >				m_pSwapChain;

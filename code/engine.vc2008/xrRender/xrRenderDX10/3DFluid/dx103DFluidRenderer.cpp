@@ -448,14 +448,14 @@ void dx103DFluidRenderer::CreateHHGGTexture()
     metadata.dimension = DirectX::TEX_DIMENSION_TEXTURE1D;
     metadata.SetAlphaMode(DirectX::TEX_ALPHA_MODE_STRAIGHT);
     ID3D12Resource* pHHGGTexture = nullptr;
-    CHK_DX(DirectX::CreateTexture(HW.pDevice, metadata, &pHHGGTexture));
+    CHK_DX(DirectX::CreateTexture(HW.pDevice.Get(), metadata, &pHHGGTexture));
 
     DirectX::ScratchImage FluidHHGGImg;
     CHK_DX(FluidHHGGImg.Initialize1D(metadata.format, sizeof(converted), metadata.arraySize, metadata.mipLevels));
     memcpy(FluidHHGGImg.GetPixels(), converted, sizeof(converted));
 
     std::vector<D3D12_SUBRESOURCE_DATA> FluidHHGGImgSubresource;
-    CHK_DX(DirectX::PrepareUpload(HW.pDevice, FluidHHGGImg.GetImages(), FluidHHGGImg.GetImageCount(), metadata, FluidHHGGImgSubresource));
+    CHK_DX(DirectX::PrepareUpload(HW.pDevice.Get(), FluidHHGGImg.GetImages(), FluidHHGGImg.GetImageCount(), metadata, FluidHHGGImgSubresource));
     
     //USE_DX12 END
 

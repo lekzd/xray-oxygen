@@ -654,7 +654,10 @@ void CHW::UpdateViews()
     RTVCPUHandle.Offset(1, m_rtvDescSize);
 
     CHK_DX (pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&pCommandAllocator)));
+
+    CHK_DX (pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pCommandList)));
 }
+
 
 #else //DX11 | DX10
 
