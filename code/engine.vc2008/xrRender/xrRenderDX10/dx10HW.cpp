@@ -222,6 +222,9 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 void CHW::DestroyDevice()
 {
 	//	Destroy state managers
+
+	//VERTVER: DX12 have a new feature - Pipeline State Object.
+	// And yes, StateManager now 
 	StateManager.Reset();
 	RSManager.ClearStateArray();
 	DSSManager.ClearStateArray();
@@ -251,7 +254,7 @@ void CHW::DestroyDevice()
 //////////////////////////////////////////////////////////////////////
 void CHW::Reset(HWND hwnd)
 {
-	DXGI_SWAP_CHAIN_DESC &cd = m_ChainDesc;
+	DXGI_SWAP_CHAIN_DESC1 &cd = m_ChainDesc;
 
 	bool bWindowed = !psDeviceFlags.is(rsFullscreen);
 

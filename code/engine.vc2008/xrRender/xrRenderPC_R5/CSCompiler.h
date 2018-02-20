@@ -31,9 +31,11 @@ private:
 	ComputeShader&			m_Target;
 	ID3D11ComputeShader*	m_cs;
 	R_constant_table		m_constants;
+#if 0
 	xr_vector<ID3D11SamplerState*>			m_Samplers;
 	xr_vector<ID3D11ShaderResourceView*>	m_Textures;
 	xr_vector<ID3D11UnorderedAccessView*>	m_Outputs;
+#endif
 }; // class CSCompiler
 
 #endif // #ifndef CSCOMPILER_H_INCLUDED

@@ -18,15 +18,18 @@ void _VertexStream::Create	()
 	DEV->Evict();
 
 	mSize					= rsDVB_Size*1024;
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX10) || defined(USE_DX11)
 	D3D_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth        = mSize;
 	bufferDesc.Usage            = D3D_USAGE_DYNAMIC;	
 	bufferDesc.BindFlags        = D3D_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags   = D3D_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags        = 0;
-
-	//R_CHK					(HW.pDevice->CreateBuffer	( &bufferDesc, 0, &pVB ));
+#elif  defined(USE_DX12)
+	//VERTVER to Giperion: No Flags to check the type of buffer(!)
+	DXGI_SWAP_CHAIN_DESC swapChainDesc;
+	swapChainDesc.BufferDesc.Width = mSize;
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 #else	//	USE_DX10
 	R_CHK					(HW.pDevice->CreateVertexBuffer	( mSize, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &pVB, NULL));
 #endif	//	USE_DX10
@@ -96,10 +99,12 @@ void* _VertexStream::Lock	( u32 vl_Count, u32 Stride, u32& vOffset )
 		mPosition			= vl_mPosition*Stride;
 		vOffset				= vl_mPosition;
 
-#if defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX11)
 		HW.pContext->Map(pVB, 0, D3D_MAP_WRITE_NO_OVERWRITE, 0, &MappedSubRes);
 		pData=(BYTE*)MappedSubRes.pData;
 		pData += vOffset*Stride;
+#elif defined(USE_DX12)
+
 #elif defined(USE_DX10)
 		pVB->Map(D3D_MAP_WRITE_NO_OVERWRITE, 0, (void**)&pData);
 		pData += vOffset*Stride;
@@ -173,7 +178,7 @@ void	_IndexStream::Create	()
 
 	mSize					= rsDIB_Size*1024;
 
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX10) || defined(USE_DX11)
 	D3D_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth        = mSize;
 	bufferDesc.Usage            = D3D_USAGE_DYNAMIC;	
@@ -183,6 +188,11 @@ void	_IndexStream::Create	()
 
 	//R_CHK					(HW.pDevice->CreateBuffer( &bufferDesc, 0, &pIB ));
 	HW.stats_manager.increment_stats_ib		(pIB);
+#elif  defined(USE_DX12)
+	//VERTVER to Giperion: No Flags to check the type of buffer(!)
+	DXGI_SWAP_CHAIN_DESC swapChainDesc;
+	swapChainDesc.BufferDesc.Width = mSize;
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 #else	//	USE_DX10
 	R_CHK					(HW.pDevice->CreateIndexBuffer( mSize, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &pIB, NULL));
 	HW.stats_manager.increment_stats_ib		(pIB);

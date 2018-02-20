@@ -429,7 +429,7 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	_Load_hw						(*this,_verts_);
 }
 
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX10) || defined(USE_DX11)
 
 void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 {
@@ -559,6 +559,134 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 	}
 }
 
+#elif defined(USE_DX12)
+void CSkeletonX_ext::_Load_hw(Fvisual& V, void *	_verts_)
+{
+	// Create HW VB in case this is possible
+	//	BOOL	bSoft				= HW.Caps.geometry.bSoftware;
+	//	u32		dwUsage				= /*D3DUSAGE_WRITEONLY |*/ (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);	// VB may be read by wallmarks code
+	switch (RenderMode)
+	{
+	case RM_SKINNING_SOFT:
+		//Msg					("skinning: software");
+		V.rm_geom.create(vertRenderFVF, RCache.Vertex.Buffer(), V.p_rm_Indices);
+		break;
+	case RM_SINGLE:
+	case RM_SKINNING_1B:
+	{
+		{	//	Back up vertex data since we can't read vertex buffer in DX10
+			u32 size = V.vCount * sizeof(vertBoned1W);
+			u32 crc = crc32(_verts_, size);
+			Vertices1W.create(crc, V.vCount, (vertBoned1W*)_verts_);
+		}
+
+		u32		vStride = D3DXGetDeclVertexSize(dwDecl_01W, 0);
+		VERIFY(vStride == sizeof(vertHW_1W));
+		VERIFY(NULL == V.p_rm_Vertices);
+
+		//	TODO: DX10: Check for memory fragmentation
+		vertHW_1W*		dstOriginal = xr_alloc<vertHW_1W>(V.vCount);
+		vertHW_1W*		dst = dstOriginal;
+		vertBoned1W*	src = (vertBoned1W*)_verts_;
+		for (u32 it = 0; it<V.vCount; it++) {
+			Fvector2	uv; uv.set(src->u, src->v);
+			dst->set(src->P, src->N, src->T, src->B, uv, src->matrix * 3);
+			dst++; src++;
+		}
+		R_CHK(dx10BufferUtils::CreateVertexBuffer(&V.p_rm_Vertices, dstOriginal, V.vCount*vStride));
+		HW.stats_manager.increment_stats_vb(V.p_rm_Vertices);
+		xr_free(dstOriginal);
+
+		V.rm_geom.create(dwDecl_01W, V.p_rm_Vertices, V.p_rm_Indices);
+	}
+	break;
+	case RM_SKINNING_2B:
+	{
+		{	//	Back up vertex data since we can't read vertex buffer in DX10
+			u32 size = V.vCount * sizeof(vertBoned2W);
+			u32 crc = crc32(_verts_, size);
+			Vertices2W.create(crc, V.vCount, (vertBoned2W*)_verts_);
+		}
+
+		u32 vStride = D3DXGetDeclVertexSize(dwDecl_2W, 0);
+		VERIFY(vStride == sizeof(vertHW_2W));
+		VERIFY(NULL == V.p_rm_Vertices);
+
+		//	TODO: DX10: Check for memory fragmentation
+		vertHW_2W*		dstOriginal = xr_alloc<vertHW_2W>(V.vCount);
+		vertHW_2W*		dst = dstOriginal;
+		vertBoned2W*	src = (vertBoned2W*)_verts_;
+		for (u32 it = 0; it<V.vCount; it++) {
+			Fvector2	uv; uv.set(src->u, src->v);
+			dst->set(src->P, src->N, src->T, src->B, uv, int(src->matrix0) * 3, int(src->matrix1) * 3, src->w);
+			dst++;		src++;
+		}
+		R_CHK(dx10BufferUtils::CreateVertexBuffer(&V.p_rm_Vertices, dstOriginal, V.vCount*vStride));
+		HW.stats_manager.increment_stats_vb(V.p_rm_Vertices);
+		xr_free(dstOriginal);
+
+		V.rm_geom.create(dwDecl_2W, V.p_rm_Vertices, V.p_rm_Indices);
+	}break;
+	case RM_SKINNING_3B:
+	{
+		{	//	Back up vertex data since we can't read vertex buffer in DX10
+			u32 size = V.vCount * sizeof(vertBoned3W);
+			u32 crc = crc32(_verts_, size);
+			Vertices3W.create(crc, V.vCount, (vertBoned3W*)_verts_);
+		}
+
+		u32		vStride = D3DXGetDeclVertexSize(dwDecl_3W, 0);
+		VERIFY(vStride == sizeof(vertHW_3W));
+		VERIFY(NULL == V.p_rm_Vertices);
+
+		//	TODO: DX10: Check for memory fragmentation
+		vertHW_3W*		dstOriginal = xr_alloc<vertHW_3W>(V.vCount);
+		vertHW_3W*		dst = dstOriginal;
+		vertBoned3W*	src = (vertBoned3W*)_verts_;
+		for (u32 it = 0; it<V.vCount; it++)
+		{
+			Fvector2	uv; uv.set(src->u, src->v);
+			dst->set(src->P, src->N, src->T, src->B, uv, int(src->m[0]) * 3, int(src->m[1]) * 3, int(src->m[2]) * 3, src->w[0], src->w[1]);
+			dst++;
+			src++;
+		}
+		R_CHK(dx10BufferUtils::CreateVertexBuffer(&V.p_rm_Vertices, dstOriginal, V.vCount*vStride));
+		HW.stats_manager.increment_stats_vb(V.p_rm_Vertices);
+		xr_free(dstOriginal);
+
+		V.rm_geom.create(dwDecl_3W, V.p_rm_Vertices, V.p_rm_Indices);
+	}break;
+	case RM_SKINNING_4B:
+	{
+		{	//	Back up vertex data since we can't read vertex buffer in DX10
+			u32 size = V.vCount * sizeof(vertBoned4W);
+			u32 crc = crc32(_verts_, size);
+			Vertices4W.create(crc, V.vCount, (vertBoned4W*)_verts_);
+			}
+
+		u32 vStride = D3DXGetDeclVertexSize(dwDecl_4W, 0);
+		VERIFY(vStride == sizeof(vertHW_4W));
+		VERIFY(NULL == V.p_rm_Vertices);
+
+		//	TODO: DX10: Check for memory fragmentation
+		vertHW_4W*		dstOriginal = xr_alloc<vertHW_4W>(V.vCount);
+		vertHW_4W*		dst = dstOriginal;
+		vertBoned4W*	src = (vertBoned4W*)_verts_;
+		for (u32 it = 0; it<V.vCount; it++)
+		{
+			Fvector2	uv; uv.set(src->u, src->v);
+			dst->set(src->P, src->N, src->T, src->B, uv, int(src->m[0]) * 3, int(src->m[1]) * 3, int(src->m[2]) * 3, int(src->m[3]) * 3, src->w[0], src->w[1], src->w[2]);
+			dst++;
+			src++;
+		}
+		R_CHK(dx10BufferUtils::CreateVertexBuffer(&V.p_rm_Vertices, dstOriginal, V.vCount*vStride));
+		HW.stats_manager.increment_stats_vb(V.p_rm_Vertices);
+		xr_free(dstOriginal);
+
+		V.rm_geom.create(dwDecl_4W, V.p_rm_Vertices, V.p_rm_Indices);
+		}break;
+	}
+}
 #else	//	USE_DX10
 
 void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)

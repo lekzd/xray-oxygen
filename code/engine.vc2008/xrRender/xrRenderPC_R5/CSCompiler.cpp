@@ -22,7 +22,8 @@ CSCompiler& CSCompiler::begin(const char* name)
 
 CSCompiler& CSCompiler::defSampler(LPCSTR ResourceName)
 {
-	D3D11_SAMPLER_DESC	desc;
+	D3D12_SAMPLER_DESC	desc;
+
     std::memset(&desc,0,sizeof(desc));
 
 	//	Use D3DTADDRESS_CLAMP,	D3DTEXF_POINT,			D3DTEXF_NONE,	D3DTEXF_POINT 
@@ -117,7 +118,8 @@ CSCompiler& CSCompiler::defSampler(LPCSTR ResourceName, const D3D_SAMPLER_DESC& 
 	if (stage >= m_Samplers.size())
 		m_Samplers.resize(stage+1);
 
-	R_CHK(HW.pDevice->CreateSamplerState(&def, &m_Samplers[stage]));
+
+	R_CHK(HW.pDevice->CreateSampler(&def, &m_Samplers[stage]));
 
 	return *this;
 }

@@ -30,9 +30,11 @@ private:
 private:
 	ID3D11ComputeShader*	m_cs;
 	ref_ctable				m_ctable;
+#if 0
 	xr_vector<ID3D11SamplerState*>			m_Samplers;
 	xr_vector<ID3D11ShaderResourceView*>	m_Textures;
 	xr_vector<ID3D11UnorderedAccessView*>	m_Outputs;
+#endif
 }; // class ComputeShader
 
 #endif // #ifndef COMPUTESHADER_H_INCLUDED

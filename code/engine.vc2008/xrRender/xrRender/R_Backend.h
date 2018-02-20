@@ -132,7 +132,8 @@ private:
 	ID3DVertexShader*				vs;
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	ID3DGeometryShader*				gs;
-#	if defined(USE_DX11) || defined(USE_DX12)
+#	if defined(USE_DX11)
+	// Tessellation Shader
 	ID3D11HullShader*				hs;
 	ID3D11DomainShader*				ds;
 	ID3D11ComputeShader*			cs;
@@ -143,7 +144,7 @@ private:
 	LPCSTR							vs_name;
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	LPCSTR							gs_name;
-#	if defined(USE_DX11) || defined(USE_DX12)
+#	if defined(USE_DX11)
 	LPCSTR							hs_name;
 	LPCSTR							ds_name;
 	LPCSTR							cs_name;
@@ -174,7 +175,7 @@ private:
 	CTexture*						textures_vs	[mtMaxVertexShaderTextures];	// 4 vs
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	CTexture*						textures_gs	[mtMaxGeometryShaderTextures];	// 4 vs
-#if defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX11)
 	CTexture*						textures_hs	[mtMaxHullShaderTextures];	// 4 vs
 	CTexture*						textures_ds	[mtMaxDomainShaderTextures];	// 4 vs
 	CTexture*						textures_cs	[mtMaxComputeShaderTextures];	// 4 vs
@@ -213,8 +214,8 @@ public:
 		else if (stage<CTexture::rstGeometry)	return textures_vs[stage-CTexture::rstVertex];
 #ifdef USE_DX10
 		else									return textures_gs[stage-CTexture::rstGeometry];
-#elif USE_DX11 || USE_DX12
-		else if (stage<CTexture::rstHull)	return textures_gs[stage-CTexture::rstGeometry];
+#elif USE_DX11
+		else if (stage<CTexture::rstHull)	return textures_gs[stage - CTexture::rstGeometry];
 		else if (stage<CTexture::rstDomain) return textures_hs[stage-CTexture::rstHull];
 		else if (stage<CTexture::rstCompute) return textures_ds[stage-CTexture::rstDomain];
 		else if (stage<CTexture::rstInvalid) return textures_cs[stage-CTexture::rstCompute];
@@ -223,6 +224,13 @@ public:
 			VERIFY(!"Invalid texture stage");
 			return 0;
 		}
+#elif	USE_DX12 
+		else if (stage<CTexture::rstHull)	return textures_gs[stage - CTexture::rstGeometry];
+		else
+		{
+			VERIFY(!"Invalid texture stage");
+			return 0;
+	}
 #else	//	USE_DX10
 		VERIFY(!"Invalid texture stage");
 		return 0;
@@ -283,7 +291,7 @@ public:
 	ICF void						set_GS				(ID3DGeometryShader* _gs, LPCSTR _n=0);
 	ICF void						set_GS				(ref_gs& _gs)						{ set_GS(_gs->gs,_gs->cName.c_str());				}
 
-#	if defined(USE_DX11) || defined(USE_DX12)
+#	if defined(USE_DX11)
 	ICF void						set_HS				(ID3D11HullShader* _hs, LPCSTR _n=0);
 	ICF void						set_HS				(ref_hs& _hs)						{ set_HS(_hs->sh,_hs->cName.c_str());				}
 
@@ -296,7 +304,7 @@ public:
 
 #endif	//	USE_DX10
 
-#if defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX11)
 	ICF	bool						is_TessEnabled		();
 #else
 	ICF	bool						is_TessEnabled		() {return false;}

@@ -4,6 +4,7 @@
 
 class dx10StateManager
 {
+	// Давай по новой Миша, всё хуйн
 public:
 	dx10StateManager();
 	~dx10StateManager();
@@ -36,8 +37,8 @@ public:
 	void	SetDepthEnable(u32 Enable);
 	void	SetColorWriteEnable(u32 WriteMask);
 	void	SetCullMode(u32 Mode);
-   void  SetMultisample( u32 Enable );
-   void  SetSampleMask( u32 Mask );
+	void	SetMultisample( u32 Enable );
+	void	SetSampleMask( u32 Mask );
 
 	void	EnableScissoring(BOOL bEnable = TRUE);
 
@@ -81,13 +82,13 @@ private:
 
 	//	Cached state descriptions
 	//	Valid only if *Valid flag is set
-	D3D_RASTERIZER_DESC		m_RDesc;
-	D3D_DEPTH_STENCIL_DESC	m_DSDesc;
-	D3D_BLEND_DESC			m_BDesc;
+	D3D_RASTERIZER_DESC			m_RDesc;
+	D3D_DEPTH_STENCIL_DESC		m_DSDesc;
+	D3D_BLEND_DESC				m_BDesc;
 
 	bool						m_bOverrideScissoring;
 	BOOL						m_bOverrideScissoringValue;
-   UINT                 m_uiSampleMask;
+	UINT						m_uiSampleMask;
 };
 
 extern	dx10StateManager	StateManager;

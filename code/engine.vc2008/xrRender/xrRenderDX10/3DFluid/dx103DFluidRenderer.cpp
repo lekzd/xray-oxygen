@@ -407,16 +407,21 @@ void dx103DFluidRenderer::CreateHHGGTexture()
 
 	D3DXFloat32To16Array( converted, data, 4*iNumSamples );
 
+#if !defined(USE_DX12)
 	D3D_TEXTURE1D_DESC desc;
+#else
+	D3D12_RESOURCE_DESC desc;
+#endif
+	
 	desc.Width = iNumSamples;
 	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	//desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-	//desc.Usage = D3D_USAGE_IMMUTABLE;
+	desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE1D;		// Set a type of texture (TEXTURE1D)
 #ifdef USE_DX11
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+#elif USE_DX12
+
 #else
 	desc.Usage = D3D_USAGE_DEFAULT;
 	desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
