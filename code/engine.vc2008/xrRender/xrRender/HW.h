@@ -70,6 +70,7 @@ public:
 	//-----------------------------------
 
 	D3D_DRIVER_TYPE					m_DriverType;	//	DevT equivalent
+    DXGI_SWAP_CHAIN_FULLSCREEN_DESC m_FullscreenDesc;
     DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivdalent
 
 	D3D12_FEATURE		FeatureLevel;

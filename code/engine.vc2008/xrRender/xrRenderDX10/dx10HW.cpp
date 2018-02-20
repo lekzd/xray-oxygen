@@ -235,7 +235,13 @@ void CHW::DestroyDevice()
 
 	_SHOW_REF				("refCount:pBaseRT",pBaseRT);
 	//	Must switch to windowed mode to release swap chain
+    
+#ifdef USE_DX12
+    if (!m_FullscreenDesc.Windowed) m_pSwapChain->SetFullscreenState(FALSE, NULL);
+#else
 	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, NULL);
+#endif
+
 	_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
 
 #ifndef USE_DX11
@@ -258,36 +264,75 @@ void CHW::Reset(HWND hwnd)
 
 	bool bWindowed = !psDeviceFlags.is(rsFullscreen);
 
-	cd.Windowed = bWindowed;
+#ifdef USE_DX12
+    m_FullscreenDesc.Windowed = bWindowed;
+#else
+    cd.Windowed = bWindowed;
+#endif
 
 	m_pSwapChain->SetFullscreenState(!bWindowed, 0);
 
+    UINT dwWidth = 0;
+    UINT dwHeight = 0;
+    
+#ifdef USE_DX12
+    dwWidth = m_ChainDesc.Width;
+    dwHeight = m_ChainDesc.Height;
+#else
 	DXGI_MODE_DESC	&desc = m_ChainDesc.BufferDesc;
+    dwWidth = desc.Width;
+    dwHeight = desc.Height;
+#endif
 
-	selectResolution(desc.Width, desc.Height, bWindowed);
+	selectResolution(dwWidth, dwHeight, bWindowed);
 
 	if (bWindowed)
 	{
-		desc.RefreshRate.Numerator = 60;
-		desc.RefreshRate.Denominator = 1;
-	}
-	else
-		desc.RefreshRate = selectRefresh(desc.Width, desc.Height, desc.Format);
-
-	CHK_DX(m_pSwapChain->ResizeTarget(&desc));
-
-
-#ifdef DEBUG
-	//	_RELEASE			(dwDebugSB);
+#ifdef USE_DX12
+        m_FullscreenDesc.RefreshRate.Numerator = 60;
+        m_FullscreenDesc.RefreshRate.Denominator = 1;
+#else
+        desc.RefreshRate.Numerator = 60;
+        desc.RefreshRate.Denominator = 1;
 #endif
+	}
+    else
+    {
+#ifdef USE_DX12
+        m_FullscreenDesc.RefreshRate = selectRefresh(dwWidth, dwHeight, m_ChainDesc.Format);
+#else
+		desc.RefreshRate = selectRefresh(dwWidth, dwHeight, desc.Format);
+#endif
+    }
+
+
+#ifdef USE_DX12
+    DXGI_MODE_DESC modeDesc;
+    modeDesc.Width = dwWidth;
+    modeDesc.Height = dwHeight;
+    modeDesc.RefreshRate = m_FullscreenDesc.RefreshRate;
+    modeDesc.Scaling = m_FullscreenDesc.Scaling;
+    modeDesc.ScanlineOrdering = m_FullscreenDesc.ScanlineOrdering;
+    CHK_DX(m_pSwapChain->ResizeTarget(&modeDesc));
+#else
+	CHK_DX(m_pSwapChain->ResizeTarget(&desc));
+#endif
+
+
 	_SHOW_REF("refCount:pBaseZB", pBaseZB);
 	_SHOW_REF("refCount:pBaseRT", pBaseRT);
 
+#ifdef USE_DX12
+    DXGI_FORMAT format = m_ChainDesc.Format;
+#else
+    DXGI_FORMAT format = desc.Format;
+#endif
+
 	CHK_DX(m_pSwapChain->ResizeBuffers(
 		cd.BufferCount,
-		desc.Width,
-		desc.Height,
-		desc.Format,
+		dwWidth,
+		dwHeight,
+        format,
 		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
 	UpdateViews();
@@ -385,19 +430,40 @@ DXGI_RATIONAL CHW::selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt)
 
 void CHW::OnAppActivate()
 {
-	if ( m_pSwapChain && !m_ChainDesc.Windowed )
+    bool bWindowed = false;
+    
+#ifdef USE_DX12
+    bWindowed = m_FullscreenDesc.Windowed;
+#else
+    bWindowed = m_ChainDesc.Windowed;
+#endif
+
+    HWND hWindow = NULL;
+    CHK_DX(m_pFactory->GetWindowAssociation(&hWindow));
+
+	if ( m_pSwapChain && !bWindowed)
 	{
-		ShowWindow( m_ChainDesc.OutputWindow, SW_RESTORE );
+		ShowWindow(hWindow, SW_RESTORE );
 		m_pSwapChain->SetFullscreenState( TRUE, NULL );
 	}
 }
 
 void CHW::OnAppDeactivate()
 {
-	if ( m_pSwapChain && !m_ChainDesc.Windowed )
+    bool bWindowed = false;
+#ifdef USE_DX12
+    bWindowed = m_FullscreenDesc.Windowed;
+#else
+    bWindowed = m_ChainDesc.Windowed;
+#endif
+
+    HWND hWindow = NULL;
+    CHK_DX(m_pFactory->GetWindowAssociation(&hWindow));
+
+	if ( m_pSwapChain && !bWindowed)
 	{
 		m_pSwapChain->SetFullscreenState( FALSE, NULL );
-		ShowWindow( m_ChainDesc.OutputWindow, SW_MINIMIZE );
+		ShowWindow(hWindow, SW_MINIMIZE );
 	}
 }
 
@@ -437,21 +503,31 @@ void CHW::updateWindowProps(HWND m_hWnd)
 			BOOL			bCenter = TRUE;
 			if (strstr(Core.Params, "-no_center_screen"))	bCenter = FALSE;
 
+            UINT dwWidth = 0;
+            UINT dwHeight = 0;
+#ifdef USE_DX12
+            dwWidth = m_ChainDesc.Width;
+            dwHeight = m_ChainDesc.Height;
+#else
+            dwWidth = m_ChainDesc.BufferDesc.Width;
+            dwHeight = m_ChainDesc.BufferDesc.Height;
+#endif
+
 			if (bCenter) {
 				RECT				DesktopRect;
 
 				GetClientRect		(GetDesktopWindow(), &DesktopRect);
-				SetRect(&m_rcWindowBounds, (DesktopRect.right - m_ChainDesc.BufferDesc.Width) / 2,
-				(DesktopRect.bottom - m_ChainDesc.BufferDesc.Height) / 2,
-				(DesktopRect.right + m_ChainDesc.BufferDesc.Width) / 2,
-				(DesktopRect.bottom + m_ChainDesc.BufferDesc.Height) / 2);
+				SetRect(&m_rcWindowBounds, (DesktopRect.right - dwWidth) / 2,
+				(DesktopRect.bottom - dwHeight) / 2,
+				(DesktopRect.right + dwWidth) / 2,
+				(DesktopRect.bottom + dwHeight) / 2);
 			}
 			else
 			{
 				if (bBordersMode) {
 					fYOffset = GetSystemMetrics(SM_CYCAPTION); // size of the window title bar
 				}
-					SetRect(&m_rcWindowBounds, 0, 0, m_ChainDesc.BufferDesc.Width, m_ChainDesc.BufferDesc.Height);
+					SetRect(&m_rcWindowBounds, 0, 0, dwWidth, dwHeight);
 				
 			};
 
