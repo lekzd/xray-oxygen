@@ -224,7 +224,7 @@ void CHW::DestroyDevice()
 	//	Destroy state managers
 
 	//VERTVER: DX12 have a new feature - Pipeline State Object.
-	// And yes, StateManager now 
+	// And yes, StateManager now is broken.
 	StateManager.Reset();
 	RSManager.ClearStateArray();
 	DSSManager.ClearStateArray();

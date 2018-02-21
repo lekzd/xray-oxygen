@@ -24,18 +24,21 @@ typedef D3D12_BLEND_DESC				D3D_BLEND_DESC;
 
 typedef D3D12_SUBRESOURCE_DATA			D3D_SUBRESOURCE_DATA;
 
-//typedef D3D11_BUFFER_DESC					D3D_BUFFER_DESC;		//<< Use the #ifndef for stability work
+typedef D3D11_TEXTURE1D_DESC				D3D_TEXTURE1D_DESC;
+typedef D3D11_TEXTURE2D_DESC				D3D_TEXTURE2D_DESC;
+typedef D3D11_TEXTURE3D_DESC				D3D_TEXTURE3D_DESC;
+typedef D3D11_BUFFER_DESC					D3D_BUFFER_DESC;		//<< Use the #ifndef for stability work
 typedef D3D12_QUERY_HEAP_DESC				D3D_QUERY_DESC;			//<< Use the #ifndef for stability work 
 typedef D3D12_SHADER_RESOURCE_VIEW_DESC		D3D_SHADER_RESOURCE_VIEW_DESC;
 typedef	D3D12_RENDER_TARGET_VIEW_DESC		D3D_RENDER_TARGET_VIEW_DESC;
 typedef	D3D12_DEPTH_STENCIL_VIEW_DESC		D3D_DEPTH_STENCIL_VIEW_DESC;
-//typedef D3D11_MAPPED_SUBRESOURCE			D3D_MAPPED_TEXTURE2D;	//<< Use the #ifndef for stability work 
-//typedef D3D11_MAPPED_SUBRESOURCE			D3D_MAPPED_TEXTURE3D;	//<< Use the #ifndef for stability work 
+typedef D3D11_MAPPED_SUBRESOURCE			D3D_MAPPED_TEXTURE2D;	//<< Use the #ifndef for stability work 
+typedef D3D11_MAPPED_SUBRESOURCE			D3D_MAPPED_TEXTURE3D;	//<< Use the #ifndef for stability work 
 typedef D3D12_INPUT_ELEMENT_DESC			D3D_INPUT_ELEMENT_DESC;
 typedef D3D12_PRIMITIVE_TOPOLOGY			D3D_PRIMITIVE_TOPOLOGY;
-//typedef	D3D11_VIEWPORT						D3D_VIEWPORT;
+typedef	D3D11_VIEWPORT						D3D_VIEWPORT;
 
-/*
+
 typedef ID3D11RasterizerState					ID3DRasterizerState;			//	RasterizerState;		<< One call must be deleted
 typedef ID3D11DepthStencilState					ID3DDepthStencilState;			//	DepthStencilState;		<< One call must be deleted
 typedef ID3D11BlendState						ID3DBlendState;					//	BlendState;				<< One call must be deleted
@@ -43,13 +46,13 @@ typedef ID3D11SamplerState						ID3DSamplerState;				//	No one in d3d12.h		<< On
 typedef ID3D11Buffer							ID3DBuffer;
 typedef ID3D11Buffer							ID3DVertexBuffer;
 typedef ID3D11Buffer							ID3DIndexBuffer;
-*
+
 //-----------------------------SRV, UAV, RTV---------------------------------
 typedef	ID3D11InputLayout						ID3DInputLayout;
 typedef	ID3D11VertexShader						ID3DVertexShader;
 typedef	ID3D11GeometryShader					ID3DGeometryShader;
 typedef	ID3D11PixelShader						ID3DPixelShader;
-*/
+
 typedef	ID3D12Resource							ID3DBaseTexture;
 typedef ID3D12Resource							ID3DResource;
 typedef	ID3D12Resource							ID3DRenderTargetView;		//D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView or Resource
