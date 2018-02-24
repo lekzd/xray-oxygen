@@ -224,6 +224,8 @@
     <ClInclude Include="..\..\utils\common\NvMender2003\mender_input_output.h" />
     <ClInclude Include="..\..\utils\common\NvMender2003\NVMeshMender.h" />
     <ClInclude Include="..\..\utils\common\NvMender2003\remove_isolated_verts.h" />
+    <ClInclude Include="..\xrRender\light_gi.h" />
+    <ClInclude Include="..\xrRender\Light_Render_Direct.h" />
     <ClInclude Include="Blender_ss.h" />
     <ClInclude Include="cl_intersect.h" />
     <ClInclude Include="stdafx.h" />
@@ -246,9 +248,7 @@
     <ClInclude Include="..\xrRender\xrStripify.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="..\xrRender\Light_DB.h" />
-    <ClInclude Include="light_gi.h" />
     <ClInclude Include="..\xrRender\Light_Package.h" />
-    <ClInclude Include="Light_Render_Direct.h" />
     <ClInclude Include="light_smapvis.h" />
     <ClInclude Include="..\xrRender\LightTrack.h" />
     <ClInclude Include="SMAP_Allocator.h" />
@@ -291,7 +291,6 @@
     <ClInclude Include="..\xrRender\HOM.h" />
     <ClInclude Include="..\xrRender\occRasterizer.h" />
     <ClInclude Include="r2_rendertarget.h" />
-    <ClInclude Include="r2_rendertarget_wallmarks.h" />
     <ClInclude Include="..\xrRender\ColorMapManager.h" />
     <ClInclude Include="..\xrRender\HW.h" />
     <ClInclude Include="..\xrRender\HWCaps.h" />
@@ -387,6 +386,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\utils\common\NvMender2003\NVMeshMender4.cpp" />
+    <ClCompile Include="..\xrRender\light_GI.cpp" />
+    <ClCompile Include="..\xrRender\Light_Render_Direct_ComputeXFS.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="r2_rendertarget_phase_ss.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -426,9 +427,7 @@
     <ClCompile Include="..\xrRender\xrStripify.cpp" />
     <ClCompile Include="..\xrRender\light.cpp" />
     <ClCompile Include="..\xrRender\Light_DB.cpp" />
-    <ClCompile Include="light_GI.cpp" />
     <ClCompile Include="..\xrRender\Light_Package.cpp" />
-    <ClCompile Include="Light_Render_Direct_ComputeXFS.cpp" />
     <ClCompile Include="light_smapvis.cpp" />
     <ClCompile Include="light_vis.cpp" />
     <ClCompile Include="..\xrRender\LightTrack.cpp" />

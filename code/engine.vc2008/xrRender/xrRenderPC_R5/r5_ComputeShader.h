@@ -4,8 +4,7 @@
 //	Copyright (C) GSC Game World - 2009
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef COMPUTESHADER_H_INCLUDED
-#define COMPUTESHADER_H_INCLUDED
+#pragma once
 
 class ComputeShader
 {
@@ -37,4 +36,3 @@ private:
 #endif
 }; // class ComputeShader
 
-#endif // #ifndef COMPUTESHADER_H_INCLUDED

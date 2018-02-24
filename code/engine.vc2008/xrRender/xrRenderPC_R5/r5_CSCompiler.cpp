@@ -5,8 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "CSCompiler.h"
-#include "ComputeShader.h"
+#include "r5_CSCompiler.h"
+#include "r5_ComputeShader.h"
 #include "..\xrRender\dxRenderDeviceRender.h"
 
 CSCompiler::CSCompiler(ComputeShader& target):

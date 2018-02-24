@@ -4,22 +4,7 @@
     <ClCompile Include="..\xrRender\blenders\Blender.cpp">
       <Filter>Blender</Filter>
     </ClCompile>
-    <ClCompile Include="blender_bloom_build.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\Blender_BmmD.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_combine.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_deffer_aref.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_deffer_flat.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_deffer_model.cpp">
       <Filter>Blender</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\Blender_detail_still.cpp">
@@ -31,31 +16,7 @@
     <ClCompile Include="..\xrRender\Blender_Editor_Wire.cpp">
       <Filter>Blender</Filter>
     </ClCompile>
-    <ClCompile Include="blender_fxaa.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_direct.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_mask.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_occq.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_point.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_reflected.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_light_spot.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\Blender_Lm(EbB).cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="blender_luminance.cpp">
       <Filter>Blender</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\Blender_Model_EbB.cpp">
@@ -82,188 +43,8 @@
     <ClCompile Include="..\xrRender\Blender_Screen_SET.cpp">
       <Filter>Blender</Filter>
     </ClCompile>
-    <ClCompile Include="blender_ssao.cpp">
-      <Filter>Blender</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\Blender_tree.cpp">
       <Filter>Blender</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10BufferUtils.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10ConstantBuffer.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10DetailManager_VS.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10HW.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\MSAA\dx10MSAABlender.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10r_constants.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10r_constants_cache.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\DX10 Rain\dx10RainBlender.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10ResourceManager_Resources.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10ResourceManager_Scripting.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dx10SamplerStateCache.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10SH_RT.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10SH_Texture.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dx10ShaderResourceStateCache.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dx10State.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dx10StateCache.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dx10StateManager.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10StateUtils.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10Texture.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\dx10TextureUtils.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidBlenders.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidData.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidEmitters.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidGrid.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidManager.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidObstacles.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidRenderer.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\3DFluid\dx103DFluidVolume.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_direct.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_omnipart_geom.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_point.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_point_geom.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_reflected.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_spot.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_accum_spot_geom.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_create_minmaxSM.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_draw_rain.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_draw_volume.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_enable_scissor.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_mark_msaa_edges.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_accumulator.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_bloom.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_combine.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_FXAA.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_hdao.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_luminance.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_occq.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_PP.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_rain.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_scene.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_smap_D.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_smap_S.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_rendertarget_phase_ssao.cpp">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="dx11HDAOCSBlender.cpp">
-      <Filter>DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="dx11MinMaxSMBlender.cpp">
-      <Filter>DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_loader.cpp">
-      <Filter>DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_R_rain.cpp">
-      <Filter>DX11 Part</Filter>
-    </ClCompile>
-    <ClCompile Include="r4_R_render.cpp">
-      <Filter>DX11 Part</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\DetailManager.cpp">
       <Filter>Details</Filter>
@@ -349,9 +130,6 @@
     <ClCompile Include="..\xrRender\R_Backend_hemi.cpp">
       <Filter>BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="R_Backend_LOD.cpp">
-      <Filter>BackEnd</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\R_Backend_Runtime.cpp">
       <Filter>BackEnd</Filter>
     </ClCompile>
@@ -409,28 +187,13 @@
     <ClCompile Include="..\xrRender\du_sphere.cpp">
       <Filter>DU</Filter>
     </ClCompile>
-    <ClCompile Include="..\xrRender\du_sphere_part.cpp">
-      <Filter>DU</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\light.cpp">
       <Filter>Light</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\Light_DB.cpp">
       <Filter>Light</Filter>
     </ClCompile>
-    <ClCompile Include="light_GI.cpp">
-      <Filter>Light</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\Light_Package.cpp">
-      <Filter>Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Light_Render_Direct_ComputeXFS.cpp">
-      <Filter>Light</Filter>
-    </ClCompile>
-    <ClCompile Include="light_smapvis.cpp">
-      <Filter>Light</Filter>
-    </ClCompile>
-    <ClCompile Include="light_vis.cpp">
       <Filter>Light</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\LightTrack.cpp">
@@ -440,12 +203,6 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\ColorMapManager.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="ComputeShader.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="CSCompiler.cpp">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\D3DUtils.cpp">
@@ -517,24 +274,6 @@
     <ClCompile Include="..\xrRender\R_DStreams.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="r2_blenders.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="r2_R_calculate.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="r2_R_lights.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="r2_R_sun.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="r2_sector_detect.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="r2_test_hw.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\ResourceManager.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -586,39 +325,285 @@
     <ClCompile Include="..\xrRender\xrRender_console.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="xrRender_R4.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="r4.cpp">
+    <ClCompile Include="r5.cpp">
       <Filter>DX12 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_loader.cpp">
+      <Filter>DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_rain.cpp">
+      <Filter>DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_render.cpp">
+      <Filter>DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="dx12MinMaxSMBlender.cpp">
+      <Filter>DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="dx12HDAOCSBlender.cpp">
+      <Filter>DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="xrRender_R5.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_sector_detect.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_test_hw.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blenders.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_calculate.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_lights.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_sun.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_direct.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_omnipart_geom.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_point.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_point_geom.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_reflected.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_spot.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_accum_spot_geom.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_create_minmaxSM.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_draw_rain.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_draw_volume.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_enable_scissor.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_mark_msaa_edges.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_accumulator.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_bloom.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_combine.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_FXAA.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_hdao.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_luminance.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_occq.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_PP.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_rain.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_scene.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_smap_D.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_smap_S.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_rendertarget_phase_ssao.cpp">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\light_GI.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2BufferUtils.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2ConstantBuffer.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2DetailManager_VS.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2HW.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\MSAA\dxB2MSAABlender.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2r_constants.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2r_constants_cache.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\DX10 Rain\dxB2RainBlender.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2ResourceManager_Resources.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2ResourceManager_Scripting.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2SamplerStateCache.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2SH_RT.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2SH_Texture.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2State.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2StateCache.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2StateManager.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2StateUtils.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2Texture.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\dxB2TextureUtils.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidBlenders.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidData.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidEmitters.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidGrid.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidManager.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidObstacles.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidRenderer.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\3DFluid\dxB23DFluidVolume.cpp">
+      <Filter>DX10 Part</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_bloom_build.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_combine.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_deffer_aref.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_deffer_flat.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_deffer_model.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_fxaa.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_direct.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_mask.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_occq.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_point.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_reflected.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_light_spot.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_luminance.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_blender_ssao.cpp">
+      <Filter>Blender</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_ComputeShader.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_CSCompiler.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\du_sphere_part.cpp">
+      <Filter>DU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\Light_Render_Direct_ComputeXFS.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_light_smapvis.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_light_vis.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="r5_R_Backend_LOD.cpp">
+      <Filter>BackEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\xrRender\blenders\Blender.h">
       <Filter>Blender</Filter>
     </ClInclude>
-    <ClInclude Include="blender_bloom_build.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\Blender_BmmD.h">
       <Filter>Blender</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\blenders\Blender_CLSID.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_combine.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_deffer_aref.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_deffer_flat.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_deffer_model.h">
       <Filter>Blender</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\Blender_detail_still.h">
@@ -630,31 +615,7 @@
     <ClInclude Include="..\xrRender\Blender_Editor_Wire.h">
       <Filter>Blender</Filter>
     </ClInclude>
-    <ClInclude Include="blender_fxaa.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_direct.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_mask.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_occq.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_point.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_reflected.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_light_spot.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\Blender_Lm(EbB).h">
-      <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="blender_luminance.h">
       <Filter>Blender</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\Blender_Model_EbB.h">
@@ -669,95 +630,8 @@
     <ClInclude Include="..\xrRender\Blender_Screen_SET.h">
       <Filter>Blender</Filter>
     </ClInclude>
-    <ClInclude Include="blender_ssao.h">
-      <Filter>Blender</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\Blender_tree.h">
       <Filter>Blender</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10BufferUtils.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10ConstantBuffer.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10ConstantBuffer_impl.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\MSAA\dx10MSAABlender.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10R_Backend_Runtime.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10r_constants_cache.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\DX10 Rain\dx10RainBlender.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10SamplerStateCache.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10ShaderResourceStateCache.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10State.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10StateCache.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10StateCacheImpl.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dx10StateManager.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10StateUtils.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\dx10TextureUtils.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidBlenders.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidData.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidEmitters.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidGrid.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidManager.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidRenderer.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidObstacles.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\3DFluid\dx103DFluidVolume.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="r4_rendertarget.h">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="r4_rendertarget_wallmarks.h">
-      <Filter>Render_target\DX11 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="dx11HDAOCSBlender.h">
-      <Filter>DX11 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="dx11MinMaxSMBlender.h">
-      <Filter>DX11 Part</Filter>
-    </ClInclude>
-    <ClInclude Include="r4_R_sun_support.h">
-      <Filter>DX11 Part</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\DetailManager.h">
       <Filter>Details</Filter>
@@ -834,9 +708,6 @@
     <ClInclude Include="..\xrRender\R_Backend_hemi.h">
       <Filter>BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="R_Backend_LOD.h">
-      <Filter>BackEnd</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\R_Backend_Runtime.h">
       <Filter>BackEnd</Filter>
     </ClInclude>
@@ -882,25 +753,13 @@
     <ClInclude Include="..\xrRender\du_sphere.h">
       <Filter>DU</Filter>
     </ClInclude>
-    <ClInclude Include="..\xrRender\du_sphere_part.h">
-      <Filter>DU</Filter>
-    </ClInclude>
     <ClInclude Include="light.h">
       <Filter>Light</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\Light_DB.h">
       <Filter>Light</Filter>
     </ClInclude>
-    <ClInclude Include="light_gi.h">
-      <Filter>Light</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\Light_Package.h">
-      <Filter>Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Light_Render_Direct.h">
-      <Filter>Light</Filter>
-    </ClInclude>
-    <ClInclude Include="light_smapvis.h">
       <Filter>Light</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\LightTrack.h">
@@ -915,16 +774,10 @@
     <ClInclude Include="..\xrRender\ColorMapManager.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeShader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xrRender\ConsoleRender.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\common\NvMender2003\convert.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="CSCompiler.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\D3DUtils.h">
@@ -1050,9 +903,6 @@
     <ClInclude Include="..\xrRender\r_sun_cascades.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="r2_types.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xrRender\RainRender.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -1149,9 +999,6 @@
     <ClInclude Include="..\xrRender\xrStripify.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="cl_intersect.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRenderDX10\DXCommonTypes.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -1164,8 +1011,155 @@
     <ClInclude Include="stdafx.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="r4.h">
+    <ClInclude Include="r5.h">
       <Filter>DX12 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_R_sun_support.h">
+      <Filter>DX11 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="dx12MinMaxSMBlender.h">
+      <Filter>DX11 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="dx12HDAOCSBlender.h">
+      <Filter>DX11 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_types.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_rendertarget.h">
+      <Filter>Render_target\DX11 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\light_gi.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2BufferUtils.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2ConstantBuffer.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2ConstantBuffer_impl.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\MSAA\dxB2MSAABlender.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2R_Backend_Runtime.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2r_constants_cache.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\DX10 Rain\dxB2RainBlender.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2SamplerStateCache.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2State.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2StateCache.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2StateCacheImpl.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2StateManager.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2StateUtils.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\dxB2TextureUtils.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidBlenders.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidData.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidEmitters.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidGrid.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidManager.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidObstacles.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidRenderer.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\3DFluid\dxB23DFluidVolume.h">
+      <Filter>DX10 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_bloom_build.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_combine.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_deffer_aref.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_deffer_flat.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_deffer_model.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_fxaa.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_direct.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_mask.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_occq.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_point.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_reflected.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_light_spot.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_luminance.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_blender_ssao.h">
+      <Filter>Blender</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_ComputeShader.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_CSCompiler.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\du_sphere_part.h">
+      <Filter>DU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\Light_Render_Direct.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_light_smapvis.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="r5_R_Backend_LOD.h">
+      <Filter>BackEnd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,9 +3,9 @@
 #include "../xrRender/uber_deffer.h"
 
 #include "../xrRender/blender_BmmD.h"
-#include "blender_deffer_flat.h"
-#include "blender_deffer_model.h"
-#include "blender_deffer_aref.h"
+#include "r5_blender_deffer_flat.h"
+#include "r5_blender_deffer_model.h"
+#include "r5_blender_deffer_aref.h"
 #include "../xrRender/blender_screen_set.h"
 #include "../xrRender/blender_editor_wire.h"
 #include "../xrRender/blender_editor_selection.h"

@@ -228,13 +228,7 @@
     <ClInclude Include="..\xrRender\Light_DB.h">
       <Filter>Lights</Filter>
     </ClInclude>
-    <ClInclude Include="light_gi.h">
-      <Filter>Lights</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\Light_Package.h">
-      <Filter>Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="Light_Render_Direct.h">
       <Filter>Lights</Filter>
     </ClInclude>
     <ClInclude Include="light_smapvis.h">
@@ -358,9 +352,6 @@
       <Filter>Visibility\HOM Occlusion</Filter>
     </ClInclude>
     <ClInclude Include="r2_rendertarget.h">
-      <Filter>Core_Target</Filter>
-    </ClInclude>
-    <ClInclude Include="r2_rendertarget_wallmarks.h">
       <Filter>Core_Target</Filter>
     </ClInclude>
     <ClInclude Include="..\xrRender\ColorMapManager.h">
@@ -660,6 +651,12 @@
     <ClInclude Include="Blender_ss.h">
       <Filter>Shading templates</Filter>
     </ClInclude>
+    <ClInclude Include="..\xrRender\light_gi.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\Light_Render_Direct.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -761,13 +758,7 @@
     <ClCompile Include="..\xrRender\Light_DB.cpp">
       <Filter>Lights</Filter>
     </ClCompile>
-    <ClCompile Include="light_GI.cpp">
-      <Filter>Lights</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRender\Light_Package.cpp">
-      <Filter>Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="Light_Render_Direct_ComputeXFS.cpp">
       <Filter>Lights</Filter>
     </ClCompile>
     <ClCompile Include="light_smapvis.cpp">
@@ -1155,6 +1146,12 @@
       <Filter>Shading templates</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\utils\common\NvMender2003\NVMeshMender4.cpp" />
+    <ClCompile Include="..\xrRender\light_GI.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\Light_Render_Direct_ComputeXFS.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="todo.txt" />

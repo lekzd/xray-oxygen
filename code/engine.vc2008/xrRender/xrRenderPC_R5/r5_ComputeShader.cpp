@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ComputeShader.h"
+#include "r5_ComputeShader.h"
 
 #pragma todo("VERTVER: ID3D11 to ID3D12")
 void ComputeShader::Construct(
