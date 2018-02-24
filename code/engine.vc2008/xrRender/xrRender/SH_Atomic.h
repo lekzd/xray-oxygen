@@ -1,11 +1,9 @@
-#ifndef sh_atomicH
-#define sh_atomicH
 #pragma once
 #include "../../xrCore/xr_resource.h"
 #include "tss_def.h"
 
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-#include "../xrRenderDX10/StateManager/dx10State.h"
+#include "../xrRenderDX10/StateManager/dxB2State.h"
 #endif	//	USE_DX10
 
 #pragma pack(push,4)
@@ -138,4 +136,3 @@ struct ECORE_API SDeclaration : public xr_resource_flagged
 typedef	resptr_core<SDeclaration,resptr_base<SDeclaration> >	ref_declaration;
 
 #pragma pack(pop)
-#endif //sh_atomicH

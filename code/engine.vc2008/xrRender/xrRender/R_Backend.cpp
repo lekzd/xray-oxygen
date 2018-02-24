@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "../xrRenderDX10/dx10BufferUtils.h"
+#include "../xrRenderDX10/dxB2BufferUtils.h"
 
 CBackend			RCache;
 
