@@ -11,7 +11,7 @@
 #include "../xrRender/dxWallMarkArray.h"
 #include "../xrRender/dxUIShader.h"
 
-#include "../xrRenderDX10/3DFluid/dx103DFluidManager.h"
+#include "../xrRenderDX10/3DFluid/dxB23DFluidManager.h"
 #include "../xrRender/ShaderResourceTraits.h"
 
 //#include "D3DX10Core.h"

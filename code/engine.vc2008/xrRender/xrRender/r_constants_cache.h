@@ -1,11 +1,9 @@
-#ifndef r_constants_cacheH
-#define r_constants_cacheH
 #pragma once
 
 #include "r_constants.h"
 
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-#include "../xrRenderDX10/dx10r_constants_cache.h"
+#include "../xrRenderDX10/dxB2r_constants_cache.h"
 #else	//	USE_DX10
 #include "../xrRenderDX9/dx9r_constants_cache.h"
 #endif	//	USE_DX10
@@ -181,4 +179,3 @@ public:
 	}
 };
 */
-#endif

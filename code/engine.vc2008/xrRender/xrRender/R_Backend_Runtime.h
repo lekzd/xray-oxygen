@@ -1,5 +1,3 @@
-#ifndef R_BACKEND_RUNTIMEH
-#define R_BACKEND_RUNTIMEH
 #pragma once
 
 #include "sh_texture.h"
@@ -8,8 +6,8 @@
 #include "sh_rt.h"
 
 #if defined(USE_DX10) || defined(USE_DX11)
-#include "../xrRenderDX10/dx10R_Backend_Runtime.h"
-#include "../xrRenderDX10/StateManager/dx10State.h"
+#include "../xrRenderDX10/dxB2R_Backend_Runtime.h"
+#include "../xrRenderDX10/StateManager/dxB2State.h"
 #else	//	USE_DX10
 #include "../xrRenderDX9/dx9R_Backend_Runtime.h"
 #endif	//	USE_DX10
@@ -115,4 +113,3 @@ ICF void CBackend::set_Shader			(Shader* S, u32 pass)
 	set_Element			(S->E[0],pass);
 }
 
-#endif

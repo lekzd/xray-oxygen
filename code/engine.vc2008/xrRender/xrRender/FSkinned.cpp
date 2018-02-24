@@ -14,7 +14,7 @@
 #include "FSkinned.h"
 #include "SkeletonX.h"
 
-#include "../xrRenderDX10/dx10BufferUtils.h"
+#include "../xrRenderDX10/dxB2BufferUtils.h"
 
 #include "../../xrEngine/EnnumerateVertices.h"
 //////////////////////////////////////////////////////////////////////

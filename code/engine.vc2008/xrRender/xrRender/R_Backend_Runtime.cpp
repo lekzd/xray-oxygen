@@ -9,8 +9,8 @@
 #include "../../xrCDB/frustum.h"
 
 #if defined(USE_DX10) || defined(USE_DX11)
-#include "../xrRenderDX10/StateManager/dx10StateManager.h"
-#include "../xrRenderDX10/StateManager/dx10ShaderResourceStateCache.h"
+#include "../xrRenderDX10/StateManager/dxB2StateManager.h"
+#include "../xrRenderDX10/StateManager/dxB2ShaderResourceStateCache.h"
 #endif	USE_DX10
 
 void CBackend::OnFrameEnd	()

@@ -10,8 +10,8 @@
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
-#include "../xrRenderDX10/dx10BufferUtils.h"
-#include "../xrRenderDX10/3DFluid/dx103DFluidVolume.h"
+#include "../xrRenderDX10/dxB2BufferUtils.h"
+#include "../xrRenderDX10/3DFluid/dxB23DFluidVolume.h"
 
 #include "../xrRender/FHierrarhyVisual.h"
 

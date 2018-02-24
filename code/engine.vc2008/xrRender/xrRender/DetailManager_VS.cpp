@@ -11,7 +11,7 @@
 #	include "../../xrEngine/environment.h"
 #endif
 
-#include "../xrRenderDX10/dx10BufferUtils.h"
+#include "../xrRenderDX10/dxB2BufferUtils.h"
 
 const int			quant	= 16384;
 const int			c_hdr	= 10;

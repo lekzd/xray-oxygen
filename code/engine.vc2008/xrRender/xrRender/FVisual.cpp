@@ -12,7 +12,7 @@
 #include "../../xrEngine/fmesh.h"
 #include "fvisual.h"
 
-#include "../xrRenderDX10/dx10BufferUtils.h"
+#include "../xrRenderDX10/dxB2BufferUtils.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

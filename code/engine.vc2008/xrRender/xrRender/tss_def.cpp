@@ -100,7 +100,7 @@ void	SimulatorStates::clear	()
 
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 
-#include "../xrRenderDX10/dx10StateUtils.h"
+#include "../xrRenderDX10/dxB2StateUtils.h"
 
 void SimulatorStates::UpdateState( dx10State &state) const
 {
