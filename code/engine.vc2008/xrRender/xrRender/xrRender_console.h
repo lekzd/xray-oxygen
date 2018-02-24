@@ -1,5 +1,3 @@
-#ifndef xrRender_consoleH
-#define xrRender_consoleH
 #pragma once
 
 // Common
@@ -220,4 +218,3 @@ enum
 	RFLAG_ACTOR_SHADOW = (1 << 0),
 };
 
-#endif

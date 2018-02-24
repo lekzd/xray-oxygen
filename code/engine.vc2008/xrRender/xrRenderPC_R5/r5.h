@@ -5,8 +5,8 @@
 
 #include "../xrRender/PSLibrary.h"
 
-#include "r2_types.h"
-#include "r4_rendertarget.h"
+#include "r5_types.h"
+#include "r5_rendertarget.h"
 
 #include "../xrRender/hom.h"
 #include "../xrRender/detailmanager.h"
