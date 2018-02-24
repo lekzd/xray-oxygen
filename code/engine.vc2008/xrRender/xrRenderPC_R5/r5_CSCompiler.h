@@ -4,9 +4,7 @@
 //	Copyright (C) GSC Game World - 2009
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef CSCOMPILER_H_INCLUDED
-#define CSCOMPILER_H_INCLUDED
-
+#pragma once
 class ComputeShader;
 
 class CSCompiler
@@ -38,4 +36,3 @@ private:
 #endif
 }; // class CSCompiler
 
-#endif // #ifndef CSCOMPILER_H_INCLUDED

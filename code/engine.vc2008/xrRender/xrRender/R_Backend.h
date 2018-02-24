@@ -18,7 +18,7 @@
 #include "..\xrRenderPC_R4\r_backend_lod.h"
 #endif
 #if defined(USE_DX12)
-#include "../xrRenderPC_R5/r_backend_lod.h"
+#include "../xrRenderPC_R5/r5_R_Backend_LOD.h"
 #endif
 #include "fvf.h"
 

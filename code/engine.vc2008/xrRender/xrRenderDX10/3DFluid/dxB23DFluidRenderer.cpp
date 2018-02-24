@@ -458,6 +458,7 @@ void dx103DFluidRenderer::CreateHHGGTexture()
     std::vector<D3D12_SUBRESOURCE_DATA> FluidHHGGImgSubresource;
     CHK_DX(DirectX::PrepareUpload(HW.pDevice.Get(), FluidHHGGImg.GetImages(), FluidHHGGImg.GetImageCount(), metadata, FluidHHGGImgSubresource));
     
+
     //USE_DX12 END
 
 	m_HHGGTexture = dxRenderDeviceRender::Instance().Resources->_CreateTexture("$user$NVHHGGTex");

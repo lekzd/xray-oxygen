@@ -1,5 +1,4 @@
-#ifndef R_BACKEND_LOD_H_INCLUDED
-#define R_BACKEND_LOD_H_INCLUDED
+#pragma once
 
 class R_LOD
 {
@@ -14,4 +13,3 @@ public:
 	void			set_LOD(float LOD);
 };
 
-#endif // #ifndef R_BACKEND_LOD_H_INCLUDED
