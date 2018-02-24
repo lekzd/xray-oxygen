@@ -981,9 +981,6 @@
     <ClInclude Include="..\xrRender\HOM.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="..\xrRender\HW.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\HWCaps.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -1166,6 +1163,9 @@
     </ClInclude>
     <ClInclude Include="r4.h">
       <Filter>DX12 Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\HW.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
