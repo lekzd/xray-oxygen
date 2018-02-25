@@ -23,6 +23,8 @@ void	free_vid_mode_list			();
 void	fill_render_mode_list		();
 void	free_render_mode_list		();
 
+const int FrameCount = 2;
+
 CHW HW;
 
 CHW::CHW() : m_pAdapter(0), pDevice(NULL), m_move_window(true)
@@ -119,7 +121,7 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     sd.SampleDesc.Count = 1;
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    sd.BufferCount = 2;
+    sd.BufferCount = FrameCount;
     sd.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
     sd.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
@@ -212,6 +214,10 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 	//	Create render target and depth-stencil views here
 	UpdateViews();
+    
+#ifdef USE_DX12
+    CreateRootSignature();
+#endif
 
 	size_t	memory									= Desc.DedicatedVideoMemory;
 	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
@@ -635,11 +641,31 @@ void fill_vid_mode_list(CHW* _hw)
 void CHW::UpdateViews()
 {
     DXGI_SWAP_CHAIN_DESC1 &sd = m_ChainDesc;
+
     D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc = {};
-    
-    RTVHeapDesc.NumDescriptors = 2;
+    RTVHeapDesc.NumDescriptors = FrameCount;
     RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
     CHK_DX(pDevice->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(&m_rtvHeap)));
+
+    D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc = {};
+    DSVHeapDesc.NumDescriptors = 1 + FrameCount * 2;
+    DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+    CHK_DX(pDevice->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(&m_dsvHeap)));
+
+    D3D12_DESCRIPTOR_HEAP_DESC SamplerHeapDesc = {};
+    SamplerHeapDesc.NumDescriptors = 4096;  //#TODO: Test value, check later
+    SamplerHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
+    SamplerHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    CHK_DX(pDevice->CreateDescriptorHeap(&SamplerHeapDesc, IID_PPV_ARGS(&m_samplerHeap)));
+
+    const DWORD nullSrvCount = 2;		// Null descriptors are needed for out of bounds behavior reads.
+    const DWORD testSRVCounts = 65535;           //#TODO I have no idea what I'm doing
+    const DWORD testCBVCounts = FrameCount * 2; //#TODO I have no idea what I'm doing
+    D3D12_DESCRIPTOR_HEAP_DESC CbvSrvHeapDesc = {};
+    CbvSrvHeapDesc.NumDescriptors = nullSrvCount + testSRVCounts + testCBVCounts;
+    CbvSrvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    CbvSrvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    CHK_DX(pDevice->CreateDescriptorHeap(&CbvSrvHeapDesc, IID_PPV_ARGS(&m_cbvSrvHeap)));
 
     m_rtvDescSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
@@ -655,7 +681,51 @@ void CHW::UpdateViews()
 
     CHK_DX (pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&pCommandAllocator)));
 
-    CHK_DX (pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pCommandList)));
+    CHK_DX(pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pCommandList)));
+    pCommandList->Close();
+    CHK_DX(pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pTextureLoadCmdList)));
+    pTextureLoadCmdList->Close();
+    CHK_DX(pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pMeshLoadCmdList)));
+}
+
+
+void CHW::CreateRootSignature()
+{
+    D3D12_FEATURE_DATA_ROOT_SIGNATURE rootSignatureFeatureDesc;
+    rootSignatureFeatureDesc.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
+
+    if (FAILED(pDevice->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &rootSignatureFeatureDesc, sizeof(D3D12_FEATURE_DATA_ROOT_SIGNATURE))))
+    {
+        rootSignatureFeatureDesc.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
+    }
+
+    //#TODO: I have no idea. We have variable resources per shader, so sometimes it's more then just diffuse and normal textures
+    CD3DX12_DESCRIPTOR_RANGE1 DescRanges[4];
+    DescRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 2, 1, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);	// 2 frequently changed diffuse + normal textures - using registers t1 and t2.
+    DescRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);	// 1 frequently changed constant buffer.
+    DescRanges[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);												// 1 infrequently changed shadow texture - starting in register t0.
+    DescRanges[3].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 2, 0);											// 2 static samplers.
+
+    CD3DX12_ROOT_PARAMETER1 rootParameters[4];
+    rootParameters[0].InitAsDescriptorTable(1, &DescRanges[0], D3D12_SHADER_VISIBILITY_PIXEL);
+    rootParameters[1].InitAsDescriptorTable(1, &DescRanges[1], D3D12_SHADER_VISIBILITY_ALL);
+    rootParameters[2].InitAsDescriptorTable(1, &DescRanges[2], D3D12_SHADER_VISIBILITY_PIXEL);
+    rootParameters[3].InitAsDescriptorTable(1, &DescRanges[3], D3D12_SHADER_VISIBILITY_PIXEL);
+
+    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc2;
+    if (rootSignatureFeatureDesc.HighestVersion == D3D_ROOT_SIGNATURE_VERSION_1_1)
+    {
+        rootSignatureDesc2.Init_1_1(_countof(rootParameters), rootParameters, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    }
+    else
+    {
+        rootSignatureDesc2.Init_1_0(_countof(rootParameters), rootParameters, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    }
+
+    ComPtr<ID3DBlob> signature;
+    ComPtr<ID3DBlob> error;
+    CHK_DX(D3DX12SerializeVersionedRootSignature(&rootSignatureDesc2, rootSignatureFeatureDesc.HighestVersion, &signature, &error));
+    CHK_DX(pDevice->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&pRootSignature)));
 }
 
 

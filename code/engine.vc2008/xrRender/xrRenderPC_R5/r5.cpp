@@ -46,6 +46,28 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(dxRender_Visual	*pVisual, floa
 	}
 	return pVisual->shader->E[id]._get();
 }
+
+void CRender::LoadTextureSynchronize(D3D12_RESOURCE_DIMENSION dimension, DWORD dwWidth, DWORD dwHeight)
+{
+    //#TODO!
+
+    D3D12_RESOURCE_DESC textureDesc = {};
+    textureDesc.MipLevels = 1; // Change later
+    textureDesc.Dimension = dimension;
+    //textureDesc.
+    
+    CD3DX12_RESOURCE_DESC textureDesc2;
+    textureDesc2.Dimension = dimension;
+    textureDesc2.MipLevels = 1;
+    textureDesc2.Width = dwWidth;
+    textureDesc2.Height = dwHeight;
+}
+
+void CRender::LoadTextureAsync()
+{
+    //#TODO!
+}
+
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_static	(dxRender_Visual	*pVisual, float cdist_sq)
 {
