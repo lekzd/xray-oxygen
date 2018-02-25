@@ -175,8 +175,6 @@ private:
 	void							LoadSWIs					(CStreamReader	*fs);
 	void							Load3DFluid					();
 
-    void LoadTextureSynchronize(D3D12_RESOURCE_DIMENSION dimension, DWORD dwWidth, DWORD dwHeight);
-    void                            LoadTextureAsync();
 
 	BOOL							add_Dynamic					(dxRender_Visual*pVisual, u32 planes);		// normal processing
 	void							add_Static					(dxRender_Visual*pVisual, u32 planes);
