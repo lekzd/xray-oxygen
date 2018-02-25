@@ -41,15 +41,15 @@ public:
 
 #ifdef DEBUG
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-	void	Validate(void)	{};
+	void					Validate				(void){};
 #else	//	USE_DX10
-	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };
+	void					Validate				(void){	VERIFY(pDevice); VERIFY(pD3D); };
 #endif	//	USE_DX10
 #else
-	void	Validate(void)	{};
+	void					Validate				(void){};
 #endif
 
-    ComPtr < IDXGIFactory2 > m_pFactory;
+    ComPtr < IDXGIFactory2 >				m_pFactory;
 //	Variables section
 #if defined(USE_DX12)
 public:
@@ -74,33 +74,33 @@ public:
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC m_FullscreenDesc;
     DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivdalent
 
-	D3D12_FEATURE		FeatureLevel;
+	D3D12_FEATURE					FeatureLevel;
 
-    UINT m_rtvDescSize;
+    UINT							m_rtvDescSize;
 #elif  defined(USE_DX11)	//	USE_DX10
 public:
-    ComPtr < IDXGIAdapter >			m_pAdapter;	//	pD3D equivalent
-    ComPtr < ID3D11Device >			pDevice;	//	combine with DX9 pDevice via typedef
-    ComPtr < ID3D11DeviceContext >    pContext;	//	combine with DX9 pDevice via typedef
-    ComPtr < IDXGISwapChain >         m_pSwapChain;
-    ComPtr < ID3D11RenderTargetView >	pBaseRT;	//	combine with DX9 pBaseRT via typedef
-    ComPtr < ID3D11DepthStencilView >	pBaseZB;
+    ComPtr < IDXGIAdapter >					m_pAdapter;	//	pD3D equivalent
+    ComPtr < ID3D11Device >					pDevice;	//	combine with DX9 pDevice via typedef
+    ComPtr < ID3D11DeviceContext >			pContext;	//	combine with DX9 pDevice via typedef
+    ComPtr < IDXGISwapChain >				m_pSwapChain;
+    ComPtr < ID3D11RenderTargetView >		pBaseRT;	//	combine with DX9 pBaseRT via typedef
+    ComPtr < ID3D11DepthStencilView >		pBaseZB;
 
-	CHWCaps					Caps;
+	CHWCaps							Caps;
 
-	D3D_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
-	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
-	D3D_FEATURE_LEVEL		FeatureLevel;
+	D3D_DRIVER_TYPE					m_DriverType;	//	DevT equivalent
+	DXGI_SWAP_CHAIN_DESC			m_ChainDesc;	//	DevPP equivalent
+	D3D_FEATURE_LEVEL				FeatureLevel;
 #elif defined(USE_DX10)
 public:
-	ComPtr < IDXGIAdapter >			m_pAdapter;	//	pD3D equivalent
-	ComPtr < ID3D10Device1 >       	pDevice1;	//	combine with DX9 pDevice via typedef
-	ComPtr < ID3D10Device >        	pDevice;	//	combine with DX9 pDevice via typedef
-	ComPtr < ID3D10Device1 >       	pContext1;	//	combine with DX9 pDevice via typedef
-	ComPtr < ID3D10Device >        	pContext;	//	combine with DX9 pDevice via typedef
-	ComPtr < IDXGISwapChain >         m_pSwapChain;
-	ComPtr < ID3D10RenderTargetView >	pBaseRT;	//	combine with DX9 pBaseRT via typedef
-	ComPtr < ID3D10DepthStencilView >	pBaseZB;
+	ComPtr < IDXGIAdapter >					m_pAdapter;	//	pD3D equivalent
+	ComPtr < ID3D10Device1 >       			pDevice1;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device >        			pDevice;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device1 >       			pContext1;	//	combine with DX9 pDevice via typedef
+	ComPtr < ID3D10Device >        			pContext;	//	combine with DX9 pDevice via typedef
+	ComPtr < IDXGISwapChain >				m_pSwapChain;
+	ComPtr < ID3D10RenderTargetView >		pBaseRT;	//	combine with DX9 pBaseRT via typedef
+	ComPtr < ID3D10DepthStencilView >		pBaseZB;
 
 	CHWCaps					Caps;
 
@@ -113,8 +113,8 @@ private:
 
 public:
 
-	ComPtr < IDirect3D9 > 			pD3D;		// D3D
-	ComPtr < IDirect3DDevice9 >		pDevice;	// render device
+	ComPtr < IDirect3D9 > 				pD3D;		// D3D
+	ComPtr < IDirect3DDevice9 >			pDevice;	// render device
 
 	ComPtr < IDirect3DSurface9 >		pBaseRT;
 	ComPtr < IDirect3DSurface9 >		pBaseZB;
@@ -130,11 +130,11 @@ public:
 	stats_manager			stats_manager;
 #endif
 #if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
-	void			UpdateViews();
-	DXGI_RATIONAL	selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt);
+	void					UpdateViews				( );
+	DXGI_RATIONAL			selectRefresh			(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt);
 
-	virtual	void	OnAppActivate();
-	virtual void	OnAppDeactivate();
+	virtual	void			OnAppActivate			( );
+	virtual void			OnAppDeactivate			( );
 #endif	//	USE_DX10
 
 private:
