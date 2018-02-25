@@ -490,9 +490,6 @@
     <ClCompile Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.cpp">
       <Filter>DX10 Part</Filter>
     </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2State.cpp">
-      <Filter>DX10 Part</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRenderDX10\StateManager\dxB2StateCache.cpp">
       <Filter>DX10 Part</Filter>
     </ClCompile>
@@ -594,6 +591,9 @@
     </ClCompile>
     <ClCompile Include="r5_R_Backend_LOD.cpp">
       <Filter>BackEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2State.cpp">
+      <Filter>DX10 Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1059,9 +1059,6 @@
     <ClInclude Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.h">
       <Filter>DX10 Part</Filter>
     </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2State.h">
-      <Filter>DX10 Part</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRenderDX10\StateManager\dxB2StateCache.h">
       <Filter>DX10 Part</Filter>
     </ClInclude>
@@ -1160,6 +1157,9 @@
     </ClInclude>
     <ClInclude Include="r5_R_Backend_LOD.h">
       <Filter>BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2State.h">
+      <Filter>DX10 Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

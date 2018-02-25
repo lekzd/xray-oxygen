@@ -102,7 +102,7 @@ void	SimulatorStates::clear	()
 
 #include "../xrRenderDX10/dxB2StateUtils.h"
 
-void SimulatorStates::UpdateState( dx10State &state) const
+void SimulatorStates::UpdateState( B1State &state) const
 {
 	for (u32 it=0; it<States.size(); it++)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-class	dx10State;
+class	B1State;
 
 typedef	ID3D10Include			ID3DInclude;
 typedef	ID3D10Blob				ID3DBlob;
@@ -765,5 +765,10 @@ typedef	ID3D10ShaderReflectionType						ID3DShaderReflectionType;
 
 #endif
 
-typedef	dx10State				ID3DState;
+#if !defined(USE_DX12)
+typedef	B1State					ID3DState;
+#else
+typedef B2State					ID3DState;
+#endif
+
 #define DX10_ONLY(expr)			expr

@@ -705,9 +705,6 @@
     <ClInclude Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.h">
       <Filter>StateManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2State.h">
-      <Filter>StateManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRenderDX10\StateManager\dxB2StateCache.h">
       <Filter>StateManager</Filter>
     </ClInclude>
@@ -749,6 +746,9 @@
     </ClInclude>
     <ClInclude Include="..\xrRender\Light_Render_Direct.h">
       <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRenderDX10\StateManager\dxB2State.h">
+      <Filter>StateManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1299,9 +1299,6 @@
     <ClCompile Include="..\xrRenderDX10\StateManager\dxB2ShaderResourceStateCache.cpp">
       <Filter>StateManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2State.cpp">
-      <Filter>StateManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\xrRenderDX10\StateManager\dxB2StateCache.cpp">
       <Filter>StateManager</Filter>
     </ClCompile>
@@ -1343,6 +1340,9 @@
     </ClCompile>
     <ClCompile Include="..\xrRender\Light_Render_Direct_ComputeXFS.cpp">
       <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRenderDX10\StateManager\dxB2State.cpp">
+      <Filter>StateManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
