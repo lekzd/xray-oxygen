@@ -22,6 +22,8 @@
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DDS.h>
 #include <DirectXTex/d3dx12.h>
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
 
 #include <wrl.h>
 

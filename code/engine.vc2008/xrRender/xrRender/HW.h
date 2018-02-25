@@ -57,12 +57,18 @@ public:
     ComPtr < ID3D12Device >					pDevice;
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
     ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
-    ComPtr < ID3D12GraphicsCommandList >    pCommandList;
+    ComPtr < ID3D12GraphicsCommandList >    pCommandList; // Main frame Cmd list
+    ComPtr < ID3D12GraphicsCommandList >    pTextureLoadCmdList; // Command list for texture load
+    ComPtr < ID3D12GraphicsCommandList >    pMeshLoadCmdList; // Command list for model load
     ComPtr < ID3D12DescriptorHeap >         m_rtvHeap;
+    ComPtr < ID3D12DescriptorHeap >         m_dsvHeap;
+    ComPtr < ID3D12DescriptorHeap >         m_samplerHeap;
+    ComPtr < ID3D12DescriptorHeap >         m_cbvSrvHeap;
     ComPtr < ID3D12Resource >				pResource;
     ComPtr < IDXGISwapChain1 >				m_pSwapChain;
     ComPtr < ID3D12Resource >		        pBaseRT;
     ComPtr < ID3D12Resource >		        pBaseRT2;
+    ComPtr < ID3D12RootSignature >          pRootSignature;
 
     ComPtr < ID3D12Resource >		        pBaseZB;
 
@@ -136,6 +142,10 @@ public:
 	virtual	void	OnAppActivate();
 	virtual void	OnAppDeactivate();
 #endif	//	USE_DX10
+
+#ifdef USE_DX12
+    void CreateRootSignature();
+#endif
 
 private:
 	bool					m_move_window;
