@@ -121,6 +121,13 @@ public:
 	void							ED_UpdateTextures	(AStringVec* names);
 #endif
 
+#ifdef USE_DX12
+    ID3D12Resource*                 LoadTextureSynchronize(D3D12_RESOURCE_DIMENSION dimension, DWORD dwWidth, DWORD dwHeight, DXGI_FORMAT format, void* pData, DWORD DataSize, DWORD Pitch = 0);
+    ID3D12Resource*                 LoadTextureSynchronize(DirectX::TexMetadata& texInfo, DirectX::ScratchImage& image);
+
+    void                            LoadTextureAsync();
+#endif
+
 	// Low level resource creation
 	CTexture*						_CreateTexture		(LPCSTR Name);
 	void							_DeleteTexture		(const CTexture* T);

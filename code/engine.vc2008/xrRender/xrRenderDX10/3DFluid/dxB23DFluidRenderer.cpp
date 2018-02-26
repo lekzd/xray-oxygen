@@ -374,13 +374,19 @@ namespace
 	}
 }
 
+#ifdef USE_DX12
+typedef DirectX::PackedVector::HALF XR_FLOAT16;
+#else
+typedef D3DXFLOAT16 XR_FLOAT16;
+#endif
+
 void dx103DFluidRenderer::CreateHHGGTexture()
 {
 //	static const int iNumSamples = 256;
 	static const int iNumSamples = 16;
 //	static const int iNumSamples = 1;
 	float data[4*iNumSamples];
-	D3DXFLOAT16 converted[4*iNumSamples];
+    XR_FLOAT16 converted[4*iNumSamples];
 
 //	Fvector4 mmin;
 //	Fvector4 mmax;
@@ -406,41 +412,40 @@ void dx103DFluidRenderer::CreateHHGGTexture()
 	//	Min value is -1
 	//	Max value is +1
 
+#ifdef USE_DX12
+    DirectX::PackedVector::XMConvertFloatToHalfStream(converted, 0, data, 0, _countof(data));
+#else
 	D3DXFloat32To16Array( converted, data, 4*iNumSamples );
-
-#if !defined(USE_DX12)
-	D3D_TEXTURE1D_DESC desc;
-#else
-	D3D12_RESOURCE_DESC desc;
 #endif
-	
-	desc.Width = iNumSamples;
-	desc.MipLevels = 1;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-	desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE1D;		// Set a type of texture (TEXTURE1D)
+
+#ifdef USE_DX10
+    D3D_TEXTURE1D_DESC desc;
+
+    desc.Width = iNumSamples;
+    desc.MipLevels = 1;
+    desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE1D;		// Set a type of texture (TEXTURE1D)
 #ifdef USE_DX11
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-#elif USE_DX12
-
+    desc.Usage = D3D11_USAGE_DEFAULT;
+    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 #else
-	desc.Usage = D3D_USAGE_DEFAULT;
-	desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
+    desc.Usage = D3D_USAGE_DEFAULT;
+    desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
 #endif
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
+    desc.CPUAccessFlags = 0;
+    desc.MiscFlags = 0;
 
-	D3D_SUBRESOURCE_DATA dataDesc;
-	//dataDesc.pSysMem = data;
-	//dataDesc.SysMemPitch = sizeof(data);
-	dataDesc.pSysMem = converted;
-	dataDesc.SysMemPitch = sizeof(converted);
+    D3D_SUBRESOURCE_DATA dataDesc;
+    //dataDesc.pSysMem = data;
+    //dataDesc.SysMemPitch = sizeof(data);
+    dataDesc.pSysMem = converted;
+    dataDesc.SysMemPitch = sizeof(converted);
 
-	ID3DTexture1D* HHGGTexture = NULL;
+    ID3DTexture1D* HHGGTexture = NULL;
 
-	CHK_DX( HW.pDevice->CreateTexture1D(&desc, &dataDesc, &HHGGTexture));
+    CHK_DX(HW.pDevice->CreateTexture1D(&desc, &dataDesc, &HHGGTexture));
 
-    //USE_DX12 START
+#elif USE_DX12
     DirectX::TexMetadata metadata;
     metadata.width = iNumSamples;
     metadata.mipLevels = 1;
@@ -448,20 +453,13 @@ void dx103DFluidRenderer::CreateHHGGTexture()
     metadata.format = DXGI_FORMAT_R16G16B16A16_FLOAT;
     metadata.dimension = DirectX::TEX_DIMENSION_TEXTURE1D;
     metadata.SetAlphaMode(DirectX::TEX_ALPHA_MODE_STRAIGHT);
-    ID3D12Resource* pHHGGTexture = nullptr;
-    CHK_DX(DirectX::CreateTexture(HW.pDevice.Get(), metadata, &pHHGGTexture));
 
     DirectX::ScratchImage FluidHHGGImg;
     CHK_DX(FluidHHGGImg.Initialize1D(metadata.format, sizeof(converted), metadata.arraySize, metadata.mipLevels));
     memcpy(FluidHHGGImg.GetPixels(), converted, sizeof(converted));
 
-    std::vector<D3D12_SUBRESOURCE_DATA> FluidHHGGImgSubresource;
-    CHK_DX(DirectX::PrepareUpload(HW.pDevice.Get(), FluidHHGGImg.GetImages(), FluidHHGGImg.GetImageCount(), metadata, FluidHHGGImgSubresource));
-
-    CRender* dx12Render = dynamic_cast<CRender*>(Render);
-    dx12Render->LoadTextureSynchronize();
-
-    //USE_DX12 END
+    ID3D12Resource* HHGGTexture = DEV->LoadTextureSynchronize(metadata, FluidHHGGImg);
+#endif
 
 	m_HHGGTexture = dxRenderDeviceRender::Instance().Resources->_CreateTexture("$user$NVHHGGTex");
 	m_HHGGTexture->surface_set(HHGGTexture);
