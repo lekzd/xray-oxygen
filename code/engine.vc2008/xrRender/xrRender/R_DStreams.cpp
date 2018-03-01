@@ -26,7 +26,7 @@ void _VertexStream::Create	()
 	bufferDesc.CPUAccessFlags   = D3D_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags        = 0;
 #elif  defined(USE_DX12)
-	//VERTVER to Giperion: No Flags to check the type of buffer(!)
+	//#TODO: No Flags to check the type of buffer(!)
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	swapChainDesc.BufferDesc.Width = mSize;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -180,6 +180,7 @@ void	_IndexStream::Create	()
 
 	mSize					= rsDIB_Size*1024;
 
+	//#VERTVER: Now in D3D12 the bufferDesc included in swapChain
 #if defined(USE_DX10) || defined(USE_DX11)
 	D3D_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth        = mSize;
@@ -187,18 +188,27 @@ void	_IndexStream::Create	()
 	bufferDesc.BindFlags        = D3D_BIND_INDEX_BUFFER;
 	bufferDesc.CPUAccessFlags   = D3D_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags        = 0;
-
-	//R_CHK					(HW.pDevice->CreateBuffer( &bufferDesc, 0, &pIB ));
+	R_CHK					(HW.pDevice->CreateBuffer( &bufferDesc, 0, &pIB ));
 	HW.stats_manager.increment_stats_ib		(pIB);
+
 #elif  defined(USE_DX12)
-	//VERTVER to Giperion: No Flags to check the type of buffer(!)
+	//#VERTVER to Giperion: No Flags to check the type of buffer(!)
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	swapChainDesc.BufferDesc.Width = mSize;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-#else	//	USE_DX10
+	//#TODO: ContastBufferView != BufferDesc
+	R_CHK	(
+		HW.pDevice->
+		CreateConstantBufferView(
+			&swapChainDesc.BufferDesc,
+			&pIB
+				)
+			);
+	HW.stats_manager.increment_stats_ib		(pIB);
+#else
 	R_CHK					(HW.pDevice->CreateIndexBuffer( mSize, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &pIB, NULL));
 	HW.stats_manager.increment_stats_ib		(pIB);
-#endif	//	USE_DX10
+#endif
 	R_ASSERT				(pIB);
 
 	mPosition				= 0;
@@ -207,14 +217,14 @@ void	_IndexStream::Create	()
 	Msg("* DIB created: %dK", mSize/1024);
 }
 
-void	_IndexStream::Destroy()
+void _IndexStream::Destroy			()
 {
 	HW.stats_manager.decrement_stats_ib	(pIB);
 	_RELEASE							(pIB);
 	_clear								();
 }
 
-u16*	_IndexStream::Lock	( u32 Count, u32& vOffset )
+u16* _IndexStream::Lock	( u32 Count, u32& vOffset )
 {
 #ifdef USE_DX11
 	D3D11_MAPPED_SUBRESOURCE MappedSubRes;
@@ -236,14 +246,16 @@ u16*	_IndexStream::Lock	( u32 Count, u32& vOffset )
 		dwFlags		= LOCKFLAGS_FLUSH;			// discard it's contens
 		mDiscardID	++;
 	}
-#if defined(USE_DX11) || defined(USE_DX12)
-#if 0
+
+	//#TODO: D3D_MAP is not defined in D3D12
+#if defined(USE_DX11)
 	D3D_MAP MapMode = (dwFlags==LOCKFLAGS_APPEND) ? 
 		D3D_MAP_WRITE_NO_OVERWRITE : D3D_MAP_WRITE_DISCARD;
 	HW.pContext->Map(pIB, 0, MapMode, 0, &MappedSubRes);
 	pLockedData = (BYTE*)MappedSubRes.pData;
 	pLockedData += mPosition * 2;
-#endif
+#elif defined(USE_DX12)
+
 #elif defined(USE_DX10)
 	D3D_MAP MapMode = (dwFlags==LOCKFLAGS_APPEND) ? 
 		D3D_MAP_WRITE_NO_OVERWRITE : D3D_MAP_WRITE_DISCARD;
@@ -265,10 +277,11 @@ void	_IndexStream::Unlock(u32 RealCount)
 	PGO						(Msg("PGO:IB_UNLOCK:%d",RealCount));
 	mPosition				+=	RealCount;
 	VERIFY					(pIB);
-#if defined(USE_DX11) || defined(USE_DX12)
-#if 0
+#if defined(USE_DX11)
 	HW.pContext->Unmap(pIB, 0);
-#endif
+#elif defined (USE_DX12)
+	pIB->Unmap();
+	//#VERTVER: We're don't need pContext cuz in D3D12 the Unmap() method linked in IndexBuffer
 #elif defined(USE_DX10)
 	pIB->Unmap();
 #else	//	USE_DX10

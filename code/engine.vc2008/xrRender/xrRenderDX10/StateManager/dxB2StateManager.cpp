@@ -449,32 +449,32 @@ void dxB2StateManager::Reset()
 {
 	UnmapConstants();
 
-	m_pRState = 0;
-	m_pDepthStencilState = 0;
-	m_pBlendState = 0;
+	m_pRState					= NULL;
+	m_pDepthStencilState		= NULL;
+	m_pBlendState				= NULL;
 
-	m_uiStencilRef = 0;
-	m_uiAlphaRef = 0;
+	m_uiStencilRef				= NULL;
+	m_uiAlphaRef				= NULL;
 
-	m_bRSNeedApply = true;
-	m_bDSSNeedApply = true;
-	m_bBSNeedApply = true;
+	m_bRSNeedApply				= true;
+	m_bDSSNeedApply				= true;
+	m_bBSNeedApply				= true;
 
-	m_bRSChanged = false;
-	m_bDSSChanged = false;
-	m_bBSChanged = false;
+	m_bRSChanged				= false;
+	m_bDSSChanged				= false;
+	m_bBSChanged				= false;
 
-	m_bRDInvalid = false;
-	m_bDSDInvalid = false;
-	m_bBDInvalid = false;
+	m_bRDInvalid				= false;
+	m_bDSDInvalid				= false;
+	m_bBDInvalid				= false;
 
 	dx10StateUtils::ResetDescription(m_RDesc);
 	dx10StateUtils::ResetDescription(m_DSDesc);
 	dx10StateUtils::ResetDescription(m_BDesc);
 
-	m_bOverrideScissoring = false;
-	m_bOverrideScissoringValue = FALSE;
-	m_uiSampleMask = 0xffffffff;
+	m_bOverrideScissoring		= false;
+	m_bOverrideScissoringValue	= FALSE;
+	m_uiSampleMask				= 0xFFFFFFFF;
 }
 
 void dxB2StateManager::UnmapConstants()
