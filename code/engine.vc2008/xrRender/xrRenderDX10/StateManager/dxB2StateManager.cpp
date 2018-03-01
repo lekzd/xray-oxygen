@@ -596,8 +596,11 @@ void dxB2StateManager::Apply()
 			m_pRState = RSManager.GetState(m_RDesc);
 			m_bRSChanged = false;
 		}
-
+#if !defined(USE_DX12)
 		HW.pContext->RSSetState(m_pRState);
+#else
+
+#endif
 		m_bRSNeedApply = false;
 	}
 
@@ -609,8 +612,13 @@ void dxB2StateManager::Apply()
 			m_pDepthStencilState = DSSManager.GetState(m_DSDesc);
 			m_bDSSChanged = false;
 		}
-		//TODO: pContext isn't exist(!)
+		
+#if !defined(USE_DX12)
 		HW.pContext->OMSetDepthStencilState(m_pDepthStencilState, m_uiStencilRef);
+#else
+
+#endif
+
 		m_bDSSNeedApply = false;
 	}
 
@@ -625,7 +633,11 @@ void dxB2StateManager::Apply()
 
 		static const FLOAT BlendFactor[4] = { 0.000f, 0.000f, 0.000f, 0.000f };
 
+#if !defined(USE_DX12)
 		HW.pContext->OMSetBlendState(m_pBlendState, BlendFactor, m_uiSampleMask);
+#else
+
+#endif
 		m_bBSNeedApply = false;
 	}
 }
@@ -838,8 +850,12 @@ void dxB2StateManager::OverrideScissoring(bool bOverride, BOOL bValue)
 				m_pRState->GetDesc(&tmpDesc);
 			else
 				dx10StateUtils::ResetDescription(tmpDesc);
-
+#if !defined(USE_DX12) 
 			m_RDesc.ScissorEnable = tmpDesc.ScissorEnable;
+#else
+
+#endif
+
 		}
 	}
 }

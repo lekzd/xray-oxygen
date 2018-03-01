@@ -54,6 +54,8 @@ void* _VertexStream::Lock	( u32 vl_Count, u32 Stride, u32& vOffset )
 {
 #ifdef USE_DX11
 	D3D11_MAPPED_SUBRESOURCE MappedSubRes;
+#elif USE_DX12
+
 #endif
 
 #ifdef DEBUG
