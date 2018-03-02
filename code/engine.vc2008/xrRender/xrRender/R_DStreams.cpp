@@ -134,10 +134,10 @@ void	_VertexStream::Unlock		( u32 Count, u32 Stride)
 
 	VERIFY				(pVB);
 
-#if defined(USE_DX11) || defined(USE_DX12)
-#if 0
+#if defined(USE_DX11)
 	HW.pContext->Unmap(pVB, 0);
-#endif
+#elif defined(USE_DX12)
+	pVB->Unmap();
 #elif defined(USE_DX10)
 	pVB->Unmap();
 #else	//	USE_DX10

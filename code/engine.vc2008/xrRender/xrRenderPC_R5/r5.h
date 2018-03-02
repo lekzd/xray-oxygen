@@ -193,6 +193,8 @@ public:
 	void							render_sun_filtered			();
 	void							render_menu					();
 	void							render_rain					();
+	ID3D12Resource* CRender::LoadTextureSynchronize(D3D12_RESOURCE_DIMENSION dimension, DWORD dwWidth, DWORD dwHeight, DXGI_FORMAT format, void* pData, DWORD DataSize, DWORD Pitch /*= 0*/);
+
 
 	void							render_sun_cascade			(u32 cascade_ind);
 	void							init_cacades				();

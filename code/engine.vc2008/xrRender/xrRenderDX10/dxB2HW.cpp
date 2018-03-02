@@ -334,12 +334,15 @@ void CHW::Reset(HWND hwnd)
     DXGI_FORMAT format = desc.Format;
 #endif
 
-	CHK_DX(m_pSwapChain->ResizeBuffers(
-		cd.BufferCount,
-		dwWidth,
-		dwHeight,
-        format,
-		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+	CHK_DX(
+		m_pSwapChain->
+		ResizeBuffers(
+			cd.BufferCount,
+			dwWidth,
+			dwHeight,
+			format,
+			DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH)
+	);
 
 	UpdateViews();
 	updateWindowProps(hwnd);
@@ -663,19 +666,31 @@ void CHW::UpdateViews()
     const DWORD testCBVCounts = FrameCount * 2; //#TODO I have no idea what I'm doing
     D3D12_DESCRIPTOR_HEAP_DESC CbvSrvHeapDesc = {};
     CbvSrvHeapDesc.NumDescriptors = nullSrvCount + testSRVCounts + testCBVCounts;
-    CbvSrvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-    CbvSrvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    CbvSrvHeapDesc.Type				=	D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    CbvSrvHeapDesc.Flags			=	D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
     CHK_DX(pDevice->CreateDescriptorHeap(&CbvSrvHeapDesc, IID_PPV_ARGS(&m_cbvSrvHeap)));
 
     m_rtvDescSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE RTVCPUHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart());
 
-    CHK_DX(m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBaseRT)));
+    CHK_DX(m_pSwapChain->GetBuffer	(
+		0,
+		IID_PPV_ARGS(
+			&pBaseRT)
+		)
+	);
     pDevice->CreateRenderTargetView(pBaseRT.Get(), nullptr, RTVCPUHandle);
     RTVCPUHandle.Offset(1, m_rtvDescSize);
 
-    CHK_DX(m_pSwapChain->GetBuffer(1, IID_PPV_ARGS(&pBaseRT2)));
+    CHK_DX(
+		m_pSwapChain->
+		GetBuffer(
+			1,
+			IID_PPV_ARGS(
+				&pBaseRT2)
+		)
+	);
     pDevice->CreateRenderTargetView(pBaseRT2.Get(), nullptr, RTVCPUHandle);
     RTVCPUHandle.Offset(1, m_rtvDescSize);
 

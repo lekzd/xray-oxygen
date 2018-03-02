@@ -57,9 +57,9 @@ public:
     ComPtr < ID3D12Device >					pDevice;
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
     ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
-    ComPtr < ID3D12GraphicsCommandList >    pCommandList; // Main frame Cmd list
-    ComPtr < ID3D12GraphicsCommandList >    pTextureLoadCmdList; // Command list for texture load
-    ComPtr < ID3D12GraphicsCommandList >    pMeshLoadCmdList; // Command list for model load
+    ComPtr < ID3D12GraphicsCommandList >    pCommandList;			// Main frame Cmd list
+    ComPtr < ID3D12GraphicsCommandList >    pTextureLoadCmdList;	// Command list for texture load
+    ComPtr < ID3D12GraphicsCommandList >    pMeshLoadCmdList;		// Command list for model load
     ComPtr < ID3D12DescriptorHeap >         m_rtvHeap;
     ComPtr < ID3D12DescriptorHeap >         m_dsvHeap;
     ComPtr < ID3D12DescriptorHeap >         m_samplerHeap;
