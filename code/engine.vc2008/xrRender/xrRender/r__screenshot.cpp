@@ -51,14 +51,16 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
 	ID3DResource		*pSrcTexture;
 #ifndef USE_DX12
     HW.pResource->GetResource(&pSrcTexture);
+#else
+	pSrcTexture = *HW.pResource.GetAddressOf();
 #endif
     VERIFY(pSrcTexture);
 
     // Save
-    switch (mode)
-    {
-    case IRender_interface::SM_FOR_GAMESAVE:
-    {
+	switch (mode)
+	{
+	case IRender_interface::SM_FOR_GAMESAVE:
+	{
 #ifdef USE_DX12
 		Blob			DDSImage;
 		Blob* pDDSImage = &DDSImage;
@@ -70,61 +72,64 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
 		Resize(RawGamesaveImg.GetImages(), 1, RawGamesaveImg.GetMetadata(), GAMESAVE_SIZE, GAMESAVE_SIZE, TEX_FILTER_DEFAULT, GamesaveImg);
 		SaveToDDSMemory(*GamesaveImg.GetImage(0, 0, 0), DDS_FLAGS_NONE, DDSImage);
 #elif USE_DX11
-        Blob			DDSImage;
-        Blob* pDDSImage = &DDSImage;
-        ScratchImage RawGamesaveImg;
-        ScratchImage GamesaveImg;
+		Blob			DDSImage;
+		Blob* pDDSImage = &DDSImage;
+		ScratchImage RawGamesaveImg;
+		ScratchImage GamesaveImg;
 
-        CaptureTexture(HW.pDevice, HW.pContext, pSrcTexture, RawGamesaveImg);
+		CaptureTexture(HW.pDevice, HW.pContext, pSrcTexture, RawGamesaveImg);
 
-        Resize(RawGamesaveImg.GetImages(), 1, RawGamesaveImg.GetMetadata(), GAMESAVE_SIZE, GAMESAVE_SIZE, TEX_FILTER_DEFAULT, GamesaveImg);
-        SaveToDDSMemory(*GamesaveImg.GetImage(0, 0, 0), DDS_FLAGS_NONE, DDSImage);
+		Resize(RawGamesaveImg.GetImages(), 1, RawGamesaveImg.GetMetadata(), GAMESAVE_SIZE, GAMESAVE_SIZE, TEX_FILTER_DEFAULT, GamesaveImg);
+		SaveToDDSMemory(*GamesaveImg.GetImage(0, 0, 0), DDS_FLAGS_NONE, DDSImage);
 #else
-        ID3DTexture2D		*pSrcSmallTexture;
-        ID3DBlob*		pDDSImage = 0;
+		ID3DTexture2D		*pSrcSmallTexture;
+		ID3DBlob*		pDDSImage = 0;
 
-        D3D_TEXTURE2D_DESC desc;
-        ZeroMemory(&desc, sizeof(desc));
-        desc.Width = GAMESAVE_SIZE;
-        desc.Height = GAMESAVE_SIZE;
-        desc.MipLevels = 1;
-        desc.ArraySize = 1;
-        desc.Format = DXGI_FORMAT_BC1_UNORM;
-        desc.SampleDesc.Count = 1;
-        desc.Usage = D3D_USAGE_DEFAULT;
-        desc.BindFlags = D3D10_BIND_SHADER_RESOURCE;
-        CHK_DX(HW.pDevice->CreateTexture2D(&desc, NULL, &pSrcSmallTexture));
-        CHK_DX(D3DX10LoadTextureFromTexture(pSrcTexture,
-            NULL, pSrcSmallTexture));
-        HRESULT hr = D3DX10SaveTextureToMemory(pSrcSmallTexture, D3DX10_IFF_DDS, &pDDSImage, 0);
+		D3D_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Width = GAMESAVE_SIZE;
+		desc.Height = GAMESAVE_SIZE;
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_BC1_UNORM;
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D_USAGE_DEFAULT;
+		desc.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+		CHK_DX(HW.pDevice->CreateTexture2D(&desc, NULL, &pSrcSmallTexture));
+		CHK_DX(D3DX10LoadTextureFromTexture(pSrcTexture,
+			NULL, pSrcSmallTexture));
+		HRESULT hr = D3DX10SaveTextureToMemory(pSrcSmallTexture, D3DX10_IFF_DDS, &pDDSImage, 0);
 #endif
 
-        // save (logical & physical)
-        IWriter*			fs = FS.w_open(name);
-        if (fs)
-        {
+		// save (logical & physical)
+		IWriter*			fs = FS.w_open(name);
+		if (fs)
+		{
 
-            fs->w(pDDSImage->GetBufferPointer(), (u32)pDDSImage->GetBufferSize());
-            FS.w_close(fs);
-        }
-        _RELEASE(pDDSImage);
+			fs->w(pDDSImage->GetBufferPointer(), (u32)pDDSImage->GetBufferSize());
+			FS.w_close(fs);
+		}
+		_RELEASE(pDDSImage);
 
-        // cleanup
+		// cleanup
 #ifdef USE_DX10
-        _RELEASE(pSrcSmallTexture);
+		_RELEASE(pSrcSmallTexture);
 #endif
-    }
-    break;
-    case IRender_interface::SM_FOR_MPSENDING:
-    {
-#ifdef USE_DX11
+	}
+	break;
+	case IRender_interface::SM_FOR_MPSENDING:
+	{
+#if defined(USE_DX11) || defined(USE_DX12)
         Blob			DDSImage;
         Blob* pDDSImage = &DDSImage;
         ScratchImage RawGamesaveImg;
         ScratchImage GamesaveImg;
 
+#ifdef USE_DX12
+		CaptureTexture(*HW.pCommandQueue.GetAddressOf(), *HW.pResource.GetAddressOf(), pSrcTexture, RawGamesaveImg);
+#else
         CaptureTexture(HW.pDevice, HW.pContext, pSrcTexture, RawGamesaveImg);
-
+#endif
         Resize(RawGamesaveImg.GetImages(), 1, RawGamesaveImg.GetMetadata(), SM_FOR_SEND_HEIGHT, SM_FOR_SEND_HEIGHT, TEX_FILTER_DEFAULT, GamesaveImg);
         SaveToDDSMemory(*GamesaveImg.GetImage(0, 0, 0), DDS_FLAGS_NONE, DDSImage);
 #else
@@ -173,14 +178,18 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
         string64			t_stemp;
         string_path			buf;
         xr_sprintf(buf, sizeof(buf), "ss_%s_%s_(%s).png", Core.UserName, timestamp(t_stemp), (g_pGameLevel) ? g_pGameLevel->name().c_str() : "mainmenu");
-        ///#TODO Save to different format, rather then TGA 
+        //#TODO Save to different format, rather then TGA 
 
-#ifdef USE_DX11
+#if defined(USE_DX11) || defined(USE_DX12)
         Blob			DDSImage;
         Blob* saved = &DDSImage;
         ScratchImage RawGamesaveImg;
 
+#ifdef USE_DX12
+		CaptureTexture(*HW.pCommandQueue.GetAddressOf(), *HW.pResource.GetAddressOf(), pSrcTexture, RawGamesaveImg);
+#else
         CaptureTexture(HW.pDevice, HW.pContext, pSrcTexture, RawGamesaveImg);
+#endif
         SaveToWICMemory(*RawGamesaveImg.GetImages(), WIC_FLAGS_NONE, GetWICCodec(WIC_CODEC_PNG), DDSImage);
 #else
         ID3DBlob			*saved = 0;
@@ -392,7 +401,7 @@ void CRender::ScreenshotAsyncBegin()
 	m_bMakeAsyncSS = true;
 }
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 
 void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 {
@@ -403,7 +412,9 @@ void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 
 	D3D_MAPPED_TEXTURE2D	MappedData;
 
-#ifdef USE_DX11
+#ifdef USE_DX12
+
+#elif USE_DX11
 	HW.pContext->Map(pTex, 0, D3D_MAP_READ, 0, &MappedData);
 #else
 	pTex->Map(0, D3D_MAP_READ, 0, &MappedData);
