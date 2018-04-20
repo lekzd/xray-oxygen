@@ -44,13 +44,14 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 #define SM_FOR_SEND_WIDTH 640
 #define SM_FOR_SEND_HEIGHT 480
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 using namespace DirectX;
 void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* memory_writer)
 {
-    ID3DResource		*pSrcTexture;
-    HW.pBaseRT->GetResource(&pSrcTexture);
-
+	ID3DResource		*pSrcTexture;
+#ifndef USE_DX12
+    HW.pResource->GetResource(&pSrcTexture);
+#endif
     VERIFY(pSrcTexture);
 
     // Save
@@ -58,7 +59,17 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
     {
     case IRender_interface::SM_FOR_GAMESAVE:
     {
-#ifdef USE_DX11
+#ifdef USE_DX12
+		Blob			DDSImage;
+		Blob* pDDSImage = &DDSImage;
+		ScratchImage RawGamesaveImg;
+		ScratchImage GamesaveImg;
+
+		CaptureTexture(*HW.pCommandQueue.GetAddressOf(), *HW.pResource.GetAddressOf(), pSrcTexture, RawGamesaveImg);
+
+		Resize(RawGamesaveImg.GetImages(), 1, RawGamesaveImg.GetMetadata(), GAMESAVE_SIZE, GAMESAVE_SIZE, TEX_FILTER_DEFAULT, GamesaveImg);
+		SaveToDDSMemory(*GamesaveImg.GetImage(0, 0, 0), DDS_FLAGS_NONE, DDSImage);
+#elif USE_DX11
         Blob			DDSImage;
         Blob* pDDSImage = &DDSImage;
         ScratchImage RawGamesaveImg;
@@ -185,35 +196,6 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
     case IRender_interface::SM_FOR_CUBEMAP:
     {
         VERIFY(!"CRender::Screenshot. This screenshot type is not supported for DX10.");
-        /*
-        string64			t_stemp;
-        string_path			buf;
-        VERIFY				(name);
-        strconcat			(sizeof(buf),buf,"ss_",Core.UserName,"_",timestamp(t_stemp),"_#",name);
-        xr_strcat				(buf,".tga");
-        IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
-        TGAdesc				p;
-        p.format			= IMG_24B;
-
-        //	TODO: DX10: This is totally incorrect but mimics
-        //	original behaviour. Fix later.
-        hr					= pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK);
-        if(hr!=D3D_OK)		return;
-        hr					= pFB->UnlockRect();
-        if(hr!=D3D_OK)		goto _end_;
-
-        // save
-        u32* data			= (u32*)xr_malloc(RenderDevice->dwHeight*RenderDevice->dwHeight*4);
-        imf_Process			(data,RenderDevice->dwHeight,RenderDevice->dwHeight,(u32*)D.pBits,RenderDevice->dwWidth,RenderDevice->dwHeight,imf_lanczos3);
-        p.scanlenght		= RenderDevice->dwHeight*4;
-        p.width				= RenderDevice->dwHeight;
-        p.height			= RenderDevice->dwHeight;
-        p.data				= data;
-        p.maketga			(*fs);
-        xr_free				(data);
-
-        FS.w_close			(fs);
-        */
     }
     break;
     }
