@@ -1,5 +1,4 @@
-#ifndef DISABLING_PARAMS_H
-#define DISABLING_PARAMS_H
+#pragma once
 struct	SOneDDOParams
 {
 	void Mul(float v);
@@ -24,4 +23,3 @@ struct SAllDDWParams
 
 extern SAllDDWParams	worldDisablingParams;
 
-#endif

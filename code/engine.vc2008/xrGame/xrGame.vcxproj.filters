@@ -2089,6 +2089,9 @@
     <Filter Include="ScriptEngine\ScriptThread\ScriptStackTracker">
       <UniqueIdentifier>{81427c0a-554c-422d-b537-38f170281e7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Common\Physics">
+      <UniqueIdentifier>{c13458e2-b642-4867-b82d-4d285ac6ec0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mt_config.h">

@@ -34,37 +34,29 @@ public:
 	u64 m_creation_step;
 	bool b_exist;
 protected:
-
-	////////////////////////// dynamic
-
+	// dynamic
 	CPHInterpolation m_body_interpolation;
 	dBodyID m_body;
 	IPhysicsShellHolder* m_phys_ref_object;
 
 	dReal m_mass;
 	bool was_enabled_before_freeze;
-
-	/////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////
+	
 	u16* p_lastMaterialIDX;
 	u16 lastMaterialIDX;
 	u16 injuriousMaterialIDX;
-	///////////////////////////////////////////////////////////////////////////
+	
 	dVector3 m_safe_velocity;
 	dVector3 m_safe_position;
 	dReal	 m_mean_y;
-public:
-
 private:
-
 	virtual		IPhysicsShellHolder	*ref_object() { return PhysicsRefObject(); }
 
 protected:
 	ERestrictionType		m_new_restriction_type;
 	ERestrictionType		m_restriction_type;
+	
 	bool b_actor_movable;
-
 	bool b_in_touch_resrtrictor;
 	float m_current_object_radius;
 public:
@@ -152,40 +144,43 @@ public:
 	virtual IPhysicsShellHolder* PhysicsRefObject() { return m_phys_ref_object; }
 
 	//AICharacter
-	virtual void GetDesiredPosition(Fvector& /**dpos/**/) {}
-	virtual void SetDesiredPosition(const Fvector& /**pos/**/) {}
-	virtual void BringToDesired(float /**time/**/, float /**velocity/**/, float force = 1.f) {}
-	virtual bool TryPosition(Fvector /**pos/**/, bool) { return false; }
-	virtual bool TouchBorder() { return false; }
-	virtual void getForce(Fvector& force);
-	virtual void setForce(const	Fvector& force);
-	virtual float FootRadius() = 0;
-	virtual void get_State(SPHNetState&	state);
-	virtual void set_State(const	SPHNetState&	state);
-	virtual void cv2obj_Xfrom(const Fquaternion& q, const Fvector& pos, Fmatrix& xform) { ; }
-	virtual void cv2bone_Xfrom(const Fquaternion& q, const Fvector& pos, Fmatrix& xform) { ; }
-	virtual	const Fvector&  ControlAccel()const = 0;
-	virtual float &FrictionFactor() = 0;
-	virtual void CutVelocity(float l_limit, float a_limit);
-	virtual u16 get_elements_number() { return 1; };
-	virtual CPHSynchronize	*get_element_sync(u16 element) { VERIFY(element == 0); return static_cast<CPHSynchronize*>(this); };
-	virtual CElevatorState	*ElevatorState() = 0;
+	virtual void 			GetDesiredPosition(Fvector& /**dpos/**/) {}
+	virtual void 			SetDesiredPosition(const Fvector& /**pos/**/) {}
+	virtual void 			BringToDesired(float /**time/**/, float /**velocity/**/, float force = 1.f) {}
+	virtual bool 			TryPosition(Fvector /**pos/**/, bool) { return false; }
+	virtual bool 			TouchBorder() { return false; }
+	virtual void 			getForce(Fvector& force);
+	virtual void 			setForce(const	Fvector& force);
+	virtual float 			FootRadius() = 0;
+	virtual void 			get_State(SPHNetState&	state);
+	virtual void 			set_State(const	SPHNetState&	state);
+	virtual void 			cv2obj_Xfrom(const Fquaternion& q, const Fvector& pos, Fmatrix& xform) { ; }
+	virtual void 			cv2bone_Xfrom(const Fquaternion& q, const Fvector& pos, Fmatrix& xform) { ; }
+	virtual	const 			Fvector&  ControlAccel()const = 0;
+	virtual float 			&FrictionFactor() = 0;
+	virtual void 			CutVelocity(float l_limit, float a_limit);
+	virtual u16 			get_elements_number() { return 1; };
+	virtual CPHSynchronize*	get_element_sync(u16 element) { VERIFY(element == 0); return static_cast<CPHSynchronize*>(this); };
+	virtual CElevatorState*	ElevatorState() = 0;
+	
 public:
 	virtual void Freeze() = 0;//{ Freeze();		}
 	virtual void UnFreeze() = 0;//{ UnFreeze();	}
 	virtual void step(float dt) = 0;//{ step( dt ); }
 	virtual void collision_disable() = 0;//{ collision_disable(); }
 	virtual void collision_enable() = 0;//{ collision_enable(); }
+	
 protected:
-	virtual	const	Fmatrix			&XFORM() const;
-	virtual void get_LinearVel(Fvector& velocity) const;
-	virtual void get_AngularVel(Fvector& velocity) const;
-	virtual u16 numberOfGeoms() const { return 0; }
-	virtual	const	IPhysicsGeometry*geometry(u16 i) const { return 0; }
-	virtual	const	Fvector &mass_Center() const;
+virtual	const	Fmatrix			&XFORM				()							const			;
+virtual			void			get_LinearVel		( Fvector& velocity )		const			;
+virtual			void			get_AngularVel		( Fvector& velocity )		const			;
+virtual			u16				numberOfGeoms		()							const			{ return 0; }
+virtual	const	IPhysicsGeometry*geometry			( u16 i )					const			{ return 0; }
+virtual	const	Fvector			&mass_Center		()							const			;
 
-	virtual void get_xform(Fmatrix& form) const { form.set(XFORM()); }
-	virtual bool collide_fluids() const { return true; }
+virtual			void			get_xform			(Fmatrix& form )			const			{ form.set( XFORM()); }
+virtual			bool			collide_fluids		() const									{ return true ; }
+
 public:
 	virtual void update_last_material() = 0;
 	virtual void NetRelcase(IPhysicsShellHolder* O) {};

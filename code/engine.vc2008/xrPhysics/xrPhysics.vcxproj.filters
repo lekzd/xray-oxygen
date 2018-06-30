@@ -369,7 +369,16 @@
     <ClCompile Include="PhysicsGamePars.cpp">
       <Filter>Client</Filter>
     </ClCompile>
-    <ClCompile Include="ActorCameraCollision.cpp" />
+    <ClCompile Include="ActorCameraCollision.cpp"/>
+    <ClCompile Include="PhysX\PXWorld.cpp">
+      <Filter>physics\Base\Objects\World</Filter>
+    </ClCompile>
+    <ClCompile Include="PXElement.cpp">
+      <Filter>physics\Base\Objects\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\PhysX_helpers.cpp">
+      <Filter>physics\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -694,5 +703,14 @@
       <Filter>Client</Filter>
     </ClInclude>
     <ClInclude Include="ActorCameraCollision.h" />
+    <ClInclude Include="PhysX\PXWorld.h">
+      <Filter>physics\Base\Objects\World</Filter>
+    </ClInclude>
+    <ClInclude Include="PXElement.h">
+      <Filter>physics\Base\Objects\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\PhysX_helpers.h">
+      <Filter>physics\Base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

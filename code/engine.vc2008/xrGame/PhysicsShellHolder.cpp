@@ -21,6 +21,7 @@
 #include "phcollisiondamagereceiver.h"
 #include "../xrEngine/iphysicsshell.h"
 #include "../xrengine/objectdump.h"
+#include "physics_game.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -111,8 +112,10 @@ BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 
 void	CPhysicsShellHolder::PHHit( SHit &H )
 {
-	if ( H.phys_impulse() >0 )
-		if(m_pPhysicsShell) m_pPhysicsShell->applyHit(H.bone_space_position(),H.direction(),H.phys_impulse(),H.bone(),H.type());
+    if (H.phys_impulse() > 0 && m_pPhysicsShell != nullptr)
+    {
+        ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type());
+    }
 }
 
 //void	CPhysicsShellHolder::Hit(float P, Fvector &dir, CObject* who, s16 element,

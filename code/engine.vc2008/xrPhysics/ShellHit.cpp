@@ -10,32 +10,14 @@
 #include "PHElement.h"
 #include "PHShell.h"
 
-void CPHShell::applyHit(const Fvector& pos, const Fvector& dir, float val, const u16 id, ALife::EHitType hit_type)
+void CPHShell::ExplosionHit(const Fvector& pos, const Fvector& dir, float val,const u16 id)
 {
-	if (id == u16(-1))
-		return;//
-
-#pragma	todo("Kosya to kosya:this code shold treat all hit types")
-	if (!m_pKinematics)
-	{
-		applyImpulseTrace(pos, dir, val);
-		return;
-	}
-
-	switch (hit_type)
-	{
-	case ALife::eHitTypeExplosion:
-		ExplosionHit(pos, dir, val, id);
-		break;
-	default: applyImpulseTrace(pos, dir, val, id);
-	}
-}
-
-void CPHShell::ExplosionHit(const Fvector& pos, const Fvector& dir, float val, const u16 id)
-{
-	if (!isActive())
-		return;
-
+    if (m_pKinematics == nullptr)
+    {
+        applyImpulseTrace(pos, dir, val);
+        return;
+    }
+	if(!isActive()) return;
 	EnableObject(0);
 	//Fvector local_pos;local_pos.set(0.f,0.f,0.f);
 	auto i = elements.begin(), e = elements.end();

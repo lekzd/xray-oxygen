@@ -43,24 +43,23 @@ protected:
 	dSpaceID m_space;
 
 public:
-	Fmatrix m_object_in_root;
-	CPHShell();
-	virtual ~CPHShell();
-	virtual void applyImpulseTrace(const Fvector& pos, const Fvector& dir, float val, const u16 id);
-	virtual void applyHit(const Fvector& pos, const Fvector& dir, float val, const u16 id, ALife::EHitType hit_type);
+	Fmatrix					m_object_in_root;
+	CPHShell								();							
+	virtual ~CPHShell						();
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
 
-	static void  __stdcall	BonesCallback(CBoneInstance* B);
-	static void  __stdcall	StataticRootBonesCallBack(CBoneInstance* B);
-	virtual	BoneCallbackFun* GetBonesCallback() { return BonesCallback; }
-	virtual BoneCallbackFun* GetStaticObjectBonesCallback() { VERIFY(false); return StataticRootBonesCallBack; }
-	virtual	void add_Element(IPhysicsElementEx* E);
-	virtual	void ToAnimBonesPositions(motion_history_state history_state);
-	virtual bool AnimToVelocityState(float dt, float l_limit, float a_limit);
-	virtual void SetBonesCallbacksOverwrite(bool v);
-	void SetPhObjectInElements();
-	virtual	void EnableObject(CPHObject* obj);
-	virtual	void DisableObject();
-	virtual void SetAirResistance(dReal linear = default_k_l, dReal angular = default_k_w)
+	static void 	_BCL	BonesCallback				(CBoneInstance* B);
+	static void 	_BCL	StataticRootBonesCallBack	(CBoneInstance* B);
+	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
+	virtual BoneCallbackFun* GetStaticObjectBonesCallback()	{ VERIFY( false ); return StataticRootBonesCallBack; }
+	virtual	void			add_Element				(IPhysicsElementEx* E);
+	virtual	void			ToAnimBonesPositions	( motion_history_state history_state );
+	virtual bool			AnimToVelocityState		(float dt, float l_limit, float a_limit );
+	virtual void			SetBonesCallbacksOverwrite(bool v);
+	void					SetPhObjectInElements	();
+	virtual	void			EnableObject			(CPHObject* obj);
+	virtual	void			DisableObject			();
+	virtual void			SetAirResistance		(dReal linear=default_k_l, dReal angular=default_k_w)
 	{
 		xr_vector<CPHElement*>::iterator i;
 		for (i = elements.begin(); elements.end() != i; ++i)

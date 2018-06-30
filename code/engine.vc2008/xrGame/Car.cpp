@@ -26,6 +26,8 @@
 #include "../xrphysics/IPHWorld.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
+#include "physics_game.h"
+
 BONE_P_MAP CCar::bone_map = BONE_P_MAP();
 
 CCar::CCar()
@@ -531,13 +533,13 @@ void CCar::PHHit(SHit &H)
 		float mag = vimpulse.magnitude();
 		if (!fis_zero(mag))
 		{
-			vimpulse.mul(1.f / mag);
-			m_pPhysicsShell->applyHit(H.bone_space_position(), vimpulse, mag, H.bone(), H.type());
+			vimpulse.mul(1.f/mag);
+            ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), vimpulse, mag, H.bone(), H.type());
 		}
 	}
 	else
 	{
-		m_pPhysicsShell->applyHit(H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type());
+        ShellApplyHit(m_pPhysicsShell, H.bone_space_position(), H.direction(), H.phys_impulse(), H.bone(), H.type());
 	}
 }
 

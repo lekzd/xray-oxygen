@@ -1620,12 +1620,13 @@ CPHSimpleCharacter::SCollisionDamageInfo::SCollisionDamageInfo()
 {
 	Construct();
 }
+
 void CPHSimpleCharacter::SCollisionDamageInfo::Construct()
 {
 	m_contact_velocity = 0.f;
 	SCollisionDamageInfo::Reinit();
-	m_hit_type = ALife::eHitTypeStrike;
 }
+
 float CPHSimpleCharacter::SCollisionDamageInfo::ContactVelocity()const
 {
 	dReal ret = m_contact_velocity;
