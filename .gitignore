@@ -27,3 +27,15 @@ librariesx64/
 *.db
 code/engine.vc2008/.vs/
 code/engine.vc2008/xrScripts/BuildVm.exe
+*.aps
+*.resources
+*.cache
+*.txt
+*.CopyComplete
+*.db-wal
+*.db-shm
+*.ide
+*.ide-shm
+*.ide-wal
+*.lock
+code/.vs/xrEditors/DesignTimeBuild/.dtbcache
