@@ -1,4 +1,4 @@
-# X-Ray Oxygen 1.7
+# X-Ray Oxygen 1.7 PhysX Edition
 
 ![Logo](https://pp.userapi.com/c830608/v830608826/fd611/DtQWCVM4BgU.jpg)
 [![Build status](https://ci.appveyor.com/api/projects/status/dw0x0lu5vkge4pa5/branch/master?svg=true)](https://ci.appveyor.com/project/ForserX/cpuid/branch/master) X-Ray 1.7f project [an offshoot of the Im-Dex](https://github.com/Im-dex/xray-162).
