@@ -292,6 +292,8 @@
     <ClInclude Include="ClS\NET_PlayersMonitor.h" />
     <ClInclude Include="ClS\NET_Server.h" />
     <ClInclude Include="ClS\NET_Shared.h" />
+    <ClInclude Include="FontExtensions.h" />
+    <ClInclude Include="FontSystem.h" />
     <ClInclude Include="_d3d_extensions.h" />
     <ClInclude Include="CopyProtection.h" />
     <ClInclude Include="dedicated_server_only.h" />
@@ -419,6 +421,7 @@
     <ClCompile Include="CPU\xrSkin2W.cpp" />
     <ClCompile Include="CPU\xrSkin2W_thread.cpp" />
     <ClCompile Include="defines.cpp" />
+    <ClCompile Include="FontSystem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

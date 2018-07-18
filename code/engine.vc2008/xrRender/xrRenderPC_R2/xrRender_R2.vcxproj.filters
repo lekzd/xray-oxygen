@@ -160,6 +160,9 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{f352fe9b-c229-4b4a-9697-12d483b97f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font Handler">
+      <UniqueIdentifier>{5e652478-56bd-4086-a7cf-68a41135c3e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cl_intersect.h">
@@ -650,6 +653,9 @@
     </ClInclude>
     <ClInclude Include="blender_sunshafts.h">
       <Filter>Shading templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\FontData.h">
+      <Filter>Font Handler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1166,6 +1172,9 @@
     </ClCompile>
     <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp">
       <Filter>Core_Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\FontData.cpp">
+      <Filter>Font Handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

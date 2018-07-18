@@ -232,6 +232,9 @@
     <Filter Include="Game API\General">
       <UniqueIdentifier>{a111e29f-5a82-4e9d-90e3-d2f04b02d807}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interfaces\Render\Font output\Oxy">
+      <UniqueIdentifier>{0998c02d-0d41-44b9-9c99-7c81b0293122}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="_d3d_extensions.h">
@@ -594,6 +597,12 @@
     <ClInclude Include="ClS\NET_Client.h">
       <Filter>NetServer</Filter>
     </ClInclude>
+    <ClInclude Include="FontSystem.h">
+      <Filter>Interfaces\Render\Font output\Oxy</Filter>
+    </ClInclude>
+    <ClInclude Include="FontExtensions.h">
+      <Filter>Interfaces\Render\Font output\Oxy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="defines.cpp">
@@ -928,6 +937,9 @@
     </ClCompile>
     <ClCompile Include="CPU\PLC.cpp">
       <Filter>CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="FontSystem.cpp">
+      <Filter>Interfaces\Render\Font output\Oxy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

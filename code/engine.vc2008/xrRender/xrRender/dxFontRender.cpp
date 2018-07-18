@@ -29,7 +29,8 @@ void dxFontRender::OnRender(CGameFont &owner)
 	if (pShader)
 		RCache.set_Shader(pShader);
 
-	if (!(owner.uFlags&CGameFont::fsValid))
+
+	if (!(owner.uFlags & CGameFont::fsValid))
 	{
 		CTexture* T = RCache.get_ActiveTexture(0);
 		owner.vTS.set((int)T->get_Width(), (int)T->get_Height());
