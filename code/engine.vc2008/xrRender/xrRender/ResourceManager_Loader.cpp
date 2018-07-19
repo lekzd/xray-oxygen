@@ -87,6 +87,7 @@ void	CResourceManager::OnDeviceCreate(IReader* F)
 	*/
 
 	// Load blenders
+
 	fs = F->open_chunk(2);
 	if (fs)
 	{
@@ -104,20 +105,23 @@ void	CResourceManager::OnDeviceCreate(IReader* F)
 				chunk_id += 1;
 				continue;
 			}
-			IBlender*		B = IBlender::Create(desc.CLS);
-			if (!B)
+
+			// Здесь только возвращается default класс
+			IBlender* BlenderObject = IBlender::Create(desc.CLS);
+
+			if (!BlenderObject)
 				Msg("! Renderer doesn't support blender '%s'", desc.cName);
 			else
 			{
-				if (B->getDescription().version != desc.version)
+				if (BlenderObject->getDescription().version != desc.version)
 				{
 					Msg("! Version conflict in shader '%s'", desc.cName);
 				}
 
 				chunk->seek(0);
-				B->Load(*chunk, desc.version);
+				BlenderObject->Load(*chunk, desc.version);
 
-				auto I = m_blenders.insert(std::make_pair(xr_strdup(desc.cName), B));
+				auto I = m_blenders.insert(std::make_pair(xr_strdup(desc.cName), BlenderObject));
 				R_ASSERT2(I.second, "shader.xr - found duplicate name!!!");
 			}
 			chunk->close();

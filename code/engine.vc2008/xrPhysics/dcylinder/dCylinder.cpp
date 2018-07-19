@@ -54,7 +54,7 @@ inline bool circleIntersection(const dReal* n1, const dReal* cp1, dReal r1, cons
 	B_A = B / A;
 	B_A_2 = B_A * B_A;
 	D = B_A_2 - C;
-	if (D < 0.f) '
+	if (D < 0.f)
 	{	//somewhat strange solution
 				//- it is needed to set some
 				//axis to sepparate cylinders
