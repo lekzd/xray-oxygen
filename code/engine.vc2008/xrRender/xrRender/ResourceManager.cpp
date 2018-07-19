@@ -44,7 +44,7 @@ IBlender* CResourceManager::_GetBlender(LPCSTR Name)
 	{
 		Msg("DX10: Shader '%s' not found in library.", Name);
 		return 0;
-}
+	}
 #endif
 	if (I == m_blenders.end()) { Debug.fatal(DEBUG_INFO, "Shader '%s' not found in library.", Name); return 0; }
 	else					return I->second;
@@ -259,8 +259,8 @@ Shader*		CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_c
 		}
 	}
 #else	//	USE_DX10
-	if (_lua_HasShader(s_shader)) return	_lua_Create(s_shader, s_textures);
-	else return	_cpp_Create(s_shader, s_textures, s_constants, s_matrices);
+	if (_lua_HasShader(s_shader)) return	_lua_Create(s_shader, s_textures); // Lord notices: здесь мы загружаем только "скриптовые" шейдеры (.s)
+	else return	_cpp_Create(s_shader, s_textures, s_constants, s_matrices); // Всё остальное прочее
 #endif	//	USE_DX10
 }
 
