@@ -45,8 +45,8 @@ ICF void CBackend::set_PS(ID3DPixelShader* _ps, LPCSTR _n)
 {
 	if (ps != _ps)
 	{
-		Msg("PGO:Pixelshader:%x", _ps);
-		Msg("PGO:PSshaderName:%s", _n);
+		//		Msg("PGO:Pixelshader:%x", _ps);
+		///		Msg("PGO:PSshaderName:%s", _n);
 		stat.ps++;
 		ps = _ps;
 		CHK_DX(HW.pDevice->SetPixelShader(ps));

@@ -8,6 +8,7 @@ void	CResourceManager::OnDeviceDestroy(BOOL)
 {
 	if (RDEVICE.b_is_Ready)				return;
 	m_textures_description.UnLoad();
+	/*
 
 	// Matrices
 	for (map_Matrix::iterator m = m_matrices.begin(); m != m_matrices.end(); m++) {
@@ -23,6 +24,7 @@ void	CResourceManager::OnDeviceDestroy(BOOL)
 		xr_delete(c->second);
 	}
 	m_constants.clear();
+	*/
 
 	// Release blenders
 	for (auto b = m_blenders.begin(); b != m_blenders.end(); b++)
@@ -72,6 +74,7 @@ void	CResourceManager::OnDeviceCreate(IReader* F)
 	*/
 
 	// Load matrices
+	/*
 	fs = F->open_chunk(1);
 	if (fs) {
 		while (!fs->eof()) {
@@ -81,6 +84,7 @@ void	CResourceManager::OnDeviceCreate(IReader* F)
 		}
 		fs->close();
 	}
+	*/
 
 	// Load blenders
 	fs = F->open_chunk(2);
