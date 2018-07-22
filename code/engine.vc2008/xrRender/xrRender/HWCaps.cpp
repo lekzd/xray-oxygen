@@ -240,32 +240,32 @@ void CHWCaps::Update()
 	raster.dwInstructions		= 256;
 
 	// ***************** Info
-	Msg							("* GPU shading: vs(%x/%d.%d/%d), ps(%x/%d.%d/%d)",
-		0,	geometry_major, geometry_minor, CAP_VERSION(geometry_major,	geometry_minor),
-		0,	raster_major,	raster_minor,	CAP_VERSION(raster_major,	raster_minor)
-		);
+	Msg("* GPU shading: vs(%x/%d.%d/%d), ps(%x/%d.%d/%d)",
+		0, geometry_major, geometry_minor, CAP_VERSION(geometry_major, geometry_minor),
+		0, raster_major, raster_minor, CAP_VERSION(raster_major, raster_minor)
+	);
 
 	// *******1********** Vertex cache
 	//	TODO: DX10: Find a way to detect cache size
 	geometry.dwVertexCache = 24;
-	Msg					("* GPU vertex cache: %s, %d","unrecognized",u32(geometry.dwVertexCache));
+	Msg("* GPU vertex cache: %s, %d", "unrecognized", u32(geometry.dwVertexCache));
 
 	// *******1********** Compatibility : vertex shader
-	if (0==raster_major)		geometry_major=0;		// Disable VS if no PS
+	if (0 == raster_major)		geometry_major = 0;		// Disable VS if no PS
 
-	//
-	bTableFog			=	FALSE;	//BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
+														//
+	bTableFog = FALSE;	//BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
 
-	// Detect if stencil available
-	bStencil			=	TRUE;
+						// Detect if stencil available
+	bStencil = TRUE;
 
 	// Scissoring
-	bScissor	= TRUE;
+	bScissor = TRUE;
 
 	// Stencil relative caps
-	soInc=D3DSTENCILOP_INCRSAT;
-	soDec=D3DSTENCILOP_DECRSAT;
-	dwMaxStencilValue=(1<<8)-1;
+	soInc = D3DSTENCILOP_INCRSAT;
+	soDec = D3DSTENCILOP_DECRSAT;
+	dwMaxStencilValue = (1 << 8) - 1;
 
 	// DEV INFO
 

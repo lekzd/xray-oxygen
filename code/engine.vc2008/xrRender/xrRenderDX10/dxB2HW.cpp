@@ -173,7 +173,11 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 										  D3D11_SDK_VERSION, &sd, &m_pSwapChain, &pDevice, &FeatureLevel, &pContext);
 #elif defined (USE_DX12)
 
-    CHK_DX(D3D12CreateDevice(m_pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&pDevice)));
+    CHK_DX(D3D12CreateDevice(
+		m_pAdapter.Get(),
+		D3D_FEATURE_LEVEL_11_0,
+		IID_PPV_ARGS(&pDevice))
+	);
 
     // Describe and create the command queue.
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};

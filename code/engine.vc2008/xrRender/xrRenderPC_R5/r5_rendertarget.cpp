@@ -19,7 +19,7 @@
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
-#include <D3DX10Tex.h>
+//#include <D3DX10Tex.h>
 
 void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, ID3DDepthStencilView* zb)
 {
@@ -31,19 +31,19 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	}
 	else
 	{
-		D3D_DEPTH_STENCIL_VIEW_DESC	desc;
-		zb->GetDesc(&desc);
+		//D3D_DEPTH_STENCIL_VIEW_DESC	desc;
+		DXGI_ADAPTER_DESC1 desc;
+		HW.m_pAdapter->GetDesc1(&desc);
 
-      if( !RImplementation.o.dx10_msaa )
-         VERIFY(desc.ViewDimension==D3D_DSV_DIMENSION_TEXTURE2D);
+      //if( !RImplementation.o.dx10_msaa )
+      //   VERIFY(desc.ViewDimension==D3D_DSV_DIMENSION_TEXTURE2D);
 
 		ID3DResource *pRes;
-
 		zb->GetResource( &pRes);
 
-		ID3DTexture2D *pTex = (ID3DTexture2D *)pRes;
+		D3D_RESOURCE_DESC *pTex = (D3D_RESOURCE_DESC*)pRes;
 
-		D3D_TEXTURE2D_DESC	TexDesc;
+		D3D_RESOURCE_DESC TexDesc;
 
 		pTex->GetDesc(&TexDesc);
 
@@ -623,8 +623,10 @@ CRenderTarget::CRenderTarget		()
 			//u_setrt						(rt_LUM_pool[it],	0,	0,	0			);
 			//CHK_DX						(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0x7f7f7f7f,	1.0f, 0L));
 			FLOAT ColorRGBA[4] = { 127.0f/255.0f, 127.0f/255.0f, 127.0f/255.0f, 127.0f/255.0f};
-			HW.pContext->ClearRenderTargetView(rt_LUM_pool[it]->pRT, ColorRGBA);
+			//HW.pContext->ClearRenderTargetView(rt_LUM_pool[it]->pRT, ColorRGBA);
+			HW.pCommandList->ClearRenderTargetView(rt_LUM_pool[it]->pRT, ColorRGBA);
 		}
+		//#VERTVER to #GIPERION: fix render target
 		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	}
 
@@ -671,7 +673,7 @@ CRenderTarget::CRenderTarget		()
 	if( RImplementation.o.ssao_hdao && RImplementation.o.ssao_ultra)
 	{
 		u32		w = Device.dwWidth, h = Device.dwHeight;
-		rt_ssao_temp.create			(r2_RT_ssao_temp,  w, h, D3DFMT_R16F, 1, true);
+		rt_ssao_temp.create			(r2_RT_ssao_temp,  w, h, D3DFMT_R16F, 1);
 		s_hdao_cs.create			(b_hdao_cs, "r2\\ssao");
 		if( RImplementation.o.dx10_msaa )
 		{
@@ -710,20 +712,35 @@ CRenderTarget::CRenderTarget		()
 	{
 		// Testure for async sreenshots
 		{
-			D3D_TEXTURE2D_DESC	desc;
+			/*D3D_TEXTURE2D_DESC	desc;
 			desc.Width = Device.dwWidth;
 			desc.Height = Device.dwHeight;
 			desc.MipLevels = 1;
 			desc.ArraySize = 1;
 			desc.SampleDesc.Count = 1;
 			desc.SampleDesc.Quality = 0;
-			desc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
 			desc.Usage = D3D_USAGE_STAGING;
 			desc.BindFlags = 0;
 			desc.CPUAccessFlags = D3D_CPU_ACCESS_READ;
-			desc.MiscFlags = 0;
+			desc.MiscFlags = 0;*/;
 
-			R_CHK( HW.pDevice->CreateTexture2D(&desc, 0, &t_ss_async) );
+			//#NOTE: texture desc now is resource desc
+			D3D_RESOURCE_DESC textureDesc = {};
+			textureDesc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
+			textureDesc.Width = Device.dwWidth;
+			textureDesc.Height = Device.dwHeight;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.SampleDesc.Quality = 0;
+			textureDesc.MipLevels = 1;
+
+			_GUID its_must_be_render_target;
+
+			HW.pDevice->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+				D3D12_HEAP_FLAG_NONE, &textureDesc, D3D12_RESOURCE_STATE_COPY_DEST, NULL, its_must_be_render_target, NULL);
+
+
+
+			//R_CHK( HW.pDevice->CreateTexture2D(&desc, 0, &t_ss_async) );
 		}
 		// Build material(s)
 		{
@@ -737,7 +754,7 @@ CRenderTarget::CRenderTarget		()
 
 			u16	tempData[TEX_material_LdotN*TEX_material_LdotH*TEX_material_Count];
 
-			D3D_TEXTURE3D_DESC	desc;
+			/*D3D_TEXTURE3D_DESC	desc;
 			desc.Width = TEX_material_LdotN;
 			desc.Height = TEX_material_LdotH;
 			desc.Depth	= TEX_material_Count;
@@ -746,13 +763,23 @@ CRenderTarget::CRenderTarget		()
 			desc.Usage = D3D_USAGE_IMMUTABLE;
 			desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
 			desc.CPUAccessFlags = 0;
-			desc.MiscFlags = 0;
+			desc.MiscFlags = 0;*/
 
-			D3D_SUBRESOURCE_DATA	subData;
+			D3D_RESOURCE_DESC textureDesc = {};
+			textureDesc.Format = DXGI_FORMAT_R8G8_UNORM;
+			textureDesc.Width = TEX_material_LdotN;
+			textureDesc.Height = TEX_material_LdotH;
+			textureDesc.DepthOrArraySize = TEX_material_Count;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.SampleDesc.Quality = 0;
+			textureDesc.MipLevels = 1;
+			textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-			subData.pSysMem = tempData;
-			subData.SysMemPitch = desc.Width*2;
-			subData.SysMemSlicePitch = desc.Height*subData.SysMemPitch;
+			D3D_SUBRESOURCE_DATA	subData; 
+
+			//subData.pSysMem = tempData;
+			//subData.SysMemPitch = desc.Width*2;
+			//subData.SysMemSlicePitch = desc.Height*subData.SysMemPitch;
 
 			// Fill it (addr: x=dot(L,N),y=dot(L,H))
 			//D3DLOCKED_BOX				R;
@@ -763,10 +790,10 @@ CRenderTarget::CRenderTarget		()
 				{
 					for (u32 x=0; x<TEX_material_LdotN; x++)
 					{
-						u16*	p	=	(u16*)		
-							(LPBYTE (subData.pSysMem) 
-							+ slice*subData.SysMemSlicePitch 
-							+ y*subData.SysMemPitch + x*2);
+						//u16*	p	=	(u16*)		
+						//	(LPBYTE (subData.pSysMem) 
+						//	+ slice*subData.SysMemSlicePitch 
+						//	+ y*subData.SysMemPitch + x*2);
 						float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
 						float	ls	=	float(y)	/ float	(TEX_material_LdotH-1) + EPS_S;
 						ls			*=	powf(ld,1/32.f);
@@ -807,13 +834,16 @@ CRenderTarget::CRenderTarget		()
 						s32		_d	=	clampr	(iFloor	(fd*255.5f),	0,255);
 						s32		_s	=	clampr	(iFloor	(fs*255.5f),	0,255);
 						if ((y==(TEX_material_LdotH-1)) && (x==(TEX_material_LdotN-1)))	{ _d = 255; _s=255;	}
-						*p			=	u16		(_s*256 + _d);
+						//*p			=	u16		(_s*256 + _d);
 					}
 				}
 			}
 			//R_CHK		(t_material_surf->UnlockBox	(0));
-
-			R_CHK(HW.pDevice->CreateTexture3D(&desc, &subData, &t_material_surf));
+			_GUID its_must_be_render_target;
+			HW.pDevice->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+				D3D12_HEAP_FLAG_NONE, &textureDesc, D3D12_RESOURCE_STATE_COPY_DEST, NULL, its_must_be_render_target, NULL);
+			
+			//R_CHK(HW.pDevice->CreateTexture3D(&desc, &subData, &t_material_surf));
 			t_material					= dxRenderDeviceRender::Instance().Resources->_CreateTexture(r2_material);
 			t_material->surface_set		(t_material_surf);
 			//R_CHK						(D3DXCreateVolumeTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,4,1,0,D3DFMT_A8L8,D3DPOOL_MANAGED,&t_material_surf));
@@ -845,26 +875,23 @@ CRenderTarget::CRenderTarget		()
 			static const int sampleSize = 4;
 			u32	tempData[TEX_jitter_count][TEX_jitter*TEX_jitter];
 
-			D3D_TEXTURE2D_DESC	desc;
-			desc.Width = TEX_jitter;
-			desc.Height = TEX_jitter;
-			desc.MipLevels = 1;
-			desc.ArraySize = 1;
-			desc.SampleDesc.Count = 1;
-			desc.SampleDesc.Quality = 0;
-			desc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
-			//desc.Usage = D3D_USAGE_IMMUTABLE;
-			desc.Usage = D3D_USAGE_DEFAULT;
-			desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
-			desc.CPUAccessFlags = 0;
-			desc.MiscFlags = 0;
+			//D3D_TEXTURE2D_DESC	desc;
+			D3D_RESOURCE_DESC textureDesc = {};
+			textureDesc.Width = TEX_jitter;
+			textureDesc.Height = TEX_jitter;
+			textureDesc.MipLevels = 1;
+			textureDesc.DepthOrArraySize = 1;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.SampleDesc.Quality = 0;
+			textureDesc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
+			textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
 			D3D_SUBRESOURCE_DATA	subData[TEX_jitter_count];
 
 			for (int it=0; it<TEX_jitter_count-1; it++)
 			{
-				subData[it].pSysMem = tempData[it];
-				subData[it].SysMemPitch = desc.Width*sampleSize;
+				//subData[it].pSysMem = tempData[it];
+				//subData[it].SysMemPitch = desc.Width*sampleSize;
 			}
 
 			// Fill it,
@@ -876,12 +903,12 @@ CRenderTarget::CRenderTarget		()
 					generate_jitter	(data,TEX_jitter_count-1);
 					for (u32 it=0; it<TEX_jitter_count-1; it++)
 					{
-						u32*	p	=	(u32*)	
-							(LPBYTE (subData[it].pSysMem) 
-							+ y*subData[it].SysMemPitch 
-							+ x*4);
+						//u32*	p	=	(u32*)	
+						//	(LPBYTE (subData[it].pSysMem) 
+						//	+ y*subData[it].SysMemPitch 
+						//	+ x*4);
 
-						*p	=	data	[it];
+						//*p	=	data	[it];
 					}
 				}
 			}
@@ -895,32 +922,30 @@ CRenderTarget::CRenderTarget		()
 				string_path					name;
 				xr_sprintf						(name,"%s%d",r2_jitter,it);
 				//R_CHK	(D3DXCreateTexture	(HW.pDevice,TEX_jitter,TEX_jitter,1,0,D3DFMT_Q8W8V8U8,D3DPOOL_MANAGED,&t_noise_surf[it]));
-				R_CHK( HW.pDevice->CreateTexture2D(&desc, &subData[it], &t_noise_surf[it]) );
+				//R_CHK( HW.pDevice->CreateTexture2D(&desc, &subData[it], &t_noise_surf[it]) );
 				t_noise[it]					= dxRenderDeviceRender::Instance().Resources->_CreateTexture	(name);
-				t_noise[it]->surface_set	(t_noise_surf[it]);
+				//t_noise[it]->surface_set	(t_noise_surf[it]);
 				//R_CHK						(t_noise_surf[it]->LockRect	(0,&R[it],0,0));
 			}
 
 			float tempDataHBAO[TEX_jitter*TEX_jitter*4];
 
 			// generate HBAO jitter texture (last)
-			D3D_TEXTURE2D_DESC	descHBAO;
+
+			//D3D_TEXTURE2D_DESC	descHBAO;
+			D3D_RESOURCE_DESC descHBAO;
 			descHBAO.Width = TEX_jitter;
 			descHBAO.Height = TEX_jitter;
 			descHBAO.MipLevels = 1;
-			descHBAO.ArraySize = 1;
+			descHBAO.DepthOrArraySize = 1;
 			descHBAO.SampleDesc.Count = 1;
 			descHBAO.SampleDesc.Quality = 0;
 			descHBAO.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			//desc.Usage = D3D_USAGE_IMMUTABLE;
-			descHBAO.Usage = D3D_USAGE_DEFAULT;
-			descHBAO.BindFlags = D3D_BIND_SHADER_RESOURCE;
-			descHBAO.CPUAccessFlags = 0;
-			descHBAO.MiscFlags = 0;
+			descHBAO.Flags = D3D12_RESOURCE_FLAG_NONE;
 
 			const auto it = TEX_jitter_count-1;
-			subData[it].pSysMem = tempDataHBAO;
-			subData[it].SysMemPitch = descHBAO.Width*sampleSize * sizeof(float);
+			//subData[it].pSysMem = tempDataHBAO;
+			//subData[it].SysMemPitch = descHBAO.Width*sampleSize * sizeof(float);
 
 			// Fill it,
 			for (u32 y=0; y<TEX_jitter; y++)
@@ -938,14 +963,14 @@ CRenderTarget::CRenderTarget		()
 					float angle = 2 * PI * ::Random.randF(0.0f, 1.0f) / numDir;
 					float dist = ::Random.randF(0.0f, 1.0f);
 
-					float *p	=	(float*)	
-						(LPBYTE (subData[it].pSysMem) 
-						+ y*subData[it].SysMemPitch 
-						+ x*4*sizeof(float));
-					*p = (float)(_cos(angle));
-					*(p+1) = (float)(_sin(angle));
-					*(p+2) = (float)(dist);
-					*(p+3) = 0;
+					//float *p	=	(float*)	
+					//	(LPBYTE (subData[it].pSysMem) 
+					//	+ y*subData[it].SysMemPitch 
+					//	+ x*4*sizeof(float));
+					//*p = (float)(_cos(angle));
+					//*(p+1) = (float)(_sin(angle));
+					//*(p+2) = (float)(dist);
+					//*(p+3) = 0;
 				}
 			}			
 
@@ -960,16 +985,16 @@ CRenderTarget::CRenderTarget		()
 			//	Create noise mipped
 			{
 				//	Autogen mipmaps
-				desc.MipLevels = 0;
+				//desc.MipLevels = 0;
 				R_CHK( HW.pDevice->CreateTexture2D(&desc, 0, &t_noise_surf_mipped) );
 				t_noise_mipped = dxRenderDeviceRender::Instance().Resources->_CreateTexture(r2_jitter_mipped);
 				t_noise_mipped->surface_set(t_noise_surf_mipped);
 
 				//	Update texture. Generate mips.
 
-				HW.pContext->CopySubresourceRegion( t_noise_surf_mipped, 0, 0, 0, 0, t_noise_surf[0], 0, 0 );
+				//HW.pContext->CopySubresourceRegion( t_noise_surf_mipped, 0, 0, 0, 0, t_noise_surf[0], 0, 0 );
 
-				D3DX11FilterTexture(HW.pContext, t_noise_surf_mipped, 0, D3DX10_FILTER_POINT);
+				//D3DX11FilterTexture(HW.pContext, t_noise_surf_mipped, 0, D3DX10_FILTER_POINT);
 			}
 		}
 	}
@@ -989,7 +1014,7 @@ CRenderTarget::CRenderTarget		()
 
 CRenderTarget::~CRenderTarget	()
 {
-	_RELEASE					(t_ss_async);
+	//_RELEASE					(t_ss_async);
 
 	// Textures
 	t_material->surface_set		(NULL);
@@ -1027,16 +1052,16 @@ CRenderTarget::~CRenderTarget	()
 	for (int it=0; it<TEX_jitter_count; it++)	{
 		t_noise	[it]->surface_set	(NULL);
 #ifdef DEBUG
-		_SHOW_REF("t_noise_surf[it]",t_noise_surf[it]);
+		//_SHOW_REF("t_noise_surf[it]",t_noise_surf[it]);
 #endif // DEBUG
-		_RELEASE					(t_noise_surf[it]);
+		//_RELEASE					(t_noise_surf[it]);
 	}
 
 	t_noise_mipped->surface_set	(NULL);
 #ifdef DEBUG
-	_SHOW_REF("t_noise_surf_mipped",t_noise_surf_mipped);
+	//_SHOW_REF("t_noise_surf_mipped",t_noise_surf_mipped);
 #endif // DEBUG
-	_RELEASE					(t_noise_surf_mipped);
+	//_RELEASE					(t_noise_surf_mipped);
 
 	// 
 	accum_spot_geom_destroy		();
@@ -1146,8 +1171,8 @@ bool CRenderTarget::use_minmax_sm_this_frame()
 	case CRender::MMSM_AUTODETECT:
 		{
 			u32 dwScreenArea = 
-				HW.m_ChainDesc.BufferDesc.Width*
-				HW.m_ChainDesc.BufferDesc.Height;
+				HW.m_ChainDesc.Width*
+				HW.m_ChainDesc.Height;
 
 			if ( ( dwScreenArea >=RImplementation.o.dx10_minmax_sm_screenarea_threshold))
 				return need_to_render_sunshafts();
