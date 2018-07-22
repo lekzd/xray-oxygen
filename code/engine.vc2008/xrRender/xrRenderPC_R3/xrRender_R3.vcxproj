@@ -71,7 +71,7 @@
       <Optimization>Disabled</Optimization>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>./;../../../sdk/include/dx;$(DXSDK_DIR)Include;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ATIMGPUD_DLL;MSAA_DX10_1;MSAA_SAMPLES=4;USE_MSAA;GBUFFER_OPTIMIZATION;USE_DX10;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0;USE_RESOURCE_DEBUGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ATIMGPUD_DLL;MSAA_DX10_1;MSAA_SAMPLES=4;USE_MSAA;GBUFFER_OPTIMIZATION;USE_DX10;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>false</SmallerTypeCheck>
@@ -418,6 +418,7 @@
     <ClCompile Include="xrRender_R3.cpp" />
     <ClCompile Include="..\xrRenderDX10\dx10Texture.cpp" />
     <ClCompile Include="..\xrRender\PSLibrary.cpp" />
+	<ClCompile Include="..\xrRender\shaderIncludeResolver.cpp" />
     <ClCompile Include="r2_blenders.cpp" />
     <ClCompile Include="r2_R_calculate.cpp" />
     <ClCompile Include="r2_R_lights.cpp" />

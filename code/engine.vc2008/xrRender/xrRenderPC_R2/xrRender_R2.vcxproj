@@ -390,6 +390,7 @@
     <ClCompile Include="blender_rain_drops.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="blender_sunshafts.cpp" />
+    <ClCompile Include=".\xrRender\shaderIncludeResolver.cpp" />
     <ClCompile Include="r2_puddles.cpp" />
     <ClCompile Include="r2_rendertarget_phase_puddles.cpp" />
     <ClCompile Include="r2_rendertarget_phase_rain_drops.cpp" />

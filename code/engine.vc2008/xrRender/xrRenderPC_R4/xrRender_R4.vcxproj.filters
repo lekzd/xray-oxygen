@@ -745,6 +745,7 @@
       <Filter>Shading templates</Filter>
     </ClInclude>
     <ClInclude Include="r2_puddles.h">
+    <ClInclude Include="..\xrRender\shaderIncludeResolver.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1348,6 +1349,7 @@
     </ClCompile>
     <ClCompile Include="r2_rendertarget_phase_puddles.cpp" />
     <ClCompile Include="r3_puddles.cpp">
+    <ClCompile Include="..\xrRender\shaderIncludeResolver.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

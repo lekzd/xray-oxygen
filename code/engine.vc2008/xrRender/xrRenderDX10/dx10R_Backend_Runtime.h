@@ -51,13 +51,13 @@ ICF void CBackend::set_Format(SDeclaration* _decl)
 	}
 }
 
-ICF void CBackend::set_PS(ID3DPixelShader* _ps, LPCSTR _n)
+ICF void CBackend::set_PS(const ID3DPixelShader* _ps, LPCSTR _n)
 {
 	if (ps!=_ps)
 	{
 		PGO				(Msg("PGO:Pshader:%x",_ps));
 		stat.ps			++;
-		ps				= _ps;
+		ps				= const_cast<ID3DPixelShader*> (_ps);
 #ifdef USE_DX11
 		HW.pContext->PSSetShader(ps, 0, 0);
 #else
@@ -68,12 +68,12 @@ ICF void CBackend::set_PS(ID3DPixelShader* _ps, LPCSTR _n)
 	}
 }
 
-ICF void CBackend::set_GS(ID3DGeometryShader* _gs, LPCSTR _n)
+ICF void CBackend::set_GS(const ID3DGeometryShader* _gs, LPCSTR _n)
 {
 	if (gs!=_gs)
 	{
 		PGO				(Msg("PGO:Gshader:%x",_ps));
-		gs				= _gs;
+		gs				= const_cast<ID3DGeometryShader*> (_gs);
 #ifdef USE_DX11
 		HW.pContext->GSSetShader(gs, 0, 0);
 #else
@@ -139,13 +139,13 @@ ICF	bool CBackend::is_TessEnabled()
 #	endif
 
 
-ICF void CBackend::set_VS(ID3DVertexShader* _vs, LPCSTR _n)
+ICF void CBackend::set_VS(const ID3DVertexShader* _vs, LPCSTR _n)
 {
 	if (vs!=_vs)
 	{
 		PGO				(Msg("PGO:Vshader:%x",_vs));
 		stat.vs			++;
-		vs				= _vs;
+		vs				= const_cast<ID3DVertexShader*> (_vs);
 #ifdef USE_DX11
 		HW.pContext->VSSetShader(vs, 0, 0);
 #else
@@ -394,7 +394,7 @@ IC void CBackend::ApplyVertexLayout()
 	}	
 }
 
-ICF void CBackend::set_VS(ref_vs& _vs)
+ICF void CBackend::set_VS(const ref_vs& _vs)
 {
 	m_pInputSignature = _vs->signature->signature;
 	set_VS(_vs->vs,_vs->cName.c_str());

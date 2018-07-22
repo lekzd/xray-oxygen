@@ -41,13 +41,13 @@ ICF void CBackend::set_Format(IDirect3DVertexDeclaration9* _decl)
 	}
 }
 
-ICF void CBackend::set_PS(ID3DPixelShader* _ps, LPCSTR _n)
+ICF void CBackend::set_PS(const ID3DPixelShader* _ps, LPCSTR _n)
 {
 	if (ps!=_ps)
 	{
 		PGO				(Msg("PGO:Pshader:%x",_ps));
 		stat.ps			++;
-		ps				= _ps;
+		ps				= const_cast<ID3DPixelShader*> (_ps);
 		CHK_DX			(HW.pDevice->SetPixelShader(ps));
 #ifdef DEBUG
 		ps_name			= _n;
@@ -55,13 +55,13 @@ ICF void CBackend::set_PS(ID3DPixelShader* _ps, LPCSTR _n)
 	}
 }
 
-ICF void CBackend::set_VS(ID3DVertexShader* _vs, LPCSTR _n)
+ICF void CBackend::set_VS(const ID3DVertexShader* _vs, LPCSTR _n)
 {
 	if (vs!=_vs)
 	{
 		PGO				(Msg("PGO:Vshader:%x",_vs));
 		stat.vs			++;
-		vs				= _vs;
+		vs				= const_cast<ID3DVertexShader*> (_vs);
 		CHK_DX			(HW.pDevice->SetVertexShader(vs));
 		vs_name			= _n;
 	}
@@ -200,7 +200,7 @@ ICF void	CBackend::set_CullMode		(u32 _mode)
 	if (cull_mode		!= _mode)		{ cull_mode = _mode;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			_mode				)); }
 }
 
-ICF void CBackend::set_VS(ref_vs& _vs)
+ICF void CBackend::set_VS(const ref_vs& _vs)
 {
 	set_VS(_vs->vs,_vs->cName.c_str());				
 }
