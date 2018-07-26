@@ -181,6 +181,9 @@ void CRender::LoadBuffers		(CStreamReader *base_fs,	BOOL _alternative)
 	dxRenderDeviceRender::Instance().Resources->Evict		();
 //	u32	dwUsage					= D3DUSAGE_WRITEONLY;
 
+
+	//xr_vector<ID3D12Resource> &_DC = _alternative ? xDC : nDC;
+
 	xr_vector<VertexDeclarator>				&_DC	= _alternative?xDC:nDC;
 	xr_vector<ID3DVertexBuffer*>		&_VB	= _alternative?xVB:nVB;
 	xr_vector<ID3DIndexBuffer*>		&_IB	= _alternative?xIB:nIB;

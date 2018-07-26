@@ -197,7 +197,7 @@ void dxEnvironmentRender::OnFrame(CEnvironment &env)
 	tsky1->surface_set		(e1);	_RELEASE(e1);
 
 	// ******************** Environment params (setting)
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11) || defined(USE_DX12)
 #if		RENDER==R_R1
 	Fvector3	fog_color = env.CurrentEnv->fog_color;
 				fog_color.mul(ps_r1_fog_luminance);

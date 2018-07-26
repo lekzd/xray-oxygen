@@ -133,8 +133,13 @@ public:
 	xr_vector<ref_shader>										Shaders;
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
 	xr_vector<VertexDeclarator>									nDC,xDC;
-	xr_vector<ID3DVertexBuffer*>							nVB,xVB;
-	xr_vector<ID3DIndexBuffer*>							nIB,xIB;
+	xr_vector<ID3DVertexBuffer*>								nVB,xVB;
+	xr_vector<ID3DIndexBuffer*>									nIB,xIB;
+
+	xr_vector<ID3D12Resource*>									NDCResource, XDCResource;
+	xr_vector<ID3D12Resource*>									NVBResource, XVBResource;
+	xr_vector<ID3D12Resource*>									NIBResource, XIBResource;
+
 	xr_vector<dxRender_Visual*>									Visuals;
 	CPSLibrary													PSLibrary;
 

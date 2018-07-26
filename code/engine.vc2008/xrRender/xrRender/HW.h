@@ -53,7 +53,11 @@ public:
 //	Variables section
 #if defined(USE_DX12)
 public:
+#ifdef DEBUG
+	ComPtr < ID3D12Debug >					pDebugControl;
+#endif
     ComPtr < IDXGIAdapter1 >                m_pAdapter;
+	ComPtr < IDXGISwapChain1 >				m_pSwapChain;
     ComPtr < ID3D12Device >					pDevice;
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
     ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
@@ -65,7 +69,6 @@ public:
     ComPtr < ID3D12DescriptorHeap >         m_samplerHeap;
     ComPtr < ID3D12DescriptorHeap >         m_cbvSrvHeap;
     ComPtr < ID3D12Resource >				pResource;
-    ComPtr < IDXGISwapChain1 >				m_pSwapChain;
     ComPtr < ID3D12Resource >		        pBaseRT;
     ComPtr < ID3D12Resource >		        pBaseRT2;
     ComPtr < ID3D12RootSignature >          pRootSignature;
@@ -78,7 +81,7 @@ public:
 
 	D3D_DRIVER_TYPE					m_DriverType;	//	DevT equivalent
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC m_FullscreenDesc;
-    DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivdalent
+    DXGI_SWAP_CHAIN_DESC1			m_ChainDesc;	//	DevPP equivalent
 
 	D3D12_FEATURE					FeatureLevel;
 

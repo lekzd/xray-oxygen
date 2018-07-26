@@ -24,7 +24,11 @@ public:
 	void decrement_stats_rtarget( ID3DTexture2D*	buff );
 	void decrement_stats_vb		( ID3DVertexBuffer*		buff );
 	void decrement_stats_ib		( ID3DIndexBuffer*		buff );
-
+#ifdef USE_DX12
+	//#TODO: #GIPERION, здесь не забудь
+	// D3D12 должен иметь свои методы для менеджера статистики
+	void IncrementedRenderTargetStats(D3D12_RESOURCE_DESC* buffer);
+#endif
 	u32 memory_usage_summary[enum_stats_buffer_type_COUNT][4];
 
 private:

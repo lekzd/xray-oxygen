@@ -41,26 +41,15 @@ BOOL	CRenderTarget::u_DBT_enable	(float zMin, float zMax)
 	if (!ps_r2_ls_flags.test(R2FLAG_USE_NVDBT))		return	FALSE;
 
 	return FALSE;
-
-	//	TODO: DX10: Check if DX10 supports this feature
-	// enable cheat
-	//HW.pDevice->SetRenderState(D3DRS_ADAPTIVETESS_X,MAKEFOURCC('N','V','D','B'));
-	//HW.pDevice->SetRenderState(D3DRS_ADAPTIVETESS_Z,*(DWORD*)&zMin);
-	//HW.pDevice->SetRenderState(D3DRS_ADAPTIVETESS_W,*(DWORD*)&zMax); 
-
-	//return TRUE;
 }
 
 void	CRenderTarget::u_DBT_disable	()
 {
-	//	TODO: DX10: Check if DX10 supports this feature
-	//if (RImplementation.o.nvdbt && ps_r2_ls_flags.test(R2FLAG_USE_NVDBT))	
-	//	HW.pDevice->SetRenderState(D3DRS_ADAPTIVETESS_X,0);
+
 }
 
 BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 {
-	// Msg	("%d: %x type(%d), pos(%f,%f,%f)",Device.dwFrame,u32(L),u32(L->flags.type),VPUSH(L->position));
 
 	// Near plane intersection
 	BOOL	near_intersect				= FALSE;
@@ -150,18 +139,4 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 	return near_intersect;
 #endif
 }
-/*
-{
-	Fmatrix& M						= RCache.xforms.m_wvp;
-	BOOL	bIntersect				= FALSE;
-	for (u32 vit=0; vit<DU_CONE_NUMVERTEX; vit++)	{
-		Fvector&	v	= du_cone_vertices[vit];
-		float _z = v.x*M._13 + v.y*M._23 + v.z*M._33 + M._43;
-		float _w = v.x*M._14 + v.y*M._24 + v.z*M._34 + M._44;
-		if (_z<=0 || _w<=0)	{
-			bIntersect	= TRUE;
-			break;
-		}
-	}
-}
-*/
+

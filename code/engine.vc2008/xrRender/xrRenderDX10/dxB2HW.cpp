@@ -43,15 +43,26 @@ CHW::~CHW()
 //////////////////////////////////////////////////////////////////////
 void CHW::CreateD3D()
 {
-	R_CHK( CreateDXGIFactory1(IID_PPV_ARGS(&m_pFactory)));
 
 #ifdef USE_DX12
+	R_CHK( CreateDXGIFactory1(IID_PPV_ARGS(&m_pFactory)));
 
+#ifdef DEBUG
+	{
+		DWORD dwDXGIFlag;
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&HW.pDebugControl))))
+		{
+			HW.pDebugControl->EnableDebugLayer();
+
+			// Enable additional debug layers.
+			dwDXGIFlag |= DXGI_CREATE_FACTORY_DEBUG;
+		}
+	}
+#endif
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_pFactory->EnumAdapters1(adapterIndex, &m_pAdapter); ++adapterIndex)
     {
         DXGI_ADAPTER_DESC1 desc;
-        m_pAdapter->GetDesc1(&desc);
-
+		R_CHK(m_pAdapter->GetDesc1(&desc));
         if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
         {
             // Don't select the Basic Render Driver adapter.
@@ -70,6 +81,7 @@ void CHW::CreateD3D()
     R_ASSERT(m_pAdapter.Get());
 
 #else
+	R_CHK(CreateDXGIFactory(IID_PPV_ARGS(&m_pFactory)));
     if (!m_pAdapter)
         m_pFactory->EnumAdapters(0, &m_pAdapter.Get());
 #endif
@@ -94,8 +106,13 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 // 		D3D_DRIVER_TYPE_REFERENCE : D3D_DRIVER_TYPE_HARDWARE;
 		
 	// Display the name of video board
+#if !defined(USE_DX12)
 	DXGI_ADAPTER_DESC Desc;
-	R_CHK( m_pAdapter->GetDesc(&Desc) );
+	R_CHK(m_pAdapter->GetDesc(&Desc));
+#else
+	DXGI_ADAPTER_DESC1 Desc;
+	R_CHK(m_pAdapter->GetDesc1(&Desc));
+#endif
 	//	Warning: Desc.Description is wide string
 	Msg		("* GPU [vendor:%X]-[device:%X]: %S", Desc.VendorId, Desc.DeviceId, Desc.Description);
 	Caps.id_vendor	= Desc.VendorId;
@@ -233,7 +250,7 @@ void CHW::DestroyDevice()
 {
 	//	Destroy state managers
 
-	//VERTVER: DX12 have a new feature - Pipeline State Object.
+	//#VERTVER: DX12 have a new feature - Pipeline State Object.
 	// And yes, StateManager now is broken.
 	StateManager.Reset();
 	RSManager.ClearStateArray();
@@ -270,7 +287,11 @@ void CHW::DestroyDevice()
 //////////////////////////////////////////////////////////////////////
 void CHW::Reset(HWND hwnd)
 {
+#ifdef USE_DX12
 	DXGI_SWAP_CHAIN_DESC1 &cd = m_ChainDesc;
+#else
+	DXGI_SWAP_CHAIN_DESC &cd = m_ChainDesc;
+#endif
 
 	bool bWindowed = !psDeviceFlags.is(rsFullscreen);
 
@@ -338,15 +359,7 @@ void CHW::Reset(HWND hwnd)
     DXGI_FORMAT format = desc.Format;
 #endif
 
-	CHK_DX(
-		m_pSwapChain->
-		ResizeBuffers(
-			cd.BufferCount,
-			dwWidth,
-			dwHeight,
-			format,
-			DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH)
-	);
+	CHK_DX(m_pSwapChain->ResizeBuffers(cd.BufferCount, dwWidth, dwHeight, format, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
 
 	UpdateViews();
 	updateWindowProps(hwnd);
@@ -406,30 +419,30 @@ DXGI_RATIONAL CHW::selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt)
 		m_pAdapter->EnumOutputs(0, &pOutput);
 		VERIFY(pOutput);
 
-		UINT num = 0;
+		DWORD num = 0;
 		DXGI_FORMAT format = fmt;
-		UINT flags         = 0;
+		DWORD flags = 0;
 
 		// Get the number of display modes available
-		pOutput->GetDisplayModeList( format, flags, &num, 0);
+		pOutput->GetDisplayModeList(format, flags, &num, 0);
 
 		// Get the list of display modes
 		modes.resize(num);
-		pOutput->GetDisplayModeList( format, flags, &num, &modes.front());
+		pOutput->GetDisplayModeList(format, flags, &num, &modes.front());
 
 		_RELEASE(pOutput);
 
-		for (u32 i=0; i<num; ++i)
+		for (u32 i = 0; i < num; ++i)
 		{
 			DXGI_MODE_DESC &desc = modes[i];
 
-			if( (desc.Width == dwWidth) 
+			if ((desc.Width == dwWidth)
 				&& (desc.Height == dwHeight)
 				)
 			{
 				VERIFY(desc.RefreshRate.Denominator);
-				float TempFreq = float(desc.RefreshRate.Numerator)/float(desc.RefreshRate.Denominator);
-				if ( TempFreq > CurrentFreq )
+				float TempFreq = float(desc.RefreshRate.Numerator) / float(desc.RefreshRate.Denominator);
+				if (TempFreq > CurrentFreq)
 				{
 					CurrentFreq = TempFreq;
 					res = desc.RefreshRate;

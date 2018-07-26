@@ -1,7 +1,8 @@
 #pragma once
+#include "r5.h"
 /***************************************
 * Vertver:
-* Таки шо тут происходит? Объясняю...
+* Таки шо тут происходит? 
 * ПЫСовцы решили, что назвать StateManager для всех рендеров как dx10StatManager
 * будет хорошей идеей. Но дело в том, что этот StateManager используюет не 
 * только R3 (DX10), а ещё и R1, R2 и R4. Теперь я сделал, что для R1-R4 будет
@@ -102,7 +103,6 @@ extern	dxB1StateManager	StateManager;
 #else
 class dxB2StateManager
 {
-	// Давай по новой Миша, всё хуйн
 public:
 	dxB2StateManager();
 	~dxB2StateManager();

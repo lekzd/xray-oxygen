@@ -3,12 +3,14 @@
 
 #pragma warning(push)
 #pragma warning(disable:4995)
+#ifndef USE_DX12 
 #include <d3dx9.h>
+#endif
 #pragma warning(pop)
 
 #include "../../xrCDB/frustum.h"
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11)|| defined(USE_DX12)
 #include "../xrRenderDX10/StateManager/dxB2StateManager.h"
 #include "../xrRenderDX10/StateManager/dxB2ShaderResourceStateCache.h"
 #endif	USE_DX10
@@ -18,6 +20,8 @@ void CBackend::OnFrameEnd	()
 #if defined(USE_DX10) || defined(USE_DX11)
 	HW.pContext->ClearState();
 	Invalidate			();
+#elif defined(USE_DX12)
+	//HW.
 #else	//	USE_DX10
 
 	for (u32 stage=0; stage<HW.Caps.raster.dwStages; stage++)
@@ -40,7 +44,7 @@ void CBackend::OnFrameBegin	()
 	set_RT				(HW.pBaseRT);
 	set_ZB				(HW.pBaseZB);
 #endif	//	USE_DX10
-    std::memset(&stat,0,sizeof(stat));
+    memset(&stat, 0, sizeof(stat));
 	Vertex.Flush		();
 	Index.Flush			();
 	set_Stencil			(FALSE);
@@ -132,7 +136,7 @@ DX10_ONLY(gs					= nullptr);
 
 void	CBackend::set_ClipPlanes	(u32 _enable, Fplane*	_planes /*=NULL */, u32 count/* =0*/)
 {
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//	TODO: DX10: Implement in the corresponding vertex shaders
 	//	Use this to set up location, were shader setup code will get data
 	//VERIFY(!"CBackend::set_ClipPlanes not implemented!");
@@ -170,7 +174,7 @@ void	CBackend::set_ClipPlanes	(u32 _enable, Fmatrix*	_xform  /*=NULL */, u32 fma
 {
 	if (0==HW.Caps.geometry.dwClipPlanes)	return;
 	if (!_enable)	{
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		//	TODO: DX10: Implement in the corresponding vertex shaders
 		//	Use this to set up location, were shader setup code will get data
 		//VERIFY(!"CBackend::set_ClipPlanes not implemented!");
@@ -192,9 +196,9 @@ void CBackend::set_Textures			(STextureList* _T)
 	//	If resources weren't set at all we should clear from resource #0.
 	int _last_ps	= -1;
 	int _last_vs	= -1;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	int _last_gs	= -1;
-#	ifdef USE_DX11
+#if	defined(USE_DX11) || defined(USE_DX12)
 	int _last_hs	= -1;
 	int _last_ds	= -1;
 	int _last_cs	= -1;
@@ -229,7 +233,7 @@ void CBackend::set_Textures			(STextureList* _T)
 				}
 			}
 		} else 
-#if	defined(USE_DX10) || defined(USE_DX11)
+#if	defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		if (load_id < CTexture::rstGeometry)
 #endif	//	UDE_DX10
 		{
@@ -253,7 +257,7 @@ void CBackend::set_Textures			(STextureList* _T)
 				}
 			}
 		}
-#if	defined(USE_DX10) || defined(USE_DX11)
+#if	defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		else if (load_id < CTexture::rstHull)
 		{
 			//	Set up pixel shader resources
@@ -276,7 +280,7 @@ void CBackend::set_Textures			(STextureList* _T)
 				}
 			}
 		}
-#ifdef USE_DX11
+#if defined(USE_DX11)  || defined(USE_DX12)
 		else if (load_id < CTexture::rstDomain)
 		{
 			//	Set up pixel shader resources
@@ -357,7 +361,7 @@ void CBackend::set_Textures			(STextureList* _T)
 			continue;
 
 		textures_ps[_last_ps]			= 0;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		//	TODO: DX10: Optimise: set all resources at once
 		ID3DShaderResourceView	*pRes = 0;
 		//HW.pDevice->PSSetShaderResources(_last_ps, 1, &pRes);
@@ -373,7 +377,7 @@ void CBackend::set_Textures			(STextureList* _T)
 			continue;
 
 		textures_vs[_last_vs]			= 0;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		//	TODO: DX10: Optimise: set all resources at once
 		ID3DShaderResourceView	*pRes = 0;
 		//HW.pDevice->VSSetShaderResources(_last_vs, 1, &pRes);
@@ -383,7 +387,7 @@ void CBackend::set_Textures			(STextureList* _T)
 #endif	//	USE_DX10
 	}
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	// clear remaining stages (VS)
 	for (++_last_gs; _last_gs<mtMaxGeometryShaderTextures; _last_gs++)
 	{
@@ -397,7 +401,7 @@ void CBackend::set_Textures			(STextureList* _T)
 		//HW.pDevice->GSSetShaderResources(_last_gs, 1, &pRes);
 		SRVSManager.SetGSResource(_last_gs, pRes);
 	}
-#ifdef USE_DX11
+#if defined(USE_DX11)	// || defined(USE_DX12)
 	for (++_last_hs; _last_hs<mtMaxHullShaderTextures; _last_hs++)
 	{
 		if (!textures_hs[_last_hs])

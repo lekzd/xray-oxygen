@@ -178,7 +178,7 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name, CMemoryWriter* me
         string64			t_stemp;
         string_path			buf;
         xr_sprintf(buf, sizeof(buf), "ss_%s_%s_(%s).png", Core.UserName, timestamp(t_stemp), (g_pGameLevel) ? g_pGameLevel->name().c_str() : "mainmenu");
-        //#TODO Save to different format, rather then TGA 
+		//#VERTVER: Oxy 1.7f support other formats. 
 
 #if defined(USE_DX11) || defined(USE_DX12)
         Blob			DDSImage;
@@ -413,7 +413,8 @@ void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 	D3D_MAPPED_TEXTURE2D	MappedData;
 
 #ifdef USE_DX12
-
+	D3D12_RANGE* RenderRange = Target->t_range_async;
+	HW.pBaseRT->Map(NULL, RenderRange, &MappedData);
 #elif USE_DX11
 	HW.pContext->Map(pTex, 0, D3D_MAP_READ, 0, &MappedData);
 #else
@@ -421,7 +422,6 @@ void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 #endif
 
 	{
-
 		u32* pPixel		= (u32*)MappedData.pData;
 		u32* pEnd		= pPixel+(Device.dwWidth*Device.dwHeight);
 
@@ -444,7 +444,8 @@ void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 #ifdef USE_DX11
 	HW.pContext->Unmap(pTex, 0);
 #else
-	pTex->Unmap(0);
+	//#TODO: Please fix ranges
+	HW.pBaseRT->Unmap(NULL, RenderRange);
 #endif
 }
 

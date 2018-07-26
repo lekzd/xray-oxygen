@@ -41,17 +41,6 @@ void CRenderTarget::draw_rain( light &RainSetup )
 		RCache.set_Geometry			(g_combine);
 
 		// setup
-//		float	intensity			= 0.3f*Rsun->color.r + 0.48f*Rsun->color.g + 0.22f*Rsun->color.b;
-//		Fvector	dir					= L_dir;
-//		dir.normalize().mul	(- _sqrt(intensity+EPS));
-//		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
-//		RCache.set_c				("Ldynamic_dir",		dir.x,dir.y,dir.z,0		);
-
-		// if (stencil>=1 && aref_pass)	stencil = light_id
-		//	Done in blender!
-		//RCache.set_ColorWriteEnable	(FALSE		);
-//		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
-//		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
 	// recalculate d_Z, to perform depth-clipping
@@ -61,28 +50,13 @@ void CRenderTarget::draw_rain( light &RainSetup )
 	Device.mFullTransform.transform(center_pt)	;
 	d_Z							= center_pt.z	;
 
-	// nv-stencil recompression
-	//if (RImplementation.o.nvstencil  && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();	//. driver bug?
-
 	// Perform lighting
 	{
-//		phase_accumulator					()	;
-//		RCache.set_CullMode					(CULL_NONE);
-//		RCache.set_ColorWriteEnable			()	;
-
-
 		// texture adjustment matrix
-		//float			fRange				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_scale:ps_r2_sun_depth_far_scale;
 		float			fRange				=  1;
-		//float			fBias				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_bias:ps_r2_sun_depth_far_bias;
-		//float			fBias				= 0.00001;
 		float			fBias				= -0.0001;
 		float			smapsize			= float(RImplementation.o.smapsize);
 		float			fTexelOffs			= (.5f / smapsize);
-//		float			view_dimX			= float(RainSetup.X.D.maxX-RainSetup.X.D.minX-2)/smapsize;
-//		float			view_dimY			= float(RainSetup.X.D.maxX-RainSetup.X.D.minX-2)/smapsize;
-//		float			view_sx				= float(RainSetup.X.D.minX+1)/smapsize;
-//		float			view_sy				= float(RainSetup.X.D.minY+1)/smapsize;
 		float			view_dimX			= float(RainSetup.X.D.maxX-RainSetup.X.D.minX)/smapsize;
 		float			view_dimY			= float(RainSetup.X.D.maxX-RainSetup.X.D.minX)/smapsize;
 		float			view_sx				= float(RainSetup.X.D.minX)/smapsize;
@@ -108,45 +82,12 @@ void CRenderTarget::draw_rain( light &RainSetup )
 			FPU::m24r		();
 		}
 
-		/*
-		// texture adjustment matrix
-		//float			fRange				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_scale:ps_r2_sun_depth_far_scale;
-		float			fRange				=  1;
-		//float			fBias				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_bias:ps_r2_sun_depth_far_bias;
-		//	TODO: DX10: Remove this when fix inverse culling for far region
-		float			fBias				= 0;
-		Fmatrix			m_TexelAdjust		= 
-		{
-			0.5f,				0.0f,				0.0f,			0.0f,
-			0.0f,				-0.5f,				0.0f,			0.0f,
-			0.0f,				0.0f,				fRange,			0.0f,
-			0.5f,				0.5f,				fBias,			1.0f
-		};
-
-		// compute xforms
-		FPU::m64r			();
-		Fmatrix				xf_invview;		xf_invview.invert	(Device.mView)	;
-
-		// shadow xform
-		Fmatrix				m_shadow;
-		{
-			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,RainSetup.X.D.combine);
-			m_shadow.mul	(xf_project,	xf_invview);
-
-			FPU::m24r		();
-		}
-		*/
-
 		// clouds xform
 		Fmatrix				m_clouds_shadow;
 		{
 			static	float	w_shift		= 0;
 			Fmatrix			m_xform;
-			//Fvector			direction	= RainSetup.direction	;
 			Fvector			normal	;	normal.setHP(1,0);
-			//w_shift		+=	0.003f*Device.fTimeDelta;
-			//Fvector			position;	position.set(0,0,0);
-			//m_xform.build_camera_dir	(position,direction,normal)	;
 			m_xform.identity();
 			Fvector			localnormal;m_xform.transform_dir(localnormal,normal); localnormal.normalize();
 			m_clouds_shadow.mul			(m_xform,xf_invview)		;
@@ -174,60 +115,6 @@ void CRenderTarget::draw_rain( light &RainSetup )
 		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
 		RCache.set_Geometry			(g_combine_2UV);
 
-		// setup
-		//RCache.set_Element			(s_accum_direct->E[sub_phase]);
-		//u_setrt	(rt_Normal,NULL,NULL,HW.pBaseZB);
-		//RCache.set_Element			(s_rain->E[0]);
-		//RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0		);
-//		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
-		//RCache.set_c				("m_shadow",			m_shadow						);
-		//RCache.set_c				("m_sunmask",			m_clouds_shadow					);
-
-		/*
-		// nv-DBT
-		float zMin,zMax;
-		if (SE_SUN_NEAR==sub_phase)	{
-			zMin = 0;
-			zMax = ps_r2_sun_near;
-		} else {
-			extern float	OLES_SUN_LIMIT_27_01_07;
-			zMin = ps_r2_sun_near;
-			zMax = OLES_SUN_LIMIT_27_01_07;
-		}
-		center_pt.mad(Device.vCameraPosition,Device.vCameraDirection,zMin);	Device.mFullTransform.transform	(center_pt);
-		zMin = center_pt.z	;
-
-		center_pt.mad(Device.vCameraPosition,Device.vCameraDirection,zMax);	Device.mFullTransform.transform	(center_pt);
-		zMax = center_pt.z	;
-		*/
-
-		//	TODO: DX10: Check if DX10 has analog for NV DBT
-		//		if (u_DBT_enable(zMin,zMax))	{
-		// z-test always
-		//			HW.pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-		//			HW.pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-		//		}
-
-		// Fetch4 : enable
-		//		if (RImplementation.o.HW_smap_FETCH4)	{
-		//. we hacked the shader to force smap on S0
-		//#			define FOURCC_GET4  MAKEFOURCC('G','E','T','4') 
-		//			HW.pDevice->SetSamplerState	( 0, D3DSAMP_MIPMAPLODBIAS, FOURCC_GET4 );
-		//		}
-
-		// setup stencil
-//		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
-//		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
-		// Fetch4 : disable
-		//		if (RImplementation.o.HW_smap_FETCH4)	{
-		//. we hacked the shader to force smap on S0
-		//#			define FOURCC_GET1  MAKEFOURCC('G','E','T','1') 
-		//			HW.pDevice->SetSamplerState	( 0, D3DSAMP_MIPMAPLODBIAS, FOURCC_GET1 );
-		//		}
-
-		//	Use for intermediate results
-		//	Patch normal
 		if( !RImplementation.o.dx10_msaa )
 			u_setrt	(rt_Accumulator,NULL,NULL,HW.pBaseZB);
 		else

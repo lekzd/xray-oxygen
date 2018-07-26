@@ -7,13 +7,17 @@ void	CRenderTarget::phase_accumulator()
 		// normal operation - setup
       if( !RImplementation.o.dx10_msaa )
       {
-		   if (RImplementation.o.fp16_blend)	u_setrt	(rt_Accumulator,		NULL,NULL,HW.pBaseZB);
-		   else								u_setrt	(rt_Accumulator_temp,	NULL,NULL,HW.pBaseZB);
+		  if (RImplementation.o.fp16_blend)	
+			  u_setrt(rt_Accumulator, NULL, NULL, HW.pBaseZB);
+		  else								
+			  u_setrt(rt_Accumulator_temp, NULL, NULL, HW.pBaseZB);
       }
       else
       {
-         if (RImplementation.o.fp16_blend)	u_setrt	(rt_Accumulator,		NULL,NULL, rt_MSAADepth->pZRT);
-         else								u_setrt	(rt_Accumulator_temp,	NULL,NULL, rt_MSAADepth->pZRT);
+		  if (RImplementation.o.fp16_blend)	
+			  u_setrt(rt_Accumulator, NULL, NULL, rt_MSAADepth->pZRT);
+		  else								
+			  u_setrt(rt_Accumulator_temp, NULL, NULL, rt_MSAADepth->pZRT);
       }
 	} else {
 		// initial setup

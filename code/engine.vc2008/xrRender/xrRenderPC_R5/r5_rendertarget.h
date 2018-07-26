@@ -106,10 +106,11 @@ public:
 //	IDirect3DSurface9*			rt_smap_ZB;		//
 
 	//	Igor: for async screenshots
-	ID3DTexture2D*			t_ss_async;				//32bit		(r,g,b,a) is situated in the system memory
+	ID3DTexture2D*				t_ss_async;				//32bit		(r,g,b,a) is situated in the system memory
+	D3D12_RANGE*				t_range_async;
 
 	// Textures
-	ID3DTexture3D*			t_material_surf;
+	//ID3DTexture3D*			t_material_surf;
 	ref_texture					t_material;
 
 	ID3DTexture2D*			t_noise_surf	[TEX_jitter_count];

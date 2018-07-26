@@ -43,6 +43,7 @@ namespace xrPlay {
 	private: System::Windows::Forms::RadioButton^  radioButton3;
 	private: System::Windows::Forms::RadioButton^  radioButton4;
 	private: System::Windows::Forms::RadioButton^  radioButton5;
+	private: System::Windows::Forms::RadioButton^  radioButton6;
 	protected:
 
 	private:
@@ -68,6 +69,7 @@ namespace xrPlay {
 			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton5 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton6 = (gcnew System::Windows::Forms::RadioButton());
 			this->SuspendLayout();
 			// 
 			// button1
@@ -183,6 +185,19 @@ namespace xrPlay {
 			this->radioButton5->Text = L"Улучшенное динамическое (DX 11)";
 			this->radioButton5->UseVisualStyleBackColor = false;
 			// 
+			// radioButton6
+			// 
+			this->radioButton5->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->radioButton5->AutoSize = true;
+			this->radioButton5->BackColor = System::Drawing::Color::Transparent;
+			this->radioButton5->ForeColor = System::Drawing::SystemColors::ButtonFace;
+			this->radioButton5->Location = System::Drawing::Point(301, 143);
+			this->radioButton5->Name = L"radioButton5";
+			this->radioButton5->Size = System::Drawing::Size(202, 17);
+			this->radioButton5->TabIndex = 10;
+			this->radioButton5->Text = L"Улучшенное динамическое (DX 12)";
+			this->radioButton5->UseVisualStyleBackColor = false;
+			// 
 			// xrLauncherWnd
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -190,6 +205,7 @@ namespace xrPlay {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(506, 212);
 			this->ControlBox = false;
+			this->Controls->Add(this->radioButton6);
 			this->Controls->Add(this->radioButton5);
 			this->Controls->Add(this->radioButton4);
 			this->Controls->Add(this->radioButton3);
@@ -221,6 +237,7 @@ namespace xrPlay {
 		if (radioButton3->Checked) rendered = "-r2.5";
 		if (radioButton4->Checked) rendered = "-r3";
 		if (radioButton5->Checked) rendered = "-r4";
+		if (radioButton6->Checked) rendered = "-r5";
 
 		params_list = marsh.marshal_as<char const*>(textBox1->Text + " " + rendered);
 		this->Close();

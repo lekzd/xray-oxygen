@@ -33,10 +33,19 @@ void stats_manager::increment_stats( u32 size, enum_stats_buffer_type type, _D3D
 #endif
 }
 
+void stats_manager::IncrementedRenderTargetStats(D3D12_RESOURCE_DESC* buffer)
+{
+	_D3DPOOL pool = D3DPOOL_MANAGED;
+	////D3D_RESOURCE_DESC desc;
+	//CD3DX12_RESOURCE_DESC* desc;
+	//CD3DX12_RESOURCE_ALLOCATION_INFO
+
+}
+
 void stats_manager::increment_stats_rtarget( ID3DTexture2D*		buff )
 {
 	_D3DPOOL pool = D3DPOOL_MANAGED;
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX10) || defined(USE_DX11)
 	D3D_TEXTURE2D_DESC desc;
 	buff->GetDesc( &desc );
 #else	
@@ -77,7 +86,7 @@ void stats_manager::increment_stats_ib( ID3DIndexBuffer*	buff )
 
 void stats_manager::decrement_stats_rtarget( ID3DTexture2D*		buff )
 {
-	if( buff == NULL)
+	if(!buff)
 		return;
 
 	buff->AddRef();

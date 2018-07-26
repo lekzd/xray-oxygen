@@ -5,39 +5,43 @@
 
 R_occlusion::R_occlusion(void)
 {
-	enabled			= strstr(Core.Params,"-no_occq")?FALSE:TRUE;
+	enabled = strstr(Core.Params, "-no_occq") ? FALSE : TRUE;
 }
 R_occlusion::~R_occlusion(void)
 {
 	occq_destroy	();
 }
-void	R_occlusion::occq_create	(u32	limit	)
+void R_occlusion::occq_create(u32	limit)
 {
-	pool.reserve	(limit);
-	used.reserve	(limit);
-	fids.reserve	(limit);
-	for (u32 it=0; it<limit; it++)	{
-		_Q	q;	q.order	= it;
-		if	(FAILED( CreateQuery(&q.Q, D3DQUERYTYPE_OCCLUSION) ))	break;
-		pool.push_back	(q);
+	pool.reserve(limit);
+	used.reserve(limit);
+	fids.reserve(limit);
+	for (u32 it = 0; it < limit; it++) 
+	{
+		_Q	q;	q.order = it;
+		if (FAILED(CreateQuery(&q.Q, D3DQUERYTYPE_OCCLUSION)))	break;
+		pool.push_back(q);
 	}
-	std::reverse	(pool.begin(), pool.end());
+	std::reverse(pool.begin(), pool.end());
 }
-void	R_occlusion::occq_destroy	(				)
+void R_occlusion::occq_destroy()
 {
-	while	(!used.empty())	{
+	while (!used.empty()) 
+	{
 		_RELEASE(used.back().Q);
-		used.pop_back	();
+		used.pop_back();
 	}
-	while	(!pool.empty())	{
+	while (!pool.empty()) 
+	{
 		_RELEASE(pool.back().Q);
-		pool.pop_back	();
+		pool.pop_back();
 	}
-	used.clear	();
-	pool.clear	();
-	fids.clear	();
+	used.clear();
+	pool.clear();
+	fids.clear();
 }
-u32		R_occlusion::occq_begin		(u32&	ID		)
+
+u32	R_occlusion::occq_begin(u32& ID)
 {
 	if (!enabled)		return 0;
 

@@ -25,6 +25,7 @@ void CRenderTarget::DoAsyncScreenshot()
 
 
 		//HW.pDevice->CopyResource( t_ss_async, pTex );
+		//#TODO: D3D12_RANGE 
 		ID3DTexture2D*	pBuffer;
 		hr = HW.m_pSwapChain->GetBuffer( 0, __uuidof( ID3D10Texture2D ), (LPVOID*)&pBuffer );
 		HW.pContext->CopyResource( t_ss_async, pBuffer );
