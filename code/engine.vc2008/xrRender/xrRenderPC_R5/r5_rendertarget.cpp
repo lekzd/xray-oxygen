@@ -84,6 +84,7 @@ void CRenderTarget::u_setrt(const ref_rt& _1, const ref_rt& _2, ID3DDepthStencil
 		//dwHeight = TexDesc.Height;
 		//_RELEASE( pRes );
 
+		CD3DX12_DEPTH_STENCIL_DESC desc;	// must be depth stencil desc
 		D3D12_RESOURCE_DESC pTex = HW.pResource->GetDesc();
 
 		dwWidth = pTex.Width;
@@ -98,10 +99,10 @@ void CRenderTarget::u_setrt(const ref_rt& _1, const ref_rt& _2, ID3DDepthStencil
 
 void CRenderTarget::u_setrt(u32 W, u32 H, ID3DRenderTargetView* _1, ID3DRenderTargetView* _2, ID3DRenderTargetView* _3, ID3DDepthStencilView* zb)
 {
-	//VERIFY									(_1);
+	VERIFY(_1);
 	dwWidth = W;
 	dwHeight = H;
-	//VERIFY									(_1);
+	VERIFY(_1);
 	RCache.set_RT(_1, 0);
 	RCache.set_RT(_2, 1);
 	RCache.set_RT(_3, 2);

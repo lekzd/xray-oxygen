@@ -88,8 +88,8 @@ void	SimulatorStates::set_SAMP	(u32 a, u32 b, u32 c)
 
 BOOL	SimulatorStates::equal	(SimulatorStates& S)
 {
-	if (States.size()!=S.States.size())												return FALSE;
-	if (0!=memcmp(&*States.begin(),&*S.States.begin(),States.size()*sizeof(State))) return FALSE;
+	if (States.size()!=S.States.size() || 0 != memcmp(&*States.begin(), &*S.States.begin(), States.size() * sizeof(State)))
+		return FALSE;
 	return TRUE;
 }
 

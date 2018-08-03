@@ -142,6 +142,23 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     sd.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
     sd.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
+	// reset command allocator and command list before use
+	CHK_DX(pCommandAllocator->Reset());		
+	CHK_DX(pCommandList->Reset(pCommandAllocator.Get(), pDepthOnlyPipelineState.Get()));
+
+	// set root signatures and viewports
+	pCommandList->SetGraphicsRootSignature(pRootSignature.Get());
+	//pCommandList->RSSetViewports(TRUE, &m_Viewport);
+	//pCommandList->RSSetScissorRects(TRUE, &m_ScissorRect);
+
+	//pCommandList->ResourceBarrier(TRUE, &CD3DX12_RESOURCE_BARRIER::Transition( )
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart(),/* m_frameIndex*/ 1, /*m_rtvDescriptorSize*/ 65536);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(m_dsvHeap->GetCPUDescriptorHandleForHeapStart());
+
+	pCPUCommandList = { pCommandList.Get() };
+	//pCommandQueue->ExecuteCommandLists(_countof(pCPUCommandList), pCPUCommandList);
+
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC SCFullscreenDesc;
     ZeroMemory(&SCFullscreenDesc, sizeof(DXGI_SWAP_CHAIN_FULLSCREEN_DESC));
 

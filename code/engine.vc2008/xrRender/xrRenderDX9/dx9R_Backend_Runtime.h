@@ -8,6 +8,21 @@ IC void		CBackend::set_xform			(u32 ID, const Fmatrix& M_)
 	CHK_DX				(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M_));
 }
 
+#ifdef USE_DX12
+IC void CBackend::SetRenderTargetView(ID3D12Resource* RT, u32 ID)
+{
+	if (RT != pRT[ID])
+	{
+		PGO(Msg("PGO:setRT"));
+		stat.target_rt++;
+		pRT[ID] = RT;
+		//CHK_DX(
+		HW.pDevice;//->//->SetRenderTargetView(ID, RT);
+		//);
+	}
+}
+#endif
+
 IC void CBackend::set_RT(ID3DRenderTargetView* RT, u32 ID)
 {
 	if (RT!=pRT[ID])

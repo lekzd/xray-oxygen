@@ -59,6 +59,7 @@ public:
     ComPtr < IDXGIAdapter1 >                m_pAdapter;
 	ComPtr < IDXGISwapChain1 >				m_pSwapChain;
     ComPtr < ID3D12Device >					pDevice;
+	ComPtr < ID3D12CommandList >			pCPUCommandList;		// For 
     ComPtr < ID3D12CommandQueue >           pCommandQueue;
     ComPtr < ID3D12CommandAllocator >       pCommandAllocator;
     ComPtr < ID3D12GraphicsCommandList >    pCommandList;			// Main frame Cmd list
@@ -68,6 +69,8 @@ public:
     ComPtr < ID3D12DescriptorHeap >         m_dsvHeap;
     ComPtr < ID3D12DescriptorHeap >         m_samplerHeap;
     ComPtr < ID3D12DescriptorHeap >         m_cbvSrvHeap;
+	ComPtr < ID3D12PipelineState >			pPipelineState;
+	ComPtr < ID3D12PipelineState >			pDepthOnlyPipelineState;
     ComPtr < ID3D12Resource >				pResource;
     ComPtr < ID3D12Resource >		        pBaseRT;
     ComPtr < ID3D12Resource >		        pBaseRT2;

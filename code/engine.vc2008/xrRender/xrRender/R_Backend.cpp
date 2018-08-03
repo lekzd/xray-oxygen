@@ -25,6 +25,33 @@ void CBackend::CreateQuadIB		()
 	//if (HW.Caps.geometry.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,NULL));
 
+#ifdef USE_DX12
+	{
+		int		Cnt = 0;
+		int		ICnt = 0;
+		for (int i = 0; i<dwTriCount; i++)
+		{
+			Indices[ICnt++] = u16(Cnt + 0);
+			Indices[ICnt++] = u16(Cnt + 1);
+			Indices[ICnt++] = u16(Cnt + 2);
+
+			Indices[ICnt++] = u16(Cnt + 3);
+			Indices[ICnt++] = u16(Cnt + 2);
+			Indices[ICnt++] = u16(Cnt + 1);
+
+			Cnt += 4;
+		}
+	}
+
+	// create constant buffer view and CPU descs
+	D3D12_CONSTANT_BUFFER_VIEW_DESC constBufferDesc;
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
+	cpuHandle = HW.m_samplerHeap->GetCPUDescriptorHandleForHeapStart();
+	constBufferDesc.SizeInBytes = sizeof(D3D12_CONSTANT_BUFFER_VIEW_DESC);
+	constBufferDesc.BufferLocation = (D3D12_GPU_VIRTUAL_ADDRESS)malloc(sizeof(D3D12_CONSTANT_BUFFER_VIEW_DESC));
+	HW.pDevice->CreateConstantBufferView(&constBufferDesc, cpuHandle);
+#else
+
 	D3D_BUFFER_DESC desc;
 	desc.ByteWidth = dwIdxCount*2;
 	//desc.Usage = D3D_USAGE_IMMUTABLE;
@@ -33,8 +60,8 @@ void CBackend::CreateQuadIB		()
 	desc.CPUAccessFlags = 0;
 	desc.MiscFlags = 0;
 
-	D3D_SUBRESOURCE_DATA subData;
-	subData.pSysMem = IndexBuffer;
+
+	D3D12_SUBRESOURCE_DATA subData;
 
 	//R_CHK(QuadIB->Lock(0,0,(void**)&Indices,0));
 	{
@@ -56,8 +83,11 @@ void CBackend::CreateQuadIB		()
 	//R_CHK(QuadIB->Unlock());
 
 	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,NULL));
-	R_CHK(HW.pDevice->CreateBuffer		( &desc, &subData, &QuadIB));
+	//R_CHK(
+		HW.pDevice->CreateBuffer		( &desc, &subData, &QuadIB)
+	//);
 	HW.stats_manager.increment_stats_ib	( QuadIB);
+#endif
 }
 
 #else	//	USE_DX10
@@ -147,12 +177,13 @@ void CBackend::OnDeviceDestroy()
 	HW.stats_manager.decrement_stats_ib	(QuadIB);
 	_RELEASE							(QuadIB);
 
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+#if defined(USE_DX10) || defined(USE_DX11)
 	DestroyConstantBuffers();
 #endif	//	USE_DX10
 }
 
-#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
+// D3D12 always create const buffer
+#if defined(USE_DX10) || defined(USE_DX11)
 
 void CBackend::CreateConstantBuffers()
 {

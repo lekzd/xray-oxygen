@@ -4,8 +4,6 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHContactBodyEffector.h"
 #include "../xrEngine/gamemtllib.h"
-//#include "gameobject.h"
-//#include "PhysicsShellHolder.h"
 #include "PHCollideValidator.h"
 #ifdef DEBUG
 #include "debug_output.h"
@@ -47,19 +45,13 @@ float 			world_erp											=	ERP(SPRING_S(base_cfm,base_erp,base_fixed_step),D
 float			world_spring										=	1.0f*SPRING	(world_cfm,world_erp);
 float			world_damping										=	1.0f*DAMPING(world_cfm,world_erp);
 
-
 const float			default_world_gravity							=	2*9.81f;
-
 
 /////////////////////////////////////////////////////
 
 int			phIterations											= 18;
 float		phTimefactor											= 1.f;
-//float		phBreakCommonFactor										= 0.01f;
-//float		phRigidBreakWeaponFactor								= 1.f;
 Fbox		phBoundaries											= {1000.f,1000.f,-1000.f,-1000.f};
-//float		ph_tri_query_ex_aabb_rate								= 1.3f;
-//int			ph_tri_clear_disable_count								= 10;
 dWorldID	phWorld;
 
 /////////////////////////////////////
@@ -95,13 +87,6 @@ IC void add_contact_body_effector(dBodyID body,const dContact& c,SGameMtl* mater
 	}
 }
 
-
-
-
-
-
-
-
 IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,CPHIsland* world,const int &MAX_CONTACTS)
 {
 	const int RS= 800+10;
@@ -124,47 +109,47 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 
 	for(i = 0; i < n; ++i)
 	{
-		dContact				&c		=contacts[i];
-		dContactGeom			&cgeom	=c.geom;
-		dSurfaceParameters		&surface=c.surface;
-		dGeomID					g1		=cgeom.g1;
-		dGeomID					g2		=cgeom.g2;
-		bool pushing_neg=	false;
-		bool do_collide	=	true;
-		dxGeomUserData* usr_data_1		=NULL;
-		dxGeomUserData* usr_data_2		=NULL;
-		u16				material_idx_1	=0;
-		u16				material_idx_2	=0;
+		dContact &c = contacts[i];
+		dContactGeom &cgeom = c.geom;
+		dSurfaceParameters &surface = c.surface;
+		dGeomID g1 = cgeom.g1;
+		dGeomID g2 = cgeom.g2;
+		bool pushing_neg = false;
+		bool do_collide = true;
+		dxGeomUserData* usr_data_1 = NULL;
+		dxGeomUserData* usr_data_2 = NULL;
+		u16 material_idx_1 = 0;
+		u16 material_idx_2 = 0;
 
-		surface.mu =1.f;// 5000.f;
-		surface.soft_erp=1.f;//ERP(world_spring,world_damping);
-		surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
+		surface.mu = 1.f;// 5000.f;
+		surface.soft_erp = 1.f;//ERP(world_spring,world_damping);
+		surface.soft_cfm = 1.f;//CFM(world_spring,world_damping);
 		surface.bounce = 0.01f;//0.1f;
-		surface.bounce_vel =1.5f;//0.005f;
+		surface.bounce_vel = 1.5f;//0.005f;
 		usr_data_1 = retrieveGeomUserData(g1);
 		usr_data_2 = retrieveGeomUserData(g2);
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		if(usr_data_2)	material_idx_2=usr_data_2->material;
-		if(usr_data_1)	material_idx_1=usr_data_1->material;
-		bool is_tri_1=dTriListClass == dGeomGetClass(g1);
-		bool is_tri_2=dTriListClass == dGeomGetClass(g2);
-		if(!is_tri_2&&!is_tri_1) surface.mode=0;
-		if(is_tri_1) material_idx_1=(u16)surface.mode;
-		if(is_tri_2) material_idx_2=(u16)surface.mode;
-		SGameMtl* material_1=GMLibrary().GetMaterialByIdx(material_idx_1);
-		SGameMtl* material_2=GMLibrary().GetMaterialByIdx(material_idx_2);
+		if (usr_data_2)	material_idx_2 = usr_data_2->material;
+		if (usr_data_1)	material_idx_1 = usr_data_1->material;
+		bool is_tri_1 = dTriListClass == dGeomGetClass(g1);
+		bool is_tri_2 = dTriListClass == dGeomGetClass(g2);
+		if (!is_tri_2 && !is_tri_1) surface.mode = 0;
+		if (is_tri_1) material_idx_1 = (u16)surface.mode;
+		if (is_tri_2) material_idx_2 = (u16)surface.mode;
+		SGameMtl* material_1 = GMLibrary().GetMaterialByIdx(material_idx_1);
+		SGameMtl* material_2 = GMLibrary().GetMaterialByIdx(material_idx_2);
 		////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
-		surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
-		float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
-		float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
-		surface.soft_erp=ERP(spring,damping);
-		surface.soft_cfm=CFM(spring,damping);
-		surface.mu=material_2->fPHFriction*material_1->fPHFriction;
+		surface.mode = dContactApprox1 | dContactSoftERP | dContactSoftCFM;
+		float spring = material_2->fPHSpring*material_1->fPHSpring*world_spring;
+		float damping = material_2->fPHDamping*material_1->fPHDamping*world_damping;
+		surface.soft_erp = ERP(spring, damping);
+		surface.soft_cfm = CFM(spring, damping);
+		surface.mu = material_2->fPHFriction*material_1->fPHFriction;
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-		Flags32	&flags_1=material_1->Flags;
-		Flags32	&flags_2=material_2->Flags;
+		Flags32	&flags_1 = material_1->Flags;
+		Flags32	&flags_2 = material_2->Flags;
 
 		if(is_tri_1)
 		{

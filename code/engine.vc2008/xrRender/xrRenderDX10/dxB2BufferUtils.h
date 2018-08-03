@@ -1,7 +1,7 @@
 #ifndef	dx10BufferUtils_included
 #define	dx10BufferUtils_included
 #pragma once
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 
 namespace dx10BufferUtils
 {

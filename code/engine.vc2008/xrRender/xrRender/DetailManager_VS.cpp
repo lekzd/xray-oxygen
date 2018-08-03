@@ -63,11 +63,10 @@ void CDetailManager::hw_Load_Geom()
 	u32			vSize		= sizeof(vertHW);
 	Msg("* [DETAILS] %d v(%d), %d p",dwVerts,vSize,dwIndices/3);
 
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11) && !defined(USE_DX12)
 	// Determine POOL & USAGE
 	u32 dwUsage		=	D3DUSAGE_WRITEONLY;
 
-	// Create VB/IB
 	R_CHK			(HW.pDevice->CreateVertexBuffer	(dwVerts*vSize,dwUsage,0,D3DPOOL_MANAGED,&hw_VB,0));
 	HW.stats_manager.increment_stats_vb				(hw_VB);
 	R_CHK			(HW.pDevice->CreateIndexBuffer	(dwIndices*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&hw_IB,0));
@@ -159,7 +158,7 @@ void CDetailManager::hw_Unload()
 	_RELEASE					(hw_VB);
 }
 
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11) && !defined(USE_DX12)
 void CDetailManager::hw_Load_Shaders()
 {
 	// Create shader to access constant storage
@@ -208,19 +207,19 @@ void CDetailManager::hw_Render()
 	RCache.set_c			(&*hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
 	RCache.set_c			(&*hwc_wave,	wave.div(PI_MUL_2));	// wave
 	RCache.set_c			(&*hwc_wind,	dir1);																					// wind-dir
-	hw_Render_dump			(&*hwc_array,	1, 0, c_hdr );
+	//hw_Render_dump			(&*hwc_array,	1, 0, c_hdr );
 
 	// Wave1
 	//wave.set				(1.f/3.f,		1.f/7.f,	1.f/5.f,	RDEVICE.fTimeGlobal*swing_current.speed);
 	wave.set				(1.f/3.f,		1.f/7.f,	1.f/5.f,	m_time_pos);
 	RCache.set_c			(&*hwc_wave,	wave.div(PI_MUL_2));	// wave
 	RCache.set_c			(&*hwc_wind,	dir2);																					// wind-dir
-	hw_Render_dump			(&*hwc_array,	2, 0, c_hdr );
+	//hw_Render_dump			(&*hwc_array,	2, 0, c_hdr );
 
 	// Still
 	RCache.set_c			(&*hwc_s_consts,scale,		scale,		scale,				1.f);
 	RCache.set_c			(&*hwc_s_xform,	RDEVICE.mFullTransform);
-	hw_Render_dump			(&*hwc_s_array,	0, 1, c_hdr );
+	//hw_Render_dump			(&*hwc_s_array,	0, 1, c_hdr );
 }
 
 void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_id, u32 c_offset)
