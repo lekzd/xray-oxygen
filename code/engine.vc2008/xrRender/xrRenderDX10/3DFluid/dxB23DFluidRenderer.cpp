@@ -15,21 +15,13 @@ struct VsInput
 namespace
 {
 	// For render call
-	//pZNearVar = pEffect->GetVariableByName("ZNear")->AsScalar();
 	shared_str	strZNear("ZNear");
-	//pZFarVar = pEffect->GetVariableByName("ZFar")->AsScalar();
 	shared_str	strZFar("ZFar");
-	//pGridScaleFactorVar = pEffect->GetVariableByName( "gridScaleFactor")->AsScalar();
 	shared_str	strGridScaleFactor("gridScaleFactor");
-	//pEyeOnGridVar = pEffect->GetVariableByName("eyeOnGrid")->AsVector();
 	shared_str	strEyeOnGrid("eyeOnGrid");
-	//pWorldViewProjectionVar = pEffect->GetVariableByName("WorldViewProjection")->AsMatrix();
 	shared_str	strWorldViewProjection("WorldViewProjection");
-	//pInvWorldViewProjectionVar = pEffect->GetVariableByName("InvWorldViewProjection")->AsMatrix();
 	shared_str	strInvWorldViewProjection("InvWorldViewProjection");
-	//pRTWidthVar = pEffect->GetVariableByName("RTWidth")->AsScalar();
 	shared_str	strRTWidth("RTWidth");
-	//pRTHeightVar = pEffect->GetVariableByName("RTHeight")->AsScalar();
 	shared_str	strRTHeight("RTHeight");
 
 	shared_str	strDiffuseLight("DiffuseLight");
@@ -87,8 +79,6 @@ void dx103DFluidRenderer::Initialize(int gridWidth, int gridHeight, int gridDept
 		D3DXMatrixTranslation(&translationM, -0.5, -0.5, -0.5);
 
 		m_gridMatrix = translationM * scaleM;
-		//m_gridMatrix.scale(m_vGridDim[0] / m_fMaxDim, m_vGridDim[1] / m_fMaxDim, m_vGridDim[2] / m_fMaxDim);
-		//m_gridMatrix.translate_over(-0.5, -0.5, -0.5);
 	}
 
 	InitShaders();
@@ -276,6 +266,7 @@ void dx103DFluidRenderer::CreateJitterTexture()
 		data[i] = (unsigned char) (rand()/float(RAND_MAX)*256);
 	}
 
+#ifdef USE_DX11
 	D3D_TEXTURE2D_DESC desc;
 	desc.Width = 256;
 	desc.Height = 256;
@@ -286,11 +277,17 @@ void dx103DFluidRenderer::CreateJitterTexture()
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	//desc.Usage = D3D_USAGE_IMMUTABLE;
-#ifdef USE_DX11
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 #elif  USE_DX12
-
+	D3D12_RESOURCE_DESC resourceDesc;
+	resourceDesc.Width = 256;
+	resourceDesc.Height = 256;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.Format = DXGI_FORMAT_R8_UNORM;
+	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.SampleDesc.Quality = 0;
 #else
 	desc.Usage = D3D_USAGE_DEFAULT;
 	desc.BindFlags = D3D_BIND_SHADER_RESOURCE;
@@ -388,12 +385,6 @@ void dx103DFluidRenderer::CreateHHGGTexture()
 	float data[4*iNumSamples];
     XR_FLOAT16 converted[4*iNumSamples];
 
-//	Fvector4 mmin;
-//	Fvector4 mmax;
-
-//	mmin.set(10000, 10000, 10000, 10000);
-//	mmax.set(-10000, -10000, -10000, -10000);
-
 	for (int i = 0; i < iNumSamples; i++)
 	{
 		float a = i / (float)(iNumSamples-1);
@@ -401,12 +392,6 @@ void dx103DFluidRenderer::CreateHHGGTexture()
 		data[4*i+1] = h1texels(a);
 		data[4*i+2] = 1.0f-g0(a);
 		data[4*i+3] = g0(a);
-
-//		for ( int j=0; j < 4; ++j )
-//		{
-//			mmin[j] = _min(mmin[j], data[4*i+j]);
-//			mmax[j] = _max(mmax[j], data[4*i+j]);
-//		}
 	}
 
 	//	Min value is -1

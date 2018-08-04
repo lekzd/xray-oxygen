@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "dx10ShaderResourceStateCache.h"
+#include "dxB2ShaderResourceStateCache.h"
 
 dx10ShaderResourceStateCache	SRVSManager;
 
@@ -48,7 +48,7 @@ void dx10ShaderResourceStateCache::Apply()
 {
 	if (m_bUpdatePSViews)
 	{
-		HW.pContext->PSSetShaderResources( m_uiMinPSView, m_uiMaxPSView-m_uiMinPSView+1, &m_PSViews[m_uiMinPSView]);
+		//HW.pContext->PSSetShaderResources( m_uiMinPSView, m_uiMaxPSView-m_uiMinPSView+1, &m_PSViews[m_uiMinPSView]);
 		m_uiMinPSView = 0xFFFFFFFF;
 		m_uiMaxPSView = 0xFFFFFFFF;
 		m_bUpdatePSViews = false;
@@ -56,7 +56,7 @@ void dx10ShaderResourceStateCache::Apply()
 
 	if (m_bUpdateGSViews)
 	{
-		HW.pContext->GSSetShaderResources( m_uiMinGSView, m_uiMaxGSView-m_uiMinGSView+1, &m_GSViews[m_uiMinGSView]);
+		//HW.pContext->GSSetShaderResources( m_uiMinGSView, m_uiMaxGSView-m_uiMinGSView+1, &m_GSViews[m_uiMinGSView]);
 		m_uiMinGSView = 0xFFFFFFFF;
 		m_uiMaxGSView = 0xFFFFFFFF;
 		m_bUpdateGSViews = false;
@@ -64,7 +64,7 @@ void dx10ShaderResourceStateCache::Apply()
 
 	if (m_bUpdateVSViews)
 	{
-		HW.pContext->VSSetShaderResources( m_uiMinVSView, m_uiMaxVSView-m_uiMinVSView+1, &m_VSViews[m_uiMinVSView]);
+		//HW.pContext->VSSetShaderResources( m_uiMinVSView, m_uiMaxVSView-m_uiMinVSView+1, &m_VSViews[m_uiMinVSView]);
 		m_uiMinVSView = 0xFFFFFFFF;
 		m_uiMaxVSView = 0xFFFFFFFF;
 		m_bUpdateVSViews = false;

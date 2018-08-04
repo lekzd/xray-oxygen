@@ -73,7 +73,7 @@ public:	//	Public class members (must be encapsulated furthur)
 		u32					bUser		: 1;
 		u32					seqCycles	: 1;
 		u32					MemoryUsage	: 28;
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 		u32					bLoadedAsStaging: 1;
 #endif	//	USE_DX10
 	}									flags;

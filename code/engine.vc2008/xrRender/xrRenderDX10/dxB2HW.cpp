@@ -257,8 +257,8 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     CreateRootSignature();
 #endif
 
-	size_t	memory									= Desc.DedicatedVideoMemory;
-	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
+	size_t	memory								= Desc.DedicatedVideoMemory;
+	Msg		("*     Texture memory: %d M",		memory / (1024 * 1024));
 	updateWindowProps							(m_hWnd);
 	fill_vid_mode_list							(this);
 }
@@ -436,7 +436,7 @@ DXGI_RATIONAL CHW::selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt)
 		m_pAdapter->EnumOutputs(0, &pOutput);
 		VERIFY(pOutput);
 
-		DWORD num = 0;
+		UINT num = 0;
 		DXGI_FORMAT format = fmt;
 		DWORD flags = 0;
 

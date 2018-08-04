@@ -64,9 +64,10 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf )
 	{
 		desc_update();
 
+#ifndef USE_DX12
 		D3D_RESOURCE_DIMENSION	type;
 		pSurface->GetType(&type);
-		if (D3D_RESOURCE_DIMENSION_TEXTURE2D == type )
+		if (D3D_RESOURCE_DIMENSION_TEXTURE2D == type)
 		{
 			D3D_SHADER_RESOURCE_VIEW_DESC	ViewDesc;
 
@@ -78,23 +79,23 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf )
 			}
 			else
 			{
-            if(desc.SampleDesc.Count <= 1 )
-            {
-			      ViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
-				   ViewDesc.Texture2D.MostDetailedMip = 0;
-   			   ViewDesc.Texture2D.MipLevels = desc.MipLevels;
-            }
-            else
-            {
-			      ViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2DMS;
-               ViewDesc.Texture2D.MostDetailedMip = 0;
-   			   ViewDesc.Texture2D.MipLevels = desc.MipLevels;
-            }
-			}			
+				if (desc.SampleDesc.Count <= 1)
+				{
+					ViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
+					ViewDesc.Texture2D.MostDetailedMip = 0;
+					ViewDesc.Texture2D.MipLevels = desc.MipLevels;
+				}
+				else
+				{
+					ViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2DMS;
+					ViewDesc.Texture2D.MostDetailedMip = 0;
+					ViewDesc.Texture2D.MipLevels = desc.MipLevels;
+				}
+			}
 
 			ViewDesc.Format = DXGI_FORMAT_UNKNOWN;
 
-			switch(desc.Format)
+			switch (desc.Format)
 			{
 			case DXGI_FORMAT_R24G8_TYPELESS:
 				ViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
@@ -104,22 +105,27 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf )
 				break;
 			}
 
-         // this would be supported by DX10.1 but is not needed for stalker
-        // if( ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS )
-				if( (desc.SampleDesc.Count <= 1) || (ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS) )         
-					CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, &ViewDesc, &m_pSRView));
-        else
-           m_pSRView = 0;
+			// this would be supported by DX10.1 but is not needed for stalker
+		   // if( ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS )
+			if ((desc.SampleDesc.Count <= 1) || (ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS))
+				CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, &ViewDesc, &m_pSRView));
+			else
+				m_pSRView = 0;
 		}
 		else
 			CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, NULL, &m_pSRView));
-	}	
+#else
+		// ребят почините бля я нахуй скора с ума сойду нахуй
+#endif
+	}
 }
 
 ID3DBaseTexture*	CTexture::surface_get	()
 {
+#ifndef USE_DX12
 	if (flags.bLoadedAsStaging)
 		ProcessStaging();
+#endif
 
 	if (pSurface)		pSurface->AddRef	();
 	return pSurface;
@@ -143,6 +149,7 @@ void CTexture::ProcessStaging()
 {
 	VERIFY(pSurface);
 	VERIFY(flags.bLoadedAsStaging);
+	
 
 	ID3DBaseTexture* pTargetSurface = 0;
 

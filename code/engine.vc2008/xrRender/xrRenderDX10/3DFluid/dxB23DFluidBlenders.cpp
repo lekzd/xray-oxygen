@@ -104,48 +104,16 @@ void BindConstants(CBlender_Compile& C)
 {
 	//	Bind constants here
 
-	//	TextureWidthShaderVariable = pEffect->GetVariableByName( "textureWidth")->AsScalar();
 	C.r_Constant( "textureWidth",	&binder_textureWidth);
-	//	TextureHeightShaderVariable = pEffect->GetVariableByName( "textureHeight")->AsScalar();
 	C.r_Constant( "textureHeight",	&binder_textureHeight);
-	//	TextureDepthShaderVariable = pEffect->GetVariableByName( "textureDepth")->AsScalar();
 	C.r_Constant( "textureDepth",	&binder_textureDepth);
 
 	//	Renderer constants
-	//D3DXVECTOR3 recGridDim(1.0f/gridDim[0], 1.0f/gridDim[1], 1.0f/gridDim[2]);
-	//pEffect->GetVariableByName("gridDim")->AsVector()->SetFloatVector(gridDim);
 	C.r_Constant( "gridDim",	&binder_gridDim);
-	//pEffect->GetVariableByName("recGridDim")->AsVector()->SetFloatVector(recGridDim);
 	C.r_Constant( "recGridDim",	&binder_recGridDim);
-	//pEffect->GetVariableByName("maxGridDim")->AsScalar()->SetFloat(maxDim);
 	C.r_Constant( "maxGridDim",	&binder_maxDim);
 
 	//	Each technique should set up these variables itself
-	/*
-	// For project, advect
-	//ModulateShaderVariable = pEffect->GetVariableByName( "modulate")->AsScalar();
-	//C.r_Constant( "modulate",		&binder_decay);
-
-	// For gaussian
-	// Used to apply external impulse
-	//ImpulseSizeShaderVariable = pEffect->GetVariableByName( "size")->AsScalar();
-	//C.r_Constant( "size",		&binder_impulseSize);
-	//	Setup manually by technique
-	//ImpulseCenterShaderVariable = pEffect->GetVariableByName( "center")->AsVector();
-	//SplatColorShaderVariable = pEffect->GetVariableByName( "splatColor")->AsVector();	
-
-	// For confinement
-	EpsilonShaderVariable = pEffect->GetVariableByName( "epsilon")->AsScalar();
-	// For confinement, advect
-	TimeStepShaderVariable = pEffect->GetVariableByName( "timestep")->AsScalar();
-	// For advect BFECC
-	ForwardShaderVariable = pEffect->GetVariableByName( "forward")->AsScalar();
-	HalfVolumeDimShaderVariable = pEffect->GetVariableByName( "halfVolumeDim")->AsVector();
-
-
-	// For render call
-	//DrawTextureShaderVariable = pEffect->GetVariableByName( "textureNumber")->AsScalar();
-	*/
 }
 void SetupSamplers(CBlender_Compile& C)
 {
@@ -304,7 +272,7 @@ void CBlender_fluid_obst::Compile(CBlender_Compile& C)
 	{
 		case 0:			// ObstStaticBox
 			//	AABB
-			//C.r_Pass	("fluid_grid", "fluid_array", "fluid_obststaticbox", false,FALSE,FALSE,FALSE);
+
 			//	OOBB
 			C.r_Pass	("fluid_grid_oobb", "fluid_array_oobb", "fluid_obst_static_oobb", false,FALSE,FALSE,FALSE);
 			break;		
@@ -356,9 +324,6 @@ void CBlender_fluid_obstdraw::Compile(CBlender_Compile& C)
 	case 0:			// DrawTexture
 		C.r_Pass	("fluid_grid", "null", "fluid_draw_texture", false,FALSE,FALSE,FALSE);
 		break;
-//		TechniqueDrawWhiteTriangles = pEffect->GetTechniqueByName( "DrawWhiteTriangles" );
-//		TechniqueDrawWhiteLines = pEffect->GetTechniqueByName( "DrawWhiteLines" );
-//		TechniqueDrawBox = pEffect->GetTechniqueByName( "DrawBox" );
 	}
 
 	C.r_CullMode(D3DCULL_NONE);
@@ -384,7 +349,6 @@ void CBlender_fluid_raydata::Compile(CBlender_Compile& C)
 		break;
 	case 1:			// CompRayData_Front
 		C.r_Pass	("fluid_raydata_front", "null", "fluid_raydata_front", false,FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-		//RS.SetRS(D3DRS_SRCBLENDALPHA,		bABlend?abSRC:D3DBLEND_ONE	);
 		//	We need different blend arguments for color and alpha
 		//	One Zero for color
 		//	One One for alpha
@@ -405,7 +369,6 @@ void CBlender_fluid_raydata::Compile(CBlender_Compile& C)
 		break;
 	}
 
-	//C.PassSET_ZB(FALSE,FALSE);
 
 	BindConstants(C);
 	SetupSamplers(C);

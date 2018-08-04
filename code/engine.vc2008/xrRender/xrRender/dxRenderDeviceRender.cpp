@@ -66,6 +66,9 @@ void  dxRenderDeviceRender::Reset( HWND hWnd, u32 &dwWidth, u32 &dwHeight, float
 #if defined(USE_DX10) || defined(USE_DX11)
 	dwWidth					= HW.m_ChainDesc.BufferDesc.Width;
 	dwHeight				= HW.m_ChainDesc.BufferDesc.Height;
+#elif defined(USE_DX12)
+	dwWidth					= HW.m_ChainDesc.Width;
+	dwHeight				= HW.m_ChainDesc.Height;
 #else	//	USE_DX10
 	dwWidth					= HW.DevPP.BackBufferWidth;
 	dwHeight				= HW.DevPP.BackBufferHeight;
@@ -84,7 +87,7 @@ void dxRenderDeviceRender::SetupStates()
 {
 	HW.Caps.Update			();
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 #else	//	USE_DX10
 	for (u32 i=0; i<HW.Caps.raster.dwStages; i++)				{
 		float fBias = -.5f	;
@@ -147,6 +150,9 @@ void dxRenderDeviceRender::Create( HWND hWnd, u32 &dwWidth, u32 &dwHeight, float
 #if defined(USE_DX10) || defined(USE_DX11)
 	dwWidth					= HW.m_ChainDesc.BufferDesc.Width;
 	dwHeight				= HW.m_ChainDesc.BufferDesc.Height;
+#elif defined(USE_DX12)
+	dwWidth = HW.m_ChainDesc.Width;
+	dwHeight = HW.m_ChainDesc.Height;
 #else	//	USE_DX10
 	dwWidth					= HW.DevPP.BackBufferWidth;
 	dwHeight				= HW.DevPP.BackBufferHeight;
@@ -165,7 +171,7 @@ void dxRenderDeviceRender::SetupGPU( BOOL bForceGPU_SW, BOOL bForceGPU_NonPure, 
 
 void dxRenderDeviceRender::overdrawBegin()
 {
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//	TODO: DX10: Implement overdrawBegin
 	VERIFY(!"dxRenderDeviceRender::overdrawBegin not implemented.");
 #else	//	USE_DX10
@@ -189,7 +195,7 @@ void dxRenderDeviceRender::overdrawBegin()
 
 void dxRenderDeviceRender::overdrawEnd()
 {
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//	TODO: DX10: Implement overdrawEnd
 	VERIFY(!"dxRenderDeviceRender::overdrawBegin not implemented.");
 #else	//	USE_DX10
@@ -255,7 +261,7 @@ void dxRenderDeviceRender::ResourcesDumpMemoryUsage()
 dxRenderDeviceRender::DeviceState dxRenderDeviceRender::GetDeviceState()
 {
 	HW.Validate		();
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) || defined(USE_DX12)
 	//	TODO: DX10: Implement GetDeviceState
 	//	TODO: DX10: Implement DXGI_PRESENT_TEST testing
 	//VERIFY(!"dxRenderDeviceRender::overdrawBegin not implemented.");
@@ -288,7 +294,7 @@ u32 dxRenderDeviceRender::GetCacheStatPolys()
 
 void dxRenderDeviceRender::Begin()
 {
-#if !defined(USE_DX10) && !defined(USE_DX11)
+#if !defined(USE_DX10) && !defined(USE_DX11) && !defined(USE_DX12)
 	CHK_DX					(HW.pDevice->BeginScene());
 #endif	//	USE_DX10
 	RCache.OnFrameBegin		();
@@ -299,7 +305,7 @@ void dxRenderDeviceRender::Begin()
 
 void dxRenderDeviceRender::Clear()
 {
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11) 
 	HW.pContext->ClearDepthStencilView(RCache.get_ZB(), 
 		D3D_CLEAR_DEPTH|D3D_CLEAR_STENCIL, 1.0f, 0);
 
@@ -308,6 +314,7 @@ void dxRenderDeviceRender::Clear()
 		FLOAT ColorRGBA[4] = {0.0f,0.0f,0.0f,0.0f};
 		HW.pContext->ClearRenderTargetView(RCache.get_RT(), ColorRGBA);
 	}
+#elif defined(USE_DX12)
 #else	//	USE_DX10
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|
@@ -330,7 +337,7 @@ void dxRenderDeviceRender::End()
 
 	DoAsyncScreenshot();
 
-#if defined(USE_DX10) || defined(USE_DX11)
+#if defined(USE_DX10) || defined(USE_DX11)|| defined(USE_DX12)
 	if (!Device.m_SecondViewport.IsSVPFrame() && !Device.m_SecondViewport.m_bCamReady) //+SecondVP+ Не выводим кадр из второго вьюпорта на экран (на практике у нас экранная картинка обновляется минимум в два раза реже) [don't flush image into display for SecondVP-frame]
 		HW.m_pSwapChain->Present(psDeviceFlags.test(rsVSync) ? 1 : 0, 0);
 #else	//	USE_DX10
@@ -352,6 +359,7 @@ void dxRenderDeviceRender::ClearTarget()
 #if defined(USE_DX10) || defined(USE_DX11)
 	FLOAT ColorRGBA[4] = {0.0f,0.0f,0.0f,0.0f};
 	HW.pContext->ClearRenderTargetView(RCache.get_RT(), ColorRGBA);
+#elif  defined(USE_DX12)
 #else	//	USE_DX10
 	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0),1,0));
 #endif	//	USE_DX10

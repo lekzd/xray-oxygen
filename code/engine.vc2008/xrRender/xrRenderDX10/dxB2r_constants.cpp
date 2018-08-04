@@ -2,7 +2,9 @@
 #pragma hdrstop
 
 #pragma warning(disable:4995)
+#ifndef USE_DX12
 #include <d3dx9.h>
+#endif
 #pragma warning(default:4995)
 
 #include "../xrRender/ResourceManager.h"

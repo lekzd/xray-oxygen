@@ -11,31 +11,6 @@
 #include "dxB23DFluidData.h"
 #include "dxB23DFluidGrid.h"
 
-/*
-#ifdef	DEBUG
-#include "../../xrRender/dxDebugRender.h"
-#endif
-
-static void draw_obb		( const Fmatrix &matrix, const u32 &color )
-{
-	Fvector							aabb[8];
-	matrix.transform_tiny			(aabb[0],Fvector().set( -1, -1, -1)); // 0
-	matrix.transform_tiny			(aabb[1],Fvector().set( -1, +1, -1)); // 1
-	matrix.transform_tiny			(aabb[2],Fvector().set( +1, +1, -1)); // 2
-	matrix.transform_tiny			(aabb[3],Fvector().set( +1, -1, -1)); // 3
-	matrix.transform_tiny			(aabb[4],Fvector().set( -1, -1, +1)); // 4
-	matrix.transform_tiny			(aabb[5],Fvector().set( -1, +1, +1)); // 5
-	matrix.transform_tiny			(aabb[6],Fvector().set( +1, +1, +1)); // 6
-	matrix.transform_tiny			(aabb[7],Fvector().set( +1, -1, +1)); // 7
-
-	u16								aabb_id[12*2] = {
-		0,1,  1,2,  2,3,  3,0,  4,5,  5,6,  6,7,  7,4,  1,5,  2,6,  3,7,  0,4
-	};
-
-	rdebug_render->add_lines						(aabb, sizeof(aabb)/sizeof(Fvector), &aabb_id[0], sizeof(aabb_id)/(2*sizeof(u16)), color);
-}
-*/
-
 namespace
 {
 	//	For OOBB
@@ -315,75 +290,6 @@ void dx103DFluidObstacles::RenderPhysicsElement( const IPhysicsElement &Element,
 	}
 }
 
-/*
-void dx103DFluidObstacles::RenderDynamicOOBB( const IPhysicsElement &Element, const Fmatrix &WorldToFluid, float timestep)
-{
-	PIX_EVENT(RenderDynamicObstacle);
-
-	//	dsdad;
-
-	Fmatrix Transform;
-	//Transform.mul(WorldToFluid, Element.XFORM());
-
-	Fvector3 BoxSize;
-	Fvector3 BoxCenter;
-	Element.get_Box( BoxSize, BoxCenter );
-
-	//	Get bone transform
-	Fmatrix OOBBTransform = Element.XFORM();
-	//	Overwrite bone position with oobb world position
-	OOBBTransform.c = BoxCenter;
-
-	Transform.mul(WorldToFluid, OOBBTransform);
-
-	//	Shader must be already set up!
-	Fmatrix	InvTransform;
-	Fmatrix ClipTransform;
-	InvTransform.invert(Transform);
-	ClipTransform.transpose(InvTransform);
-
-	for ( int i=0; i<6; ++i)
-	{
-		Fvector4	UpdatedPlane = UnitClipPlanes[i];
-		UpdatedPlane.w *= BoxSize[i/2];
-		//UpdatedPlane.w += (i%2) ? (-BoxCenter[i/2]) : BoxCenter[i/2];
-		Fvector4	TransformedPlane;
-		ClipTransform.transform(TransformedPlane, UpdatedPlane);
-		TransformedPlane.normalize_as_plane();
-		RCache.set_ca(strOOBBClipPlane, i, TransformedPlane);
-	}
-
-	const Fvector3	&MassCenter3 = Element.mass_Center();
-	Fvector3	AngularVelocity3;
-	Fvector3	TranslationVelocity3;
-	Element.get_AngularVel(AngularVelocity3);
-	Element.get_LinearVel(TranslationVelocity3);
-
-	Fvector4	MassCenter;
-	Fvector4	AngularVelocity;
-	Fvector4	TranslationVelocity;
-	MassCenter.set( MassCenter3.x, MassCenter3.y, MassCenter3.z, 0.0f);
-	AngularVelocity.set( AngularVelocity3.x, AngularVelocity3.y, AngularVelocity3.z, 0.0f);
-	TranslationVelocity.set( TranslationVelocity3.x, TranslationVelocity3.y, TranslationVelocity3.z, 0.0f);
-
-	float	fVelocityScale;
-	
-	VERIFY(timestep!=0);
-
-	fVelocityScale = 1/timestep;
-
-	fVelocityScale *= Device.fTimeDelta;
-
-	AngularVelocity.mul( fVelocityScale );
-	TranslationVelocity.mul( fVelocityScale );
-
-	RCache.set_c(strMassCenter, MassCenter);
-	RCache.set_c(strOOBBWorldAngularVelocity, AngularVelocity);
-	RCache.set_c(strOOBBWorldTranslationVelocity, TranslationVelocity);	
-
-	m_pGrid->DrawSlices();
-}
-*/
 
 void dx103DFluidObstacles::RenderDynamicOOBB( const IPhysicsGeometry &Geometry, const Fmatrix &WorldToFluid, float timestep)
 {
