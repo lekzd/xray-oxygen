@@ -151,8 +151,8 @@ Shader*	CResourceManager::_cpp_Create(IBlender* B, LPCSTR s_shader, LPCSTR s_tex
 
 	// Parse names
 	_ParseList(C.L_textures, s_textures);
-	_ParseList(C.L_constants, s_constants);
-	_ParseList(C.L_matrices, s_matrices);
+	//_ParseList(C.L_constants, s_constants);
+	//_ParseList(C.L_matrices, s_matrices);
 
 	// Compile element	(LOD0 - HQ)
 	{
