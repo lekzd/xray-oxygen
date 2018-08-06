@@ -4,28 +4,32 @@
 #include "../xrRender/dxRenderFactory.h"
 #include "../xrRender/dxUIRender.h"
 #include "../xrRender/dxDebugRender.h"
+#include "../xrRender/FontData.h"
 
 #pragma comment(lib,"xrEngine.lib")
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
-					 )
+BOOL APIENTRY DllMain(HANDLE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
 {
+	FontData D;
+	D.init();
+
 	switch (ul_reason_for_call)
 	{
-	case DLL_PROCESS_ATTACH	:
-		::Render					= &RImplementation;
-		::RenderFactory				= &RenderFactoryImpl;
-		::DU						= &DUImpl;
-		//::vid_mode_token			= inited by HW;
-		UIRender					= &UIRenderImpl;
-		DRender						= &DebugRenderImpl;
-		xrRender_initconsole		();
-		break	;
-	case DLL_THREAD_ATTACH	:
-	case DLL_THREAD_DETACH	:
-	case DLL_PROCESS_DETACH	:
+	case DLL_PROCESS_ATTACH:
+		::Render = &RImplementation;
+		::RenderFactory = &RenderFactoryImpl;
+		::DU = &DUImpl;
+		//::vid_mode_token = inited by HW;
+		UIRender = &UIRenderImpl;
+		DRender = &DebugRenderImpl;
+		xrRender_initconsole();
+		break;
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
 		break;
 	}
 	return TRUE;
