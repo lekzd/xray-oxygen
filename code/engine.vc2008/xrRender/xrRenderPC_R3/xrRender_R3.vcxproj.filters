@@ -178,6 +178,9 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{76756d5c-532e-43b0-9e63-cd0bee1ef42f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font Handler">
+      <UniqueIdentifier>{d390fb8c-529c-4efa-a389-17902c5bed50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cl_intersect.h">
@@ -734,6 +737,9 @@
     </ClInclude>
     <ClInclude Include="Blender_ss.h" />
     <ClInclude Include="blender_sunshafts.h" />
+    <ClInclude Include="..\xrRender\FontData.h">
+      <Filter>Font Handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1319,6 +1325,9 @@
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="r3_rendertarget_phase_FXAA.cpp">
       <Filter>Core_Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\FontData.cpp">
+      <Filter>Font Handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

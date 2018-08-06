@@ -1,8 +1,9 @@
 /*
 	Date of creation: 15.07.18
 	Author: Lord
-	Copyright: GSC, OxyDev Team
+	Copyright (C): GSC, OxyDev Team
 */
+
 #pragma once
 
 class FontData
@@ -18,15 +19,15 @@ private:
 
 	//
 	int glyphHeight;
-
-	ref_shader FontShader;
-	ref_geom FontGeom;
+	string32 FontName;
 
 public:
 
 public:
 	FontData();
 	~FontData();
+
+	void init(int Maxsize = 72, string32 FontName = "Arial");
 
 private:
 };

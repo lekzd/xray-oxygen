@@ -116,7 +116,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./;../../../sdk/include/dx;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../../sdk/include/dx;../../../sdk/include/;../../../sdk/include/freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_DX10;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
@@ -217,6 +217,7 @@
     <ClInclude Include="..\..\utils\common\NvMender2003\mender_input_output.h" />
     <ClInclude Include="..\..\utils\common\NvMender2003\NVMeshMender.h" />
     <ClInclude Include="..\..\utils\common\NvMender2003\remove_isolated_verts.h" />
+    <ClInclude Include="..\xrRender\FontData.h" />
     <ClInclude Include="blender_rain_drops.h" />
     <ClInclude Include="Blender_ss.h" />
     <ClInclude Include="blender_sunshafts.h" />
@@ -402,6 +403,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\utils\common\NvMender2003\NVMeshMender4.cpp" />
+    <ClCompile Include="..\xrRender\FontData.cpp" />
     <ClCompile Include="blender_rain_drops.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="blender_sunshafts.cpp" />

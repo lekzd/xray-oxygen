@@ -178,6 +178,9 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{2b8ee698-8298-45d3-bb63-f88d514d295f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font Handler">
+      <UniqueIdentifier>{b5f472ae-fe11-4d15-8e27-442fa473da25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cl_intersect.h">
@@ -749,6 +752,9 @@
     </ClInclude>
     <ClInclude Include="Blender_ss.h" />
     <ClInclude Include="blender_sunshafts.h" />
+    <ClInclude Include="..\xrRender\FontData.h">
+      <Filter>Font Handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1344,6 +1350,9 @@
     <ClCompile Include="r2_rendertarget_phase_ss.cpp" />
     <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
+    <ClCompile Include="..\xrRender\FontData.cpp">
+      <Filter>Font Handler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\..\xrCore.natvis" />
