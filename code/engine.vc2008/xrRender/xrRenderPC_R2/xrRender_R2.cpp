@@ -7,15 +7,11 @@
 #include "../xrRender/FontData.h"
 
 #pragma comment(lib,"xrEngine.lib")
-
 BOOL APIENTRY DllMain(HANDLE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
 )
 {
-	FontData D;
-	D.init();
-
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
