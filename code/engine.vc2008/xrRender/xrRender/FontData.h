@@ -9,16 +9,12 @@
 class FontData
 {
 private:
-	// No comments
-	int Width, Height;
 	int Thickness;
 	int BorderWidth;
 
 	// Color data of font
 	int ColorR, ColorG, ColorB;
 
-	//
-	int glyphHeight;
 	string32 FontName;
 
 public:
@@ -29,5 +25,6 @@ public:
 
 	void init(int Maxsize = 72, string32 FontName = "Arial");
 
+	void Load_UnicodeDictionary(void);
 private:
 };

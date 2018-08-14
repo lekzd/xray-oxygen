@@ -227,10 +227,10 @@
     <ClInclude Include="..\..\utils\common\NvMender2003\NVMeshMender.h" />
     <ClInclude Include="..\..\utils\common\NvMender2003\remove_isolated_verts.h" />
     <ClInclude Include="..\xrRender\FontData.h" />
+    <ClInclude Include="..\xrRender\FontManager.h" />
     <ClInclude Include="blender_rain_drops.h" />
     <ClInclude Include="blender_sunshafts.h" />
     <ClInclude Include="cl_intersect.h" />
-    <ClInclude Include="FontManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\xrRender\xrD3DDefs.h" />
     <ClInclude Include="..\xrRender\xrRender_console.h" />
@@ -395,10 +395,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\xrRender\FontData.cpp" />
+    <ClCompile Include="..\xrRender\FontManager.cpp" />
     <ClCompile Include="blender_rain_drops.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="blender_sunshafts.cpp" />
-    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="r2_rendertarget_phase_rain_drops.cpp" />
     <ClCompile Include="r2_rendertarget_phase_ss.cpp" />
     <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp" />

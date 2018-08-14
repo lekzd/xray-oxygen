@@ -755,6 +755,9 @@
     <ClInclude Include="..\xrRender\FontData.h">
       <Filter>Font Handler</Filter>
     </ClInclude>
+    <ClInclude Include="..\xrRender\FontManager.h">
+      <Filter>Font Handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1351,6 +1354,9 @@
     <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp" />
     <ClCompile Include="Blender_ss.cpp" />
     <ClCompile Include="..\xrRender\FontData.cpp">
+      <Filter>Font Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\FontManager.cpp">
       <Filter>Font Handler</Filter>
     </ClCompile>
   </ItemGroup>
